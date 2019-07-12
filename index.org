@@ -1,0 +1,7 @@
+#+TITLE: My HomePage
+
+* Recent Posts
+#+INCLUDE: "recent-posts.org"
+* By category
+#+INCLUDE: "by-category.org"
+
