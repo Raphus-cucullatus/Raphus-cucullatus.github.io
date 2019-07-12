@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-07-12 Fri 16:24 -->
+<!-- 2019-07-12 Fri 16:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My HomePage</title>
+<title>QEMU: Adding a New Trace Event</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -228,58 +228,91 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My HomePage</h1>
-
-<div id="outline-container-org2ebe206" class="outline-2">
-<h2 id="org2ebe206">Recent Posts</h2>
-<div class="outline-text-2" id="text-org2ebe206">
-<ul class="org-ul">
-<li>Jul 12 2019: <a href="PML.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-<li>Jul 9 2019: <a href="qemu%20adding%20a%20new%20trace%20event.html">QEMU: Adding a New Trace Event</a></li>
+<h1 class="title">QEMU: Adding a New Trace Event</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9f33610">1. Locate corresponding trace events file</a></li>
+<li><a href="#orgcd50ba7">2. Add trace events</a></li>
+<li><a href="#org69edfdd">3. Place your trace function, build and run</a></li>
+<li><a href="#org989b3cc">4. See also</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org84711d5" class="outline-2">
-<h2 id="org84711d5">By category</h2>
-<div class="outline-text-2" id="text-org84711d5">
-</div>
-<div id="outline-container-orgc41d9e1" class="outline-3">
-<h3 id="orgc41d9e1">Virtualization</h3>
-<div class="outline-text-3" id="text-orgc41d9e1">
-<ul class="org-ul">
-<li><a href="qemu%20adding%20a%20new%20trace%20event.html">QEMU: Adding a New Trace Event</a></li>
-<li><a href="PML.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org619d746" class="outline-3">
-<h3 id="org619d746">Database</h3>
-<div class="outline-text-3" id="text-org619d746">
-<ul class="org-ul">
-<li><a href="redis.html">Redis Data Persistence and High-Availability</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgbc420b0" class="outline-3">
-<h3 id="orgbc420b0">Misc.</h3>
-<div class="outline-text-3" id="text-orgbc420b0">
-<ul class="org-ul">
-<li><a href="GTD.html">My Thoughputs on Getting Things Done (GTD)</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgfa87aac" class="outline-2">
-<h2 id="orgfa87aac">About</h2>
-<div class="outline-text-2" id="text-orgfa87aac">
 <p>
-If you have any questions, feel free to contact me at <a href="https://github.com/Raphus-cucullatus/Raphus-cucullatus.github.io/issues">the Issues page</a>.
+For example, I want to add three trace functions in
+<code>migration/migration.c</code>:
+</p>
+<pre class="example">
+trace_migration_completion_wakeup_request();
+trace_migration_completion_globalstate_store();
+trace_migration_completion_vm_stop();
+</pre>
+
+<p>
+The steps are as follows.
+</p>
+
+<div id="outline-container-org9f33610" class="outline-2">
+<h2 id="org9f33610"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+First, find the <code>trace-events</code> file in the sub-directory where your
+modification is going to happen.  Here, it is
+<code>migration/trace-events</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcd50ba7" class="outline-2">
+<h2 id="orgcd50ba7"><span class="section-number-2">2</span> Add trace events</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Then, append one line for each trace function.  The line specifies the
+trace function name, its args and print formatting.  In my case, they
+are
+</p>
+<pre class="example">
+migration_completion_wakeup_request(void) ""
+migration_completion_globalstate_store(void) ""
+migration_completion_vm_stop(void) ""
+</pre>
+</div>
+</div>
+<div id="outline-container-org69edfdd" class="outline-2">
+<h2 id="org69edfdd"><span class="section-number-2">3</span> Place your trace function, build and run</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Note that tracing should be enabled with a backend and switched on.
+When <code>./configure</code>, add
+</p>
+<pre class="example">
+--enable-trace-backends=&lt;choose your tracing backends&gt;
+</pre>
+<p>
+Check <code>/.configure --help</code> for supported tracing backends.
+</p>
+
+<p>
+And when run QEMU, add
+</p>
+<pre class="example">
+-trace events=&lt;file that contains events you want to trace&gt;
+</pre>
+</div>
+</div>
+<div id="outline-container-org989b3cc" class="outline-2">
+<h2 id="org989b3cc"><span class="section-number-2">4</span> See also</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+For more details on QEMU tracing, see <code>docs/devel/tracing.txt</code> in the
+QEMU repository.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2019-07-12 Fri 16:24</p>
+<p class="date">Created: 2019-07-12 Fri 16:16</p>
 <p class="validation"></p>
 </div>
 </body>

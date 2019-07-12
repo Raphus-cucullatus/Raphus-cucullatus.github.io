@@ -1,4 +1,5 @@
-* Kernel
+* Virtualization
+- [[file:qemu%20adding%20a%20new%20trace%20event.html][QEMU: Adding a New Trace Event]]
 - [[file:PML.html][Page-Modification Logging (PML) Inside and Its Overhead]]
 * Database
 - [[file:redis.html][Redis Data Persistence and High-Availability]]
