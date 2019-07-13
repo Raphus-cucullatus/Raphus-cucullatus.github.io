@@ -3,10 +3,9 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-07-12 Fri 15:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Thoughputs on Getting Things Done (GTD)</title>
+<title>QEMU: Adding a New Trace Event</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -228,76 +227,91 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My Thoughputs on Getting Things Done (GTD)</h1>
+<h1 class="title">QEMU: Adding a New Trace Event</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge2280a3">1. <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></a>
-<ul>
-<li><a href="#org0a852e6">1.1. Goal</a></li>
-</ul>
-</li>
-<li><a href="#org6be81e1">2. <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt; </span></span> Milestone summary</a></li>
+<li><a href="#org603a761">1. Locate corresponding trace events file</a></li>
+<li><a href="#org835e85d">2. Add trace events</a></li>
+<li><a href="#org74f3bc5">3. Place your trace function, build and run</a></li>
+<li><a href="#orgcbf633c">4. See also</a></li>
 </ul>
 </div>
 </div>
+<p>
+For example, I want to add three trace functions in
+<code>migration/migration.c</code>:
+</p>
+<pre class="example">
+trace_migration_completion_wakeup_request();
+trace_migration_completion_globalstate_store();
+trace_migration_completion_vm_stop();
+</pre>
 
-<div id="outline-container-orge2280a3" class="outline-2">
-<h2 id="orge2280a3"><span class="section-number-2">1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></h2>
+<p>
+The steps are as follows.
+</p>
+
+<div id="outline-container-org603a761" class="outline-2">
+<h2 id="org603a761"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
 <div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org0a852e6" class="outline-3">
-<h3 id="org0a852e6"><span class="section-number-3">1.1</span> Goal</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>Won't miss appointment without always keep it in mind</li>
-<li>Have enough time to complete tasks ahead of deadline</li>
-<li>Know what to do best at any time</li>
-</ul>
+<p>
+First, find the <code>trace-events</code> file in the sub-directory where your
+modification is going to happen.  Here, it is
+<code>migration/trace-events</code>.
+</p>
 </div>
 </div>
-</div>
-<div id="outline-container-org6be81e1" class="outline-2">
-<h2 id="org6be81e1"><span class="section-number-2">2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt; </span></span> Milestone summary</h2>
+<div id="outline-container-org835e85d" class="outline-2">
+<h2 id="org835e85d"><span class="section-number-2">2</span> Add trace events</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-The insight is separating task management and time management.
+Then, append one line for each trace function.  The line specifies the
+trace function name, its args and print formatting.  In my case, they
+are
+</p>
+<pre class="example">
+migration_completion_wakeup_request(void) ""
+migration_completion_globalstate_store(void) ""
+migration_completion_vm_stop(void) ""
+</pre>
+</div>
+</div>
+<div id="outline-container-org74f3bc5" class="outline-2">
+<h2 id="org74f3bc5"><span class="section-number-2">3</span> Place your trace function, build and run</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Note that tracing should be enabled with a backend and switched on.
+When <code>./configure</code>, add
+</p>
+<pre class="example">
+--enable-trace-backends=&lt;choose your tracing backends&gt;
+</pre>
+<p>
+Check <code>/.configure --help</code> for supported tracing backends.
 </p>
 
 <p>
-Task management deals with tasks, and aims at
+And when run QEMU, add
 </p>
-<ul class="org-ul">
-<li>recording tasks</li>
-<li>setting deadlines, notifications</li>
-<li>grouping task (maybe into multiple dimensions) for the convenience
-of later scheduling</li>
-<li>complex task involves project management methodology</li>
-</ul>
-
+<pre class="example">
+-trace events=&lt;file that contains events you want to trace&gt;
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcbf633c" class="outline-2">
+<h2 id="orgcbf633c"><span class="section-number-2">4</span> See also</h2>
+<div class="outline-text-2" id="text-4">
 <p>
-Time management deals with time resource.  It schedules tasks into my
-available time blocks to
-</p>
-<ul class="org-ul">
-<li>Make sure that tasks are assigned proper time resource so that
-<ol class="org-ol">
-<li>They have enough time to finish.</li>
-<li>Tasks that have different priority are treated differently.</li>
-</ol></li>
-<li>Balance tension and slack and maximize my efficiency</li>
-</ul>
-
-<p>
-I use OmniFocus and OmniPlan for task management and Apple Calendar
-for time management.
+For more details on QEMU tracing, see <code>docs/devel/tracing.txt</code> in the
+QEMU repository.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2019-07-12 Fri 15:19</p>
+<p class="date">Date: Jul 09, 2019</p>
 <p class="validation"></p>
 </div>
 </body>

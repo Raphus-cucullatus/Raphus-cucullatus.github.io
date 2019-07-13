@@ -3,10 +3,9 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-07-12 Fri 15:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Redis Data Persistence and High-Availability</title>
+<title>My Thoughputs on Getting Things Done (GTD)</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -228,187 +227,76 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Redis Data Persistence and High-Availability</h1>
+<h1 class="title">My Thoughputs on Getting Things Done (GTD)</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4099534">1. Redis data persistence and crash recovery</a>
+<li><a href="#org31cae87">1. <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></a>
 <ul>
-<li><a href="#org25cca03">1.1. RDB</a></li>
-<li><a href="#orgb350d92">1.2. AOF</a></li>
-<li><a href="#org5b843b7">1.3. About redis recovery time</a></li>
+<li><a href="#orgcaba61e">1.1. Goal</a></li>
 </ul>
 </li>
-<li><a href="#orgcf4c0a1">2. Redis high-availability: replication, cluster, and sentinel</a></li>
+<li><a href="#org2373e28">2. <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt; </span></span> Milestone summary</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org4099534" class="outline-2">
-<h2 id="org4099534"><span class="section-number-2">1</span> Redis data persistence and crash recovery</h2>
+<div id="outline-container-org31cae87" class="outline-2">
+<h2 id="org31cae87"><span class="section-number-2">1</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li class="on"><code>[X]</code> does redis persist data?</li>
-</ul>
-
-<p>
-It depends on the configuration.  It has RDB and AOF and their
-combination to provide different level of durability.  I realize that
-Redis, PostgreSQL, MySQL alike provide different level of durability
-regards crashing.
-</p>
 </div>
-<div id="outline-container-org25cca03" class="outline-3">
-<h3 id="org25cca03"><span class="section-number-3">1.1</span> RDB</h3>
+<div id="outline-container-orgcaba61e" class="outline-3">
+<h3 id="orgcaba61e"><span class="section-number-3">1.1</span> Goal</h3>
 <div class="outline-text-3" id="text-1-1">
-<p>
-Snapshots.
-</p>
-
-<p>
-Impl:
-</p>
-<ol class="org-ol">
-<li>Redis forks. We now have a child and a parent process.</li>
-<li>The child starts to write the data-set to a temporary RDB file.</li>
-<li>When the child is done writing the new RDB file, it replaces the
-old one.</li>
-</ol>
-
-<p>
-Caller of loading from a RDB:
-</p>
 <ul class="org-ul">
-<li><code>rdbLoad</code>:
-<ul class="org-ul">
-<li>server.c: <code>loadDataFromDisk</code></li>
-<li>replication.c: <code>readSyncBulkPayload</code></li>
-</ul></li>
-<li><code>rdbLoadRio</code>:
-<ul class="org-ul">
-<li>aof.c: <code>loadAppendOnlyFile</code></li>
-</ul></li>
-</ul>
-
-<p>
-Caller of saving to a RDB:
-</p>
-<ul class="org-ul">
-<li><code>rdbSave</code>:
-<ul class="org-ul">
-<li>db.c: <code>flushallCommand</code></li>
-<li>rdb.c: <code>rdbSaveBackground</code></li>
-<li>rdb.c: <code>saveCommand</code></li>
-<li>server.c: <code>prepareForShutdown</code></li>
-</ul></li>
-<li><code>rdbSaveRio</code>
-<ul class="org-ul">
-<li>aof.c: <code>rewriteAppendOnlyFile</code></li>
-</ul></li>
-<li><code>rdbSaveRioWithEOFMark</code>
-<ul class="org-ul">
-<li>rdb.c: <code>rdbSaveToSlavesSockets</code></li>
-</ul></li>
+<li>Won't miss appointment without always keep it in mind</li>
+<li>Have enough time to complete tasks ahead of deadline</li>
+<li>Know what to do best at any time</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb350d92" class="outline-3">
-<h3 id="orgb350d92"><span class="section-number-3">1.2</span> AOF</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-Operation logging + log compacting (log rewriting).  
-</p>
-
-<p>
-Three <code>fsync</code> policy:
-</p>
-<ol class="org-ol">
-<li><code>always</code></li>
-<li><code>everysec</code></li>
-<li><code>no</code></li>
-</ol>
-
-<p>
-Loading from a AOF (<code>loadAppendOnlyFile</code>) is invoked when
-<code>loadDataFromDisk</code> (server.c) at the server start.
-</p>
-
-<p>
-When a command is to 'propagate' (to AOF or slaves),
-<code>feedAppendOnlyFile</code> is called to cat the command to the
-<code>server.aof_buffer</code>.  And some time-related command may be
-transformed.  For example, <code>expire</code> command will be transformed to
-<code>expireat</code> command.
-</p>
-
-<p>
-Before re-entering the event loop or after a period (depends on the
-config of <code>appendfsync</code>, <code>flushAppendOnlyFile</code> is called to fsync the
-writes.
-</p>
 </div>
-</div>
-<div id="outline-container-org5b843b7" class="outline-3">
-<h3 id="org5b843b7"><span class="section-number-3">1.3</span> About redis recovery time</h3>
-<div class="outline-text-3" id="text-1-3">
-<blockquote>
-<p>
-In experience, from a blog, Redis server will load an RDB file at the
-rate of 10 ~ 20 seconds per gigabyte of memory used.  Loading an AOF
-file that was just rewritten by the server takes something like twice
-per gigabyte in Redis 2.6, but of course if a lot of writes reached
-the AOF file after the latest compaction it can take longer.
-</p>
-
-<p>
-It is a better idea to use replication.  For example in the case of
-redis version upgrade, the admin will setup the Redis instance running
-the new version as slave of the old instance, then will point all the
-clients to the new instance, will turn this instance into a master,
-and will finally shut down the old one.
-</p>
-</blockquote>
-</div>
-</div>
-</div>
-<div id="outline-container-orgcf4c0a1" class="outline-2">
-<h2 id="orgcf4c0a1"><span class="section-number-2">2</span> Redis high-availability: replication, cluster, and sentinel</h2>
+<div id="outline-container-org2373e28" class="outline-2">
+<h2 id="org2373e28"><span class="section-number-2">2</span> <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt; </span></span> Milestone summary</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Redis replication is a master-slave method to achieve fail-over
-and serve read-only request on slaves.  
-</p>
-<ul class="org-ul">
-<li>The updates are propagate from the master to slaves in an aync way
-(where the master only wait for configurable N replies from
-slaves).</li>
-<li>The slaves can serve read-only request and stale data (when
-in-sync, if disabled, the slave will reply an error "SYNC with
-master in progress")</li>
-</ul>
-
-<p>
-Redis cluster is a solution for static, hash-based data partition
-among several redis masters who can either be a standalone server or a
-replication setup (1 master with several slaves).
+The insight is separating task management and time management.
 </p>
 
 <p>
-Redis sentinel is a dynamic reconfiguration mechanism to manage,
-monitor, reconfigure a replication setup (1 master with several
-slaves).
+Task management deals with tasks, and aims at
 </p>
 <ul class="org-ul">
-<li>sentinels are on consensus of the state of the master in a
-replication group.</li>
-<li>clients connect to the sentinels to know the current master.</li>
+<li>recording tasks</li>
+<li>setting deadlines, notifications</li>
+<li>grouping task (maybe into multiple dimensions) for the convenience
+of later scheduling</li>
+<li>complex task involves project management methodology</li>
 </ul>
+
+<p>
+Time management deals with time resource.  It schedules tasks into my
+available time blocks to
+</p>
+<ul class="org-ul">
+<li>Make sure that tasks are assigned proper time resource so that
+<ol class="org-ol">
+<li>They have enough time to finish.</li>
+<li>Tasks that have different priority are treated differently.</li>
+</ol></li>
+<li>Balance tension and slack and maximize my efficiency</li>
+</ul>
+
+<p>
+I use OmniFocus and OmniPlan for task management and Apple Calendar
+for time management.
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2019-07-12 Fri 15:01</p>
+<p class="date">Date: May 25, 2019</p>
 <p class="validation"></p>
 </div>
 </body>

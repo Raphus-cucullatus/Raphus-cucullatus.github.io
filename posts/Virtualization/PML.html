@@ -3,7 +3,6 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-07-12 Fri 15:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Page-Modification Logging (PML) Inside and Its Overhead</title>
@@ -233,28 +232,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org040239b">1. PML capability</a></li>
-<li><a href="#org1c8f210">2. PML enabling</a></li>
-<li><a href="#org6ad7e47">3. PML mechanism</a></li>
-<li><a href="#org5692ec8">4. Runtime PML</a></li>
-<li><a href="#orgc3aa1a4">5. Getting the dirty log</a></li>
-<li><a href="#org4157b1f">6. Evaluation on PML overhead</a>
+<li><a href="#orgcf74edf">1. PML capability</a></li>
+<li><a href="#org1786600">2. PML enabling</a></li>
+<li><a href="#orgab95fc7">3. PML mechanism</a></li>
+<li><a href="#orge7b0efa">4. Runtime PML</a></li>
+<li><a href="#org669fd39">5. Getting the dirty log</a></li>
+<li><a href="#org759498f">6. Evaluation on PML overhead</a>
 <ul>
-<li><a href="#org6449eb8">6.1. Sources of overhead</a></li>
-<li><a href="#orgccbf11c">6.2. Setup</a></li>
-<li><a href="#org2f268d0">6.3. Result takeaways</a></li>
-<li><a href="#org5175123">6.4. Micro-benchmark: memory write throughput</a></li>
-<li><a href="#orgd3f58c3">6.5. Macro-benchmark: PageRank</a></li>
-<li><a href="#org8fc7515">6.6. <code>kvm_vm_ioctl_get_dirty_log</code> time</a></li>
-<li><a href="#org6b616af">6.7. <code>vmx_flush_pml_buffer</code> time</a></li>
+<li><a href="#orgffe4e3f">6.1. Sources of overhead</a></li>
+<li><a href="#org8296d5e">6.2. Setup</a></li>
+<li><a href="#org1a10c62">6.3. Result takeaways</a></li>
+<li><a href="#org3983825">6.4. Micro-benchmark: memory write throughput</a></li>
+<li><a href="#org71e326c">6.5. Macro-benchmark: PageRank</a></li>
+<li><a href="#org301ac96">6.6. <code>kvm_vm_ioctl_get_dirty_log</code> time</a></li>
+<li><a href="#org0d80ec1">6.7. <code>vmx_flush_pml_buffer</code> time</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org040239b" class="outline-2">
-<h2 id="org040239b"><span class="section-number-2">1</span> PML capability</h2>
+<div id="outline-container-orgcf74edf" class="outline-2">
+<h2 id="orgcf74edf"><span class="section-number-2">1</span> PML capability</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 VMX related capabilities are reported mainly by MSR.  PML control is
@@ -272,8 +271,8 @@ control in the 32-bit vector.
 </p>
 </div>
 </div>
-<div id="outline-container-org1c8f210" class="outline-2">
-<h2 id="org1c8f210"><span class="section-number-2">2</span> PML enabling</h2>
+<div id="outline-container-org1786600" class="outline-2">
+<h2 id="org1786600"><span class="section-number-2">2</span> PML enabling</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The enabling bit of PML is at bit 17 in the secondary processor-based
@@ -306,8 +305,8 @@ kvm_init
 </pre>
 </div>
 </div>
-<div id="outline-container-org6ad7e47" class="outline-2">
-<h2 id="org6ad7e47"><span class="section-number-2">3</span> PML mechanism</h2>
+<div id="outline-container-orgab95fc7" class="outline-2">
+<h2 id="orgab95fc7"><span class="section-number-2">3</span> PML mechanism</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The VMCS field (<code>PML_ADDRESS</code>) specifies the physical address of a 4K
@@ -329,8 +328,8 @@ GPA in this slot.  Then decreases the PML index by 1.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5692ec8" class="outline-2">
-<h2 id="org5692ec8"><span class="section-number-2">4</span> Runtime PML</h2>
+<div id="outline-container-orge7b0efa" class="outline-2">
+<h2 id="orge7b0efa"><span class="section-number-2">4</span> Runtime PML</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 When PML is enabled (<code>enable_pml</code> is 1), <code>vmx_flush_pml_buffer</code> is
@@ -353,8 +352,8 @@ is set.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgc3aa1a4" class="outline-2">
-<h2 id="orgc3aa1a4"><span class="section-number-2">5</span> Getting the dirty log</h2>
+<div id="outline-container-org669fd39" class="outline-2">
+<h2 id="org669fd39"><span class="section-number-2">5</span> Getting the dirty log</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 QEMU can use the <code>KVM_GET_DIRTY_LOG</code> ioctl to request a dirty page
@@ -375,12 +374,12 @@ write protect it for those pages that have dirty-bit disabled).</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org4157b1f" class="outline-2">
-<h2 id="org4157b1f"><span class="section-number-2">6</span> Evaluation on PML overhead</h2>
+<div id="outline-container-org759498f" class="outline-2">
+<h2 id="org759498f"><span class="section-number-2">6</span> Evaluation on PML overhead</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-org6449eb8" class="outline-3">
-<h3 id="org6449eb8"><span class="section-number-3">6.1</span> Sources of overhead</h3>
+<div id="outline-container-orgffe4e3f" class="outline-3">
+<h3 id="orgffe4e3f"><span class="section-number-3">6.1</span> Sources of overhead</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 There are 3 sources of overhead after enabling PML:
@@ -409,8 +408,8 @@ in the PML page.  And bitmap marking occurs only for
 </ol>
 </div>
 </div>
-<div id="outline-container-orgccbf11c" class="outline-3">
-<h3 id="orgccbf11c"><span class="section-number-3">6.2</span> Setup</h3>
+<div id="outline-container-org8296d5e" class="outline-3">
+<h3 id="org8296d5e"><span class="section-number-3">6.2</span> Setup</h3>
 <div class="outline-text-3" id="text-6-2">
 <ul class="org-ul">
 <li>Host: Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz, Linux 4.19.57, QEMU
@@ -419,8 +418,8 @@ in the PML page.  And bitmap marking occurs only for
 </ul>
 </div>
 </div>
-<div id="outline-container-org2f268d0" class="outline-3">
-<h3 id="org2f268d0"><span class="section-number-3">6.3</span> Result takeaways</h3>
+<div id="outline-container-org1a10c62" class="outline-3">
+<h3 id="org1a10c62"><span class="section-number-3">6.3</span> Result takeaways</h3>
 <div class="outline-text-3" id="text-6-3">
 <ol class="org-ol">
 <li>For an extreme case (guest repeatedly, sequentially writes 8 bytes
@@ -432,8 +431,8 @@ running time slow down.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org5175123" class="outline-3">
-<h3 id="org5175123"><span class="section-number-3">6.4</span> Micro-benchmark: memory write throughput</h3>
+<div id="outline-container-org3983825" class="outline-3">
+<h3 id="org3983825"><span class="section-number-3">6.4</span> Micro-benchmark: memory write throughput</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Benchmark description: 1 thread repeatedly, sequentially write 8 bytes
@@ -542,8 +541,8 @@ it, this case involves modifying kernel a little bit.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd3f58c3" class="outline-3">
-<h3 id="orgd3f58c3"><span class="section-number-3">6.5</span> Macro-benchmark: PageRank</h3>
+<div id="outline-container-org71e326c" class="outline-3">
+<h3 id="org71e326c"><span class="section-number-3">6.5</span> Macro-benchmark: PageRank</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 Benchmark description: 10-iteration PageRank in <a href="https://github.com/jshun/ligra">Ligra (a graph
@@ -630,8 +629,8 @@ Ligra's rMat generator) with 2<sup>23</sup> vertices.
 </table>
 </div>
 </div>
-<div id="outline-container-org8fc7515" class="outline-3">
-<h3 id="org8fc7515"><span class="section-number-3">6.6</span> <code>kvm_vm_ioctl_get_dirty_log</code> time</h3>
+<div id="outline-container-org301ac96" class="outline-3">
+<h3 id="org301ac96"><span class="section-number-3">6.6</span> <code>kvm_vm_ioctl_get_dirty_log</code> time</h3>
 <div class="outline-text-3" id="text-6-6">
 <p>
 The time of getting dirty log from KVM depends on how many dirty pages
@@ -686,8 +685,8 @@ workload and the frequency of dirty log syncing.
 </table>
 </div>
 </div>
-<div id="outline-container-org6b616af" class="outline-3">
-<h3 id="org6b616af"><span class="section-number-3">6.7</span> <code>vmx_flush_pml_buffer</code> time</h3>
+<div id="outline-container-org0d80ec1" class="outline-3">
+<h3 id="org0d80ec1"><span class="section-number-3">6.7</span> <code>vmx_flush_pml_buffer</code> time</h3>
 <div class="outline-text-3" id="text-6-7">
 <p>
 This function is called on every guest exit and at the beginning
@@ -750,7 +749,7 @@ proportional to the number of unread entries in the PML page.
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2019-07-12 Fri 15:04</p>
+<p class="date">Date: Jul 12, 2019</p>
 <p class="validation"></p>
 </div>
 </body>
