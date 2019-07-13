@@ -1,3 +1,4 @@
+require 'date'
 require 'rake/clean'
 
 POSTS_ORGS = FileList['./posts/**/*.txt']
@@ -30,6 +31,13 @@ file 'index.html' => %w[recent-posts.html by-category.html]
 CLEAN.include('by-category.html')
 CLEAN.include('recent-posts.html')
 CLEAN.include('index.html')
+
+desc "Publish to GitHub."
+task publish: %w[index.html] do
+  sh "git add --all"
+  sh "git commit -m\"#{Date.today.strftime("%b %d, %Y")}\""
+  sh "git push origin master"
+end
 
 task default: %w[index.html]
 
