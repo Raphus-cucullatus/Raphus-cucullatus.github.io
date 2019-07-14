@@ -231,14 +231,14 @@ for the JavaScript code in this tag.
 <p>
 I happened to write some <i>Ruby</i> code recently.  After years since I
 had learned it (but not had been using later), I had to check <i>Ruby</i>
-docs frequently.  <i>Ruby</i> is bundled with <i>ri</i>, which is an offline,
-easy-to-use command-line tool to query <i>Ruby</i> APIs.  As an Emacs user,
-I soon found myself looking for a front-end for <i>ri</i> so that I could
-query <i>ri</i> without leaving my editor.
+docs frequently.  Fortunately, <i>Ruby</i> was bundled with <i>ri</i>, which was
+an offline, easy-to-use command-line tool to query <i>Ruby</i> APIs.  As an
+Emacs user, I soon found myself looking for a front-end for <i>ri</i> so
+that I could query <i>ri</i> without leaving my editor.
 </p>
 
 <p>
-I first used <a href="https://github.com/hron/yari.el">yari.el</a> for a while.  Generally it is a good, popular
+I first used <a href="https://github.com/hron/yari.el">yari.el</a> for a while.  Generally it was a good, popular
 package (and actually the only "modern" choice as far as I known).  It
 retrieves all classes known by <i>ri</i> when it is first invoked.  Then it
 uses <code>completing-read</code> for my input.
@@ -246,27 +246,27 @@ uses <code>completing-read</code> for my input.
 
 <p>
 However, I found it NOT as handy as I had expected. The default
-completion is not handy enough because it takes a <i>match-first</i>
+completion was not handy enough because it took a <i>match-first</i>
 strategy.  I had to type the class name before giving the method name
-I was looking for.  Otherwise the completion won't match and in this
-case <i>yari</i> will not attempt to send the input to <i>ri</i> even though
-<i>ri</i> actually is capable of searching for a method for all known
-classes.
+I was looking for.  Otherwise the completion would not match and in
+this case <i>yari</i> also would not attempt to send the input to <i>ri</i> even
+though <i>ri</i> actually was capable of searching for a method for all
+known classes.
 </p>
 
 <p>
 Take <code>strftime</code> as an example.  
 </p>
 <ul class="org-ul">
-<li>For <i>yari</i>: If I type "<code>strftime</code>" in the <i>yari</i> prompt and press
-<code>&lt;RET&gt;</code>, "<code>[No match]</code>" is shown with no further query results.</li>
-<li>For the native command-line <i>ri</i> tool: If I type <code>"ri strftime"</code> in
+<li>For <i>yari</i>: If I typed "<code>strftime</code>" in the <i>yari</i> prompt and pressed
+<code>&lt;RET&gt;</code>, "<code>[No match]</code>" was shown with no further query results.</li>
+<li>For the native command-line <i>ri</i> tool: If I typed <code>"ri strftime"</code> in
 a shell, the docs of <code>Date.strftime</code>, <code>DateTime.strftime</code>,
-<code>Time.strftime</code> is shown.</li>
+<code>Time.strftime</code> was shown.</li>
 </ul>
 
 <p>
-To the rescue, <i>yari</i> can be used with <i>ido-mode</i> and is itself
+To the rescue, <i>yari</i> could be used with <i>ido-mode</i> and was itself
 shipped with several shrewd completion systems like <i>helm</i> and
 <i>anything</i>.  Unfortunately, I was not into any complicated completion
 systems nor was I to introduce one into my Emacs.
@@ -275,7 +275,7 @@ systems nor was I to introduce one into my Emacs.
 <p>
 Surprisingly I kinda liked querying the native <i>ri</i>.  It was handy
 enough to search my input and even smart enough to guess my typo.  For
-example, if I type "<code>mach</code>", <i>ri</i> replies
+example, if I typed "<code>mach</code>", <i>ri</i> replied
 </p>
 
 <pre class="example">
@@ -284,10 +284,10 @@ Did you mean?  match
 </pre>
 
 <p>
-Since <i>ri</i> is already a good query tool, what I needed was just a
+Since <i>ri</i> was already a good query tool, what I needed was just a
 simple front-end talking to an inferior <i>ri</i> process.  I liked
 <code>shell-mode</code>'s way to input, navigate, and search, I decided to
-implement an interactive <code>shell-mode</code> like front-end for <i>ri</i>.  It
+implement an interactive <code>shell-mode</code> -like front-end for <i>ri</i>.  It
 turned out to be really simple and intuitive.  And I named it <i>iri</i>.
 </p>
 
