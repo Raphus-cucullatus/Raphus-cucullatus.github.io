@@ -232,10 +232,10 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org603a761">1. Locate corresponding trace events file</a></li>
-<li><a href="#org835e85d">2. Add trace events</a></li>
-<li><a href="#org74f3bc5">3. Place your trace function, build and run</a></li>
-<li><a href="#orgcbf633c">4. See also</a></li>
+<li><a href="#org6c47f9e">1. Locate corresponding trace events file</a></li>
+<li><a href="#org8f9df8e">2. Add trace events</a></li>
+<li><a href="#org955f99e">3. Place your trace function, build and run</a></li>
+<li><a href="#org77290dd">4. See also</a></li>
 </ul>
 </div>
 </div>
@@ -253,8 +253,8 @@ trace_migration_completion_vm_stop();
 The steps are as follows.
 </p>
 
-<div id="outline-container-org603a761" class="outline-2">
-<h2 id="org603a761"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
+<div id="outline-container-org6c47f9e" class="outline-2">
+<h2 id="org6c47f9e"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, find the <code>trace-events</code> file in the sub-directory where your
@@ -263,8 +263,8 @@ modification is going to happen.  Here, it is
 </p>
 </div>
 </div>
-<div id="outline-container-org835e85d" class="outline-2">
-<h2 id="org835e85d"><span class="section-number-2">2</span> Add trace events</h2>
+<div id="outline-container-org8f9df8e" class="outline-2">
+<h2 id="org8f9df8e"><span class="section-number-2">2</span> Add trace events</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Then, append one line for each trace function.  The line specifies the
@@ -278,8 +278,8 @@ migration_completion_vm_stop(void) ""
 </pre>
 </div>
 </div>
-<div id="outline-container-org74f3bc5" class="outline-2">
-<h2 id="org74f3bc5"><span class="section-number-2">3</span> Place your trace function, build and run</h2>
+<div id="outline-container-org955f99e" class="outline-2">
+<h2 id="org955f99e"><span class="section-number-2">3</span> Place your trace function, build and run</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Note that tracing should be enabled with a backend and switched on.
@@ -300,8 +300,8 @@ And when run QEMU, add
 </pre>
 </div>
 </div>
-<div id="outline-container-orgcbf633c" class="outline-2">
-<h2 id="orgcbf633c"><span class="section-number-2">4</span> See also</h2>
+<div id="outline-container-org77290dd" class="outline-2">
+<h2 id="org77290dd"><span class="section-number-2">4</span> See also</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 For more details on QEMU tracing, see <code>docs/devel/tracing.txt</code> in the

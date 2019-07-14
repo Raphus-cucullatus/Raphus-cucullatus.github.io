@@ -27,9 +27,7 @@ end
 CLEAN.include('recent-posts.txt')
 
 desc "Generate 'index.html'."
-file 'index.html' => %w[recent-posts.html by-category.html]
-CLEAN.include('by-category.html')
-CLEAN.include('recent-posts.html')
+file 'index.html' => %w[recent-posts.txt by-category.txt index.txt]
 CLEAN.include('index.html')
 
 desc "Publish to GitHub."

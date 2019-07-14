@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>&lrm;</title>
+<title>IRI: An interactive Emacs front-end for Ruby API reference</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -227,43 +227,76 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org653ad64">1. Database</a></li>
-<li><a href="#orgaade52c">2. Misc.</a></li>
-<li><a href="#orge8f10eb">3. Virtualization</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org653ad64" class="outline-2">
-<h2 id="org653ad64"><span class="section-number-2">1</span> Database</h2>
-<div class="outline-text-2" id="text-1">
+<h1 class="title">IRI: An interactive Emacs front-end for Ruby API reference</h1>
+<p>
+I happened to write some <i>Ruby</i> code recently.  After years since I
+had learned it (but not had been using later), I had to check <i>Ruby</i>
+docs frequently.  <i>Ruby</i> is bundled with <i>ri</i>, which is an offline,
+easy-to-use command-line tool to query <i>Ruby</i> APIs.  As an Emacs user,
+I soon found myself looking for a front-end for <i>ri</i> so that I could
+query <i>ri</i> without leaving my editor.
+</p>
+
+<p>
+I first used <a href="https://github.com/hron/yari.el">yari.el</a> for a while.  Generally it is a good, popular
+package (and actually the only "modern" choice as far as I known).  It
+retrieves all classes known by <i>ri</i> when it is first invoked.  Then it
+uses <code>completing-read</code> for my input.
+</p>
+
+<p>
+However, I found it NOT as handy as I had expected. The default
+completion is not handy enough because it takes a <i>match-first</i>
+strategy.  I had to type the class name before giving the method name
+I was looking for.  Otherwise the completion won't match and in this
+case <i>yari</i> will not attempt to send the input to <i>ri</i> even though
+<i>ri</i> actually is capable of searching for a method for all known
+classes.
+</p>
+
+<p>
+Take <code>strftime</code> as an example.  
+</p>
 <ul class="org-ul">
-<li><a href="./posts/Database/redis.html">Redis Data Persistence and High-Availability</a></li>
+<li>For <i>yari</i>: If I type "<code>strftime</code>" in the <i>yari</i> prompt and press
+<code>&lt;RET&gt;</code>, "<code>[No match]</code>" is shown with no further query results.</li>
+<li>For the native command-line <i>ri</i> tool: If I type <code>"ri strftime"</code> in
+a shell, the docs of <code>Date.strftime</code>, <code>DateTime.strftime</code>,
+<code>Time.strftime</code> is shown.</li>
 </ul>
-</div>
-</div>
-<div id="outline-container-orgaade52c" class="outline-2">
-<h2 id="orgaade52c"><span class="section-number-2">2</span> Misc.</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li><a href="./posts/Misc./GTD.html">My Thoughputs on Getting Things Done (GTD)</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orge8f10eb" class="outline-2">
-<h2 id="orge8f10eb"><span class="section-number-2">3</span> Virtualization</h2>
-<div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li><a href="./posts/Virtualization/qemu%20adding%20a%20new%20trace%20point.html">QEMU: Adding a New Trace Event</a></li>
-<li><a href="./posts/Virtualization/PML.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-</ul>
-</div>
-</div>
+
+<p>
+To the rescue, <i>yari</i> can be used with <i>ido-mode</i> and is itself
+shipped with several shrewd completion systems like <i>helm</i> and
+<i>anything</i>.  Unfortunately, I was not into any complicated completion
+systems nor was I to introduce one into my Emacs.
+</p>
+
+<p>
+Surprisingly I kinda liked querying the native <i>ri</i>.  It was handy
+enough to search my input and even smart enough to guess my typo.  For
+example, if I type "<code>mach</code>", <i>ri</i> replies
+</p>
+
+<pre class="example">
+Nothing known about .mach
+Did you mean?  match
+</pre>
+
+<p>
+Since <i>ri</i> is already a good query tool, what I needed was just a
+simple front-end talking to an inferior <i>ri</i> process.  I liked
+<code>shell-mode</code>'s way to input, navigate, and search, I decided to
+implement an interactive <code>shell-mode</code> like front-end for <i>ri</i>.  It
+turned out to be really simple and intuitive.  And I named it <i>iri</i>.
+</p>
+
+<p>
+The project now can be found <a href="https://github.com/Raphus-cucullatus/iri">here</a>.  Hope you enjoy it!
+</p>
 </div>
 <div id="postamble" class="status">
+<p class="date">Date: Jul 14, 2019</p>
 <p class="validation"></p>
 </div>
 </body>
