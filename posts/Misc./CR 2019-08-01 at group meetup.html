@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Thoughputs on Getting Things Done (GTD)</title>
+<title>Pitfalls of research on performance optimization</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -227,76 +227,60 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My Thoughputs on Getting Things Done (GTD)</h1>
+<h1 class="title">Pitfalls of research on performance optimization</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org531a555">1. Goal <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></a></li>
-<li><a href="#org4e4cf14">2. My post on reddit</a></li>
-<li><a href="#org2368182">3. Milestone summary <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt;</span></span></a></li>
+<li><a href="#orgb4fcaa1">1. Begin implementing without solid, preliminary data support</a></li>
+<li><a href="#orgdd524cb">2. Aimlessly apply an optimization</a></li>
+<li><a href="#org0ee2e98">3. Can not identify the trade-offs of an optimization</a></li>
 </ul>
 </div>
 </div>
+<p>
+On 2019/08/01, HGS gave a report on his query repair concurrency control.
+</p>
 
-<div id="outline-container-org531a555" class="outline-2">
-<h2 id="org531a555"><span class="section-number-2">1</span> Goal <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-03-29 Fri&gt;</span></span></h2>
+<p>
+After the speech, CR gave an inspiring comment on the presentation, the work, and about general research as well.  Here is a summary.
+</p>
+
+<div id="outline-container-orgb4fcaa1" class="outline-2">
+<h2 id="orgb4fcaa1"><span class="section-number-2">1</span> Begin implementing without solid, preliminary data support</h2>
 <div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Won't miss appointment without always keep it in mind</li>
-<li>Have enough time to complete tasks ahead of deadline</li>
-<li>Know what to do best at any time</li>
-</ul>
+<p>
+If there is no supporting data for your idea/claims, it is 90% that the project would fail.  It is necessary to give:
+</p>
+<ol class="org-ol">
+<li>Define the most beneficial case of your optimization.</li>
+<li>Declare the scenario/use-case where the most beneficial case is common.</li>
+</ol>
 </div>
 </div>
-<div id="outline-container-org4e4cf14" class="outline-2">
-<h2 id="org4e4cf14"><span class="section-number-2">2</span> My post on reddit</h2>
+<div id="outline-container-orgdd524cb" class="outline-2">
+<h2 id="orgdd524cb"><span class="section-number-2">2</span> Aimlessly apply an optimization</h2>
 <div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li><a href="https://www.reddit.com/r/omnifocus/comments/bug4a3/omnifocus_is_for_task_management_not_for_time/?utm_source=share&amp;utm_medium=web2x">OmniFocus is for task management, NOT for time management?</a></li>
-</ul>
+<p>
+Hu used predicate lock to optimize the false conflict issue in MySQL gap lock.  But
+</p>
+<ol class="org-ol">
+<li>It seems unrelated to query repair (the project keypoint).</li>
+<li>If applied, it brings a further question that what's the impact of predicate lock on query repair.  What if using predicate lock boosts the baseline while has little effect on your version?</li>
+</ol>
 </div>
 </div>
-<div id="outline-container-org2368182" class="outline-2">
-<h2 id="org2368182"><span class="section-number-2">3</span> Milestone summary <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-05-25 Sat&gt;</span></span></h2>
+<div id="outline-container-org0ee2e98" class="outline-2">
+<h2 id="org0ee2e98"><span class="section-number-2">3</span> Can not identify the trade-offs of an optimization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-The insight is separating task management and time management.
-</p>
-
-<p>
-Task management deals with tasks, and aims at
-</p>
-<ul class="org-ul">
-<li>recording tasks</li>
-<li>setting deadlines, notifications</li>
-<li>grouping task (maybe into multiple dimensions) for the convenience
-of later scheduling</li>
-<li>complex task involves project management methodology</li>
-</ul>
-
-<p>
-Time management deals with time resource.  It schedules tasks into my
-available time blocks to
-</p>
-<ul class="org-ul">
-<li>Make sure that tasks are assigned proper time resource so that
-<ol class="org-ol">
-<li>They have enough time to finish.</li>
-<li>Tasks that have different priority are treated differently.</li>
-</ol></li>
-<li>Balance tension and slack and maximize my efficiency</li>
-</ul>
-
-<p>
-I use OmniFocus and OmniPlan for task management and Apple Calendar
-for time management.
+Hu decided to use query plan optimization to reduce the repair operations in the repair phase so that blocking time can be reduced.  However, query plan optimization was originally used for execution performance.  If you use a query plan that is <i>good</i> for your repair phase but is different from the query plan <i>optimal</i> for execution, you are actually trading common-case performance for that in special cases.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: May 25, 2019</p>
+<p class="date">Date: Aug 01, 2019</p>
 <p class="validation"></p>
 </div>
 </body>
