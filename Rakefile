@@ -8,7 +8,7 @@ CONFIG_EMACS_ORG_EXPORT = './config/emacs-org-export.el'
 
 desc "Compile standalone Org file to html (I have my Org file named '*.txt')."
 rule '.html' => ['.txt'] do |post|
-  sh "emacs -batch -eval '(progn (load-file \"#{CONFIG_EMACS_ORG_EXPORT}\") (set-buffer (find-file-noselect \"#{post.source}\")) (org-mode) (org-html-export-to-html))'"
+  sh "emacs -batch -l #{CONFIG_EMACS_ORG_EXPORT} -eval '(progn (set-buffer (find-file-noselect \"#{post.source}\")) (org-mode) (org-html-export-to-html))'"
 end
 
 POSTS_HTMLS = POSTS_ORGS.ext('html')

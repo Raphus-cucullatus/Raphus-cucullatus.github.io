@@ -3,5 +3,5 @@
       org-export-time-stamp-file nil)
 
 ;; htmlize
-(add-to-list 'load-path "./config/emacs-htmlize/")
+(add-to-list 'load-path "./lib/emacs-htmlize/")
 (require 'htmlize)
