@@ -232,9 +232,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc5f1b51">1. Symbols and Variables</a></li>
-<li><a href="#orgadcfef7">2. "<code>boundp</code>"</a></li>
-<li><a href="#orgde694a4">3. "<code>intern</code>"</a></li>
+<li><a href="#org2a66e6f">1. Symbols and Variables</a></li>
+<li><a href="#org5e22ed4">2. "<code>boundp</code>"</a></li>
+<li><a href="#org25c602b">3. "<code>intern</code>"</a></li>
 </ul>
 </div>
 </div>
@@ -242,8 +242,8 @@ for the JavaScript code in this tag.
 Let's start from some small experiments.
 </p>
 
-<div id="outline-container-orgc5f1b51" class="outline-2">
-<h2 id="orgc5f1b51"><span class="section-number-2">1</span> Symbols and Variables</h2>
+<div id="outline-container-org2a66e6f" class="outline-2">
+<h2 id="org2a66e6f"><span class="section-number-2">1</span> Symbols and Variables</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First,
@@ -290,8 +290,8 @@ One can say that a variable is just a symbol under the hood.  But what is rather
 </p>
 </div>
 </div>
-<div id="outline-container-orgadcfef7" class="outline-2">
-<h2 id="orgadcfef7"><span class="section-number-2">2</span> "<code>boundp</code>"</h2>
+<div id="outline-container-org5e22ed4" class="outline-2">
+<h2 id="org5e22ed4"><span class="section-number-2">2</span> "<code>boundp</code>"</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(symbol-value a)                      <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">=&gt; Symbol&#8217;s value as variable is void: g1</span>
@@ -339,8 +339,8 @@ The "value" cell of a symbol can be emptied,
 </div>
 </div>
 </div>
-<div id="outline-container-orgde694a4" class="outline-2">
-<h2 id="orgde694a4"><span class="section-number-2">3</span> "<code>intern</code>"</h2>
+<div id="outline-container-org25c602b" class="outline-2">
+<h2 id="org25c602b"><span class="section-number-2">3</span> "<code>intern</code>"</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 "interning" in elisp means put a symbol into a given symbol table (a global table named <code>obarray</code> by default), so that it can be searched instead of just a lonely structure.  Let's go through some examples to make it clear.
@@ -376,7 +376,7 @@ It seems a contradiction that <code>(intern-soft 'g1)</code> returns <code>t</co
 </p>
 
 <p>
-The next expression gives us a hint: the value of <code>a</code> is different from the symbol <code>g1</code>.  When the function is called, lisp reader sees <code>g1</code> (note that it is not evaluated in the function argument evaluation phase due to quote).  It tries to search <code>g1</code> in the global symbol table but fails.  Then it creates a new symbol and interned it into the global symbol table.  This symbol also has a name "g1".
+The second expression gives us a hint: the value of <code>a</code> is different from the symbol <code>g1</code>.  When the function is called, lisp reader sees <code>g1</code> (note that it is not evaluated in the function argument evaluation phase due to quote).  It tries to search <code>g1</code> in the global symbol table but fails.  Then it creates a new symbol and interned it into the global symbol table.  This symbol also has a name "g1".
 </p>
 
 <p>
