@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pitfalls of research on performance optimization</title>
+<title>CR: Pitfalls of the researches on performance optimization</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -227,14 +227,14 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Pitfalls of research on performance optimization</h1>
+<h1 class="title">CR: Pitfalls of the researches on performance optimization</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb4fcaa1">1. Begin implementing without solid, preliminary data support</a></li>
-<li><a href="#orgdd524cb">2. Aimlessly apply an optimization</a></li>
-<li><a href="#org0ee2e98">3. Can not identify the trade-offs of an optimization</a></li>
+<li><a href="#org1fcb2d9">1. Pitfall 1: Begin implementing without solid, preliminary data support</a></li>
+<li><a href="#org00c5635">2. Pitfall 2: Aimlessly apply an optimization</a></li>
+<li><a href="#org7bc0738">3. Pitfall 3: Can not identify the trade-offs of an optimization</a></li>
 </ul>
 </div>
 </div>
@@ -243,11 +243,11 @@ On 2019/08/01, HGS gave a report on his query repair concurrency control.
 </p>
 
 <p>
-After the speech, CR gave an inspiring comment on the presentation, the work, and about general research as well.  Here is a summary.
+After the speech, CR left an inspiring comment on the presentation, the work, and about general research as well.  Here is a summary on the pitfalls of the researches on performance optimization by CR.
 </p>
 
-<div id="outline-container-orgb4fcaa1" class="outline-2">
-<h2 id="orgb4fcaa1"><span class="section-number-2">1</span> Begin implementing without solid, preliminary data support</h2>
+<div id="outline-container-org1fcb2d9" class="outline-2">
+<h2 id="org1fcb2d9"><span class="section-number-2">1</span> Pitfall 1: Begin implementing without solid, preliminary data support</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 If there is no supporting data for your idea/claims, it is 90% that the project would fail.  It is necessary to give:
@@ -258,20 +258,20 @@ If there is no supporting data for your idea/claims, it is 90% that the project 
 </ol>
 </div>
 </div>
-<div id="outline-container-orgdd524cb" class="outline-2">
-<h2 id="orgdd524cb"><span class="section-number-2">2</span> Aimlessly apply an optimization</h2>
+<div id="outline-container-org00c5635" class="outline-2">
+<h2 id="org00c5635"><span class="section-number-2">2</span> Pitfall 2: Aimlessly apply an optimization</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Hu used predicate lock to optimize the false conflict issue in MySQL gap lock.  But
 </p>
 <ol class="org-ol">
-<li>It seems unrelated to query repair (the project keypoint).</li>
+<li>It seems unrelated to query repair (the project key point).</li>
 <li>If applied, it brings a further question that what's the impact of predicate lock on query repair.  What if using predicate lock boosts the baseline while has little effect on your version?</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org0ee2e98" class="outline-2">
-<h2 id="org0ee2e98"><span class="section-number-2">3</span> Can not identify the trade-offs of an optimization</h2>
+<div id="outline-container-org7bc0738" class="outline-2">
+<h2 id="org7bc0738"><span class="section-number-2">3</span> Pitfall 3: Can not identify the trade-offs of an optimization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Hu decided to use query plan optimization to reduce the repair operations in the repair phase so that blocking time can be reduced.  However, query plan optimization was originally used for execution performance.  If you use a query plan that is <i>good</i> for your repair phase but is different from the query plan <i>optimal</i> for execution, you are actually trading common-case performance for that in special cases.
