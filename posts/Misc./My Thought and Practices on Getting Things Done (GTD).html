@@ -232,23 +232,23 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org457c176">1. Goal</a></li>
-<li><a href="#orgd1adace">2. My post on reddit</a></li>
-<li><a href="#org5a0b6b6">3. Milestone summary</a></li>
-<li><a href="#orgf922569">4. What's my use-cases from history?</a></li>
-<li><a href="#orgda8042a">5. Implement my GTD system using Org mode</a></li>
-<li><a href="#orgb0b44b8">6. One month after migrating to Org-mode</a>
+<li><a href="#org45ef287">1. Goal</a></li>
+<li><a href="#org6142b01">2. My post on reddit</a></li>
+<li><a href="#org4b96d75">3. Milestone summary</a></li>
+<li><a href="#orgd053db1">4. What's my use-cases from history?</a></li>
+<li><a href="#orgf5c951a">5. Implement my GTD system using Org mode</a></li>
+<li><a href="#org6c331b2">6. One month after migrating to Org-mode</a>
 <ul>
-<li><a href="#orge357b88">6.1. Case study: How to see what I have doen last week?</a></li>
-<li><a href="#org7a18a91">6.2. Issues I met</a></li>
+<li><a href="#org977d67e">6.1. Case study: How to see what I have doen last week?</a></li>
+<li><a href="#orga339253">6.2. Issues I met</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org457c176" class="outline-2">
-<h2 id="org457c176"><span class="section-number-2">1</span> Goal</h2>
+<div id="outline-container-org45ef287" class="outline-2">
+<h2 id="org45ef287"><span class="section-number-2">1</span> Goal</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Won't miss appointment without always keep it in mind</li>
@@ -257,16 +257,16 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd1adace" class="outline-2">
-<h2 id="orgd1adace"><span class="section-number-2">2</span> My post on reddit</h2>
+<div id="outline-container-org6142b01" class="outline-2">
+<h2 id="org6142b01"><span class="section-number-2">2</span> My post on reddit</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://www.reddit.com/r/omnifocus/comments/bug4a3/omnifocus_is_for_task_management_not_for_time/?utm_source=share&amp;utm_medium=web2x">OmniFocus is for task management, NOT for time management?</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5a0b6b6" class="outline-2">
-<h2 id="org5a0b6b6"><span class="section-number-2">3</span> Milestone summary</h2>
+<div id="outline-container-org4b96d75" class="outline-2">
+<h2 id="org4b96d75"><span class="section-number-2">3</span> Milestone summary</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The insight is separating task management and time management.
@@ -302,8 +302,8 @@ for time management.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf922569" class="outline-2">
-<h2 id="orgf922569"><span class="section-number-2">4</span> What's my use-cases from history?</h2>
+<div id="outline-container-orgd053db1" class="outline-2">
+<h2 id="orgd053db1"><span class="section-number-2">4</span> What's my use-cases from history?</h2>
 <div class="outline-text-2" id="text-4">
 <ol class="org-ol">
 <li>"~/Document/bears/": My plain text notes at work.
@@ -364,8 +364,8 @@ Goodreads.com.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgda8042a" class="outline-2">
-<h2 id="orgda8042a"><span class="section-number-2">5</span> Implement my GTD system using Org mode</h2>
+<div id="outline-container-orgf5c951a" class="outline-2">
+<h2 id="orgf5c951a"><span class="section-number-2">5</span> Implement my GTD system using Org mode</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Principles:
@@ -416,19 +416,19 @@ Goal:
 Implementation:
 </p>
 <ol class="org-ol">
-<li>Capturing.  Using org capture.  Capture ideas into inbox.
+<li>Capturing.  Using Org <i>capture</i>.  Capture ideas into inbox.
 Implemented by a top-level sub-tree "Inbox", propertied by
 <code>CATEGORY="inbox"</code>.  For quick insertion, add a <i>Capture</i> template
 to insert task into "Inbox".  For quick viewing, add a
 <code>org-agenda-custom-commands</code> to filter <code>+CATEGORY="inbox"+LEVEL=2</code>.</li>
-<li>Task Planning.  Using Org sub-tree, list.
+<li>Task Planning.
 <ol class="org-ol">
-<li>Sub-tree for hierarchy.  Don't abuse!</li>
-<li>Tags for future retrieving.</li>
-<li>Schedule for start working on it.</li>
-<li>Deadline for deadline.</li>
+<li>Org <i>sub-tree</i>, <i>list</i> for planning.  Use Emacs <i>narrow</i> to reduce distraction.</li>
+<li><i>Tags</i> for future retrieving.</li>
+<li><i>Schedule</i> for start working on it.</li>
+<li><i>Deadline</i> for deadline.</li>
 </ol></li>
-<li>Personal time management.  Using org agenda view.
+<li>Personal time management.  Using Org <i>agenda view</i>.
 <ol class="org-ol">
 <li>Appointments goes to "Appointments" with timestamp.  For
 example, "Swimming" has a timestamp of
@@ -439,21 +439,21 @@ example, "Swimming" has a timestamp of
 <li><i>Schedule</i> TODO items to a specific day (or time).</li>
 <li><i>Clock-in</i> what you are doing.</li>
 </ol></li>
-<li>Time logging.  Using clock-in, clock-out.</li>
+<li>Time logging.  Using <i>clock-in</i>, <i>clock-out</i>.</li>
 <li>Archiving.  Tasks that done should be archived to keep the org
 file neat.  To query upon archived tasks, visit the archive file
-and use sparse tree.</li>
+and use <i>sparse tree</i>.</li>
 </ol></li>
 <li>Note down. Add entry to "Misc".</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgb0b44b8" class="outline-2">
-<h2 id="orgb0b44b8"><span class="section-number-2">6</span> One month after migrating to Org-mode</h2>
+<div id="outline-container-org6c331b2" class="outline-2">
+<h2 id="org6c331b2"><span class="section-number-2">6</span> One month after migrating to Org-mode</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orge357b88" class="outline-3">
-<h3 id="orge357b88"><span class="section-number-3">6.1</span> Case study: How to see what I have doen last week?</h3>
+<div id="outline-container-org977d67e" class="outline-3">
+<h3 id="org977d67e"><span class="section-number-3">6.1</span> Case study: How to see what I have doen last week?</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 Use agenda week view
@@ -465,12 +465,12 @@ Use agenda week view
 </ol>
 </div>
 </div>
-<div id="outline-container-org7a18a91" class="outline-3">
-<h3 id="org7a18a91"><span class="section-number-3">6.2</span> Issues I met</h3>
+<div id="outline-container-orga339253" class="outline-3">
+<h3 id="orga339253"><span class="section-number-3">6.2</span> Issues I met</h3>
 <div class="outline-text-3" id="text-6-2">
 <ol class="org-ol">
 <li>Priority inverse in my task execution:  I headed for new, emerging tasks before the completion of my old TODOs.  As a result, old TODOs got accumulated.  This bad workflow hurts the progress of the tasks that I really want to do and increases the pressure when I check my tasks.</li>
-<li>Tasks Org file bloat and the fragmentation of my Org notes.  Org-mode serves two functionality for me now, note taking and task management.  This left a mess at first.  Besides project planning, I tended to write task completion result, thoughts, further ideas, simple research journaling in the project's Org subtree.  My research notes began scattering everywhere and either I bothered copying them to my project note file or I had to search desperately for some previous notes.  Finally I realized that there should be a clear dividing between task&amp;time management and my writings.</li>
+<li>GTD Org file bloat and the fragmentation of my Org notes.  Org-mode serves two functionality for me now, 1) note-taking (e.g. research journal) and 2) task management (GTD).  After using Org mode for GTD, I tended to write task execution result, thoughts, further ideas, simple research journaling directly in substrees in the GTD org file.  Then my research notes began scattering several places (in some TODO/DONE subtrees, and in standalone research note Org files.  Either I bother copying them all to standalone project note files or I would have a hard time when searching for previous notes.  Finally I realized that there should be a clear dividing between task&amp;time management and my write-ups.</li>
 </ol>
 </div>
 </div>
