@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My HomePage</title>
+<title>mani.el: Yet Another Emacs Package to Read Man Page</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -240,68 +240,92 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My HomePage</h1>
-
-<div id="outline-container-orgf4ff245" class="outline-2">
-<h2 id="orgf4ff245">Recent Posts</h2>
-<div class="outline-text-2" id="text-orgf4ff245">
-<ul class="org-ul">
-<li>Feb 21, 2020: <a href="./posts/Emacs/mani.html">mani.el: Yet Another Emacs Package to Read Man Page</a></li>
-<li>Oct 22, 2019: <a href="./posts/Misc./My%20Thought%20and%20Practices%20on%20Getting%20Things%20Done%20(GTD).html">My Thought and Practices on Getting Things Done (GTD)</a></li>
-<li>Aug 11, 2019: <a href="./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html">Elisp Symbols: What are Symbol, Variable,  and "<code>boundp</code>", "<code>intern</code>" all about?</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgce39e03" class="outline-2">
-<h2 id="orgce39e03">All Posts</h2>
-<div class="outline-text-2" id="text-orgce39e03">
-</div>
-<div id="outline-container-org9669337" class="outline-3">
-<h3 id="org9669337">Database</h3>
-<div class="outline-text-3" id="text-org9669337">
-<ul class="org-ul">
-<li><a href="./posts/Database/redis%20persistence%20&amp;%20high%20availability.html">Redis Data Persistence and High-Availability</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org243db13" class="outline-3">
-<h3 id="org243db13">Misc.</h3>
-<div class="outline-text-3" id="text-org243db13">
-<ul class="org-ul">
-<li><a href="./posts/Misc./CR%202019-08-01%20at%20group%20meetup.html">CR: Pitfalls of the researches on performance optimization</a></li>
-<li><a href="./posts/Misc./My%20Thought%20and%20Practices%20on%20Getting%20Things%20Done%20(GTD).html">My Thought and Practices on Getting Things Done (GTD)</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgd29f58d" class="outline-3">
-<h3 id="orgd29f58d">Virtualization</h3>
-<div class="outline-text-3" id="text-orgd29f58d">
-<ul class="org-ul">
-<li><a href="./posts/Virtualization/qemu%20adding%20a%20new%20trace%20point.html">QEMU: Adding a New Trace Event</a></li>
-<li><a href="./posts/Virtualization/PML%20and%20its%20overhead.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-<li><a href="./posts/Virtualization/live%20migration%20stop&amp;copy.html"> The Stop &amp; Copy Phase in QEMU Live Migration</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgd7f3043" class="outline-3">
-<h3 id="orgd7f3043">Emacs</h3>
-<div class="outline-text-3" id="text-orgd7f3043">
-<ul class="org-ul">
-<li><a href="./posts/Emacs/mani.html">mani.el: Yet Another Emacs Package to Read Man Page</a></li>
-<li><a href="./posts/Emacs/iri.html">IRI: An Interactive Emacs Front-End for Ruby API Reference</a></li>
-<li><a href="./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html">Elisp Symbols: What are Symbol, Variable,  and "<code>boundp</code>", "<code>intern</code>" all about?</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org5d7123f" class="outline-2">
-<h2 id="org5d7123f">About</h2>
-<div class="outline-text-2" id="text-org5d7123f">
+<h1 class="title">mani.el: Yet Another Emacs Package to Read Man Page</h1>
 <p>
-If you have any questions, feel free to contact me at <a href="https://github.com/Raphus-cucullatus/Raphus-cucullatus.github.io/issues">the Issues page</a>.
+<code>mani.el</code> is a tiny Man<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> page reader for Emacs.
+</p>
+
+
+<div id="outline-container-org135b066" class="outline-2">
+<h2 id="org135b066">"Why not <code>man.el</code><sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup> or <code>woman.el</code><sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>"?</h2>
+<div class="outline-text-2" id="text-org135b066">
+<p>
+<b><code>man.el</code> does not support viewing remote Man pages.</b> Recently I've
+found myself programming frequently in a remote environment: a remote
+machine (usually Linux), from a macOS laptop.  In this case, I prefer
+seeing Man pages in that machine, e.g. Linux system calls instead of
+BSD ones, and tools installed on servers not on my laptop.
+</p>
+
+<p>
+One can manage <code>woman.el</code> to find remote man page file<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>, but
+<b><code>woman.el</code> does not always parse correctly.</b> For example, "<code>woman
+ls</code>" produces the following sequences in my machine:
+</p>
+
+<pre class="example">
+.Dd May 19, 2002
+.Dt LS 1
+.Os
+.Sh NAME
+.Nm ls
+.Nd list directory contents
+...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgffe53f3" class="outline-2">
+<h2 id="orgffe53f3"><code>mani.el</code> is a "just-work" Man page reader</h2>
+<div class="outline-text-2" id="text-orgffe53f3">
+<ol class="org-ol">
+<li>It invokes the <code>man</code> program to produce the content.  So if <code>man</code>
+works, <code>mani.el</code> works.</li>
+
+<li>It uses <code>process-file</code> to run the <code>man</code> program.  So it is
+"remote-aware".  If the current <code>default-directory</code> is a remote one,
+<code>man</code> is invoked in that remote machine.</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-org457ca16" class="outline-2">
+<h2 id="org457ca16">Limitations</h2>
+<div class="outline-text-2" id="text-org457ca16">
+<p>
+<code>mani.el</code> is not any feature-rich like <code>man.el</code> and <code>woman.el</code>.  It
+does not support navigation, completion, highlight, and caching
+functionalities.  I find it just work, and am less-motivated to push
+it further.
 </p>
 </div>
 </div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://en.wikipedia.org/wiki/Man_page">https://en.wikipedia.org/wiki/Man_page</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Man-Page.html#Man-Page">https://www.gnu.org/software/emacs/manual/html_node/emacs/Man-Page.html#Man-Page</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_node/woman/index.html">https://www.gnu.org/software/emacs/manual/html_node/woman/index.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://emacs.stackexchange.com/a/20996/19670">https://emacs.stackexchange.com/a/20996/19670</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="date">Date: Feb 21, 2020</p>
 </div>
 </body>
 </html>
