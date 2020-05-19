@@ -1,4 +1,4 @@
-#+TITLE: Reading EuroSys’20 best paper award: Don’t shoot down TLB shootdowns
+#+TITLE: Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns
 #+DATE: May 19, 2020
 
 Personally, I had a chance to optimize TLB shootdown overhead in

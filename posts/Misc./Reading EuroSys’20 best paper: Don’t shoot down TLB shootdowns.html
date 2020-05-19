@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My HomePage</title>
+<title>Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -240,70 +240,49 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My HomePage</h1>
-
-<div id="outline-container-org8e0a143" class="outline-2">
-<h2 id="org8e0a143">Recent Posts</h2>
-<div class="outline-text-2" id="text-org8e0a143">
-<ul class="org-ul">
-<li>May 19, 2020: <a href="./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html">Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns</a></li>
-<li>Mar 11, 2020: <a href="./posts/Virtualization/case:%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html">Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host</a></li>
-<li>Feb 21, 2020: <a href="./posts/Emacs/mani.html">mani.el: Yet Another Emacs Package to Read Man Page</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7f0cf0b" class="outline-2">
-<h2 id="org7f0cf0b">All Posts</h2>
-<div class="outline-text-2" id="text-org7f0cf0b">
-</div>
-<div id="outline-container-org372b288" class="outline-3">
-<h3 id="org372b288">Database</h3>
-<div class="outline-text-3" id="text-org372b288">
-<ul class="org-ul">
-<li><a href="./posts/Database/redis%20persistence%20&amp;%20high%20availability.html">Redis Data Persistence and High-Availability</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org6b3c220" class="outline-3">
-<h3 id="org6b3c220">Misc.</h3>
-<div class="outline-text-3" id="text-org6b3c220">
-<ul class="org-ul">
-<li><a href="./posts/Misc./My%20Thought%20and%20Practices%20on%20Getting%20Things%20Done%20(GTD).html">My Thought and Practices on Getting Things Done (GTD)</a></li>
-<li><a href="./posts/Misc./CR%202019-08-01%20at%20group%20meetup.html">CR: Pitfalls of the researches on performance optimization</a></li>
-<li><a href="./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html">Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org4d8e257" class="outline-3">
-<h3 id="org4d8e257">Virtualization</h3>
-<div class="outline-text-3" id="text-org4d8e257">
-<ul class="org-ul">
-<li><a href="./posts/Virtualization/case:%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html">Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host</a></li>
-<li><a href="./posts/Virtualization/live%20migration%20stop&amp;copy.html"> The Stop &amp; Copy Phase in QEMU Live Migration</a></li>
-<li><a href="./posts/Virtualization/PML%20and%20its%20overhead.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-<li><a href="./posts/Virtualization/qemu%20adding%20a%20new%20trace%20point.html">QEMU: Adding a New Trace Event</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org5e424b2" class="outline-3">
-<h3 id="org5e424b2">Emacs</h3>
-<div class="outline-text-3" id="text-org5e424b2">
-<ul class="org-ul">
-<li><a href="./posts/Emacs/mani.html">mani.el: Yet Another Emacs Package to Read Man Page</a></li>
-<li><a href="./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html">Elisp Symbols: What are Symbol, Variable,  and "<code>boundp</code>", "<code>intern</code>" all about?</a></li>
-<li><a href="./posts/Emacs/iri.html">IRI: An Interactive Emacs Front-End for Ruby API Reference</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org24adf7b" class="outline-2">
-<h2 id="org24adf7b">About</h2>
-<div class="outline-text-2" id="text-org24adf7b">
+<h1 class="title">Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns</h1>
 <p>
-If you have any questions, feel free to contact me at <a href="https://github.com/Raphus-cucullatus/Raphus-cucullatus.github.io/issues">the Issues page</a>.
+Personally, I had a chance to optimize TLB shootdown overhead in
+2018 when I spent nearly one month evaluating TLB shootdown
+performance.  I was asked to provide some supporting data of the
+performance of some memory management operations on a
+multi-socket machine.  I also read several papers on TLB
+shootdown (which are all cited by this EuroSys’20 paper).
 </p>
+
+<p>
+I had found the poor performance of TLB shootdown, I had read
+related paper as background, and I had looked into the source
+code TLB shootdown in Linux kernel, but why I was not the one who
+do this kind of work?  I list the following reasons:
+</p>
+<ol class="org-ol">
+<li>At that time we were rushing for a conference deadline.
+Looking deep into TLB shootdown and even optimizing it were
+not of high priority.</li>
+<li>At that time, I thought the poor performance was due to slow
+IPI which is more hardware than software for us to solve.
+Actually this is partially true.  As the EuroSys’20 paper
+shows, what they optimized is not the dominant part (39%) when
+shooting 1 PTE.  But as the batching grows, the local <code>invlpg</code>
+time takes more and their approach becomes more effective (58%
+for 10 PTE).</li>
+</ol>
+
+<p>
+Here are lessons I’ve learned:
+</p>
+<ol class="org-ol">
+<li>Note down observed problems and address them one day.</li>
+<li>Most of the time, there should always be work to do, however
+small it seems.</li>
+<li>Performance analysis: breakdown, <b>model</b>, analyze and begin
+with the dominant.</li>
+<li>Don’t simply make a guess, use experiment result to speak.</li>
+</ol>
 </div>
-</div>
+<div id="postamble" class="status">
+<p class="date">Date: May 19, 2020</p>
 </div>
 </body>
 </html>
