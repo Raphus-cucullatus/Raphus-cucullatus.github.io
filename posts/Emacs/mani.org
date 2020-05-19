@@ -1,0 +1,57 @@
+#+TITLE: mani.el: Yet Another Emacs Package to Read Man Page
+#+DATE: Feb 21, 2020
+#+OPTIONS: toc:nil num:nil
+
+[[https://github.com/Raphus-cucullatus/mani.el][mani.el]] is a tiny Man[fn:1] page reader for Emacs.
+
+
+* "Why not ~man.el~[fn:2] or ~woman.el~[fn:3]"?
+
+*~man.el~ does not support viewing remote Man pages.* Recently I've
+found myself programming frequently in a remote environment: a remote
+machine (usually Linux), from a macOS laptop.  In this case, I prefer
+seeing Man pages in that machine, e.g. Linux system calls instead of
+BSD ones, and tools installed on servers not on my laptop.
+
+One can manage ~woman.el~ to find remote man page file[fn:4], but
+*~woman.el~ does not always parse correctly.* For example, "~woman
+ls~" produces the following sequences in my machine:
+   
+#+begin_example
+    .Dd May 19, 2002
+    .Dt LS 1
+    .Os
+    .Sh NAME
+    .Nm ls
+    .Nd list directory contents
+    ...
+#+end_example
+
+* ~mani.el~ is a "just-work" Man page reader
+
+1. It invokes the ~man~ program to produce the content.  So if ~man~
+   works, ~mani.el~ works.
+
+2. It uses ~process-file~ to run the ~man~ program.  So it is
+   "remote-aware".  If the current ~default-directory~ is a remote one,
+   ~man~ is invoked in that remote machine.
+
+
+* Limitations
+
+~mani.el~ is not any feature-rich like ~man.el~ and ~woman.el~.  It
+does not support navigation, completion, highlight, and caching
+functionalities.  I find it just work, and am less-motivated to push
+it further.
+
+You can contact me [[https://github.com/Raphus-cucullatus/mani.el/issues][here]] if you have any questions.  Hope you enjoy it!
+
+* Footnotes
+
+[fn:1]https://en.wikipedia.org/wiki/Man_page
+
+[fn:2]https://www.gnu.org/software/emacs/manual/html_node/emacs/Man-Page.html#Man-Page
+
+[fn:3]https://www.gnu.org/software/emacs/manual/html_node/woman/index.html
+
+[fn:4]https://emacs.stackexchange.com/a/20996/19670

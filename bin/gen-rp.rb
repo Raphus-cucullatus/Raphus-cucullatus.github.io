@@ -7,12 +7,12 @@ require 'date'
 require 'uri'
 
 post_dir = "#{ARGV[0]}/posts"
-out = "#{ARGV[0]}/recent-posts.txt"
+out = "#{ARGV[0]}/recent-posts.org"
 exit(-1) unless File.directory?(post_dir)
 
 posts = []
 Find.find(post_dir) do |path|
-  if File.basename(path) =~ /.+\.txt$/
+  if File.basename(path) =~ /.+\.org$/
     content = File.read(path, :encoding => "utf-8")
     match_date = /#\+DATE: (.*)$/.match(content)
     match_title = /#\+TITLE: (.*)$/.match(content)
@@ -34,7 +34,7 @@ end
 
 File.open(out, mode="w") do |f|
   posts.slice(0, 3).each do |p|
-    path_html = p[:path].gsub(/(.*)\.txt$/, '\1.html')
+    path_html = p[:path].gsub(/(.*)\.org$/, '\1.html')
     path_html_escaped = URI.escape(path_html)
     f.write("- #{p[:date]}: [[file:#{path_html_escaped}][#{p[:title]}]]\n")
   end

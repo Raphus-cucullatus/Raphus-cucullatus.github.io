@@ -1,4 +1,4 @@
-#+TITLE: EuroSys’20 best paper award: Don’t shoot down TLB shootdowns
+#+TITLE: Reading EuroSys’20 best paper award: Don’t shoot down TLB shootdowns
 #+DATE: May 19, 2020
 
 Personally, I had a chance to optimize TLB shootdown overhead in
@@ -19,7 +19,7 @@ do this kind of work?  I list the following reasons:
    IPI which is more hardware than software for us to solve.
    Actually this is partially true.  As the EuroSys’20 paper
    shows, what they optimized is not the dominant part (39%) when
-   shooting 1 PTE.  But as the batching grows, the local `invlpg`
+   shooting 1 PTE.  But as the batching grows, the local ~invlpg~
    time takes more and their approach becomes more effective (58%
    for 10 PTE).
 

@@ -159,6 +159,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -183,7 +196,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -232,22 +245,22 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org248c9a8">1. Goal</a></li>
-<li><a href="#orge6d594b">2. My post on reddit</a></li>
-<li><a href="#org060f2da">3. Milestone summary</a></li>
-<li><a href="#org17efbff">4. Migration to Org mode as my GTD system</a></li>
-<li><a href="#org46cb243">5. One month after migrating to Org-mode</a>
+<li><a href="#org412ba64">1. Goal</a></li>
+<li><a href="#org7d79ffb">2. My post on reddit</a></li>
+<li><a href="#org4c3d2a8">3. Milestone summary</a></li>
+<li><a href="#orgb64f72c">4. Migration to Org mode as my GTD system</a></li>
+<li><a href="#org3da02de">5. One month after migrating to Org-mode</a>
 <ul>
-<li><a href="#org7180ab5">5.1. Case study: How to see what I have doen last week?</a></li>
-<li><a href="#orgc1baffe">5.2. Issues I met</a></li>
+<li><a href="#orgf0c3b38">5.1. Case study: How to see what I have doen last week?</a></li>
+<li><a href="#org761d119">5.2. Issues I met</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org248c9a8" class="outline-2">
-<h2 id="org248c9a8"><span class="section-number-2">1</span> Goal</h2>
+<div id="outline-container-org412ba64" class="outline-2">
+<h2 id="org412ba64"><span class="section-number-2">1</span> Goal</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Won't miss appointments without always keep them in mind.</li>
@@ -256,16 +269,16 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orge6d594b" class="outline-2">
-<h2 id="orge6d594b"><span class="section-number-2">2</span> My post on reddit</h2>
+<div id="outline-container-org7d79ffb" class="outline-2">
+<h2 id="org7d79ffb"><span class="section-number-2">2</span> My post on reddit</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://www.reddit.com/r/omnifocus/comments/bug4a3/omnifocus_is_for_task_management_not_for_time/?utm_source=share&amp;utm_medium=web2x">OmniFocus is for task management, NOT for time management?</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org060f2da" class="outline-2">
-<h2 id="org060f2da"><span class="section-number-2">3</span> Milestone summary</h2>
+<div id="outline-container-org4c3d2a8" class="outline-2">
+<h2 id="org4c3d2a8"><span class="section-number-2">3</span> Milestone summary</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The insight is separating task management and time management.
@@ -301,8 +314,8 @@ for time management.
 </p>
 </div>
 </div>
-<div id="outline-container-org17efbff" class="outline-2">
-<h2 id="org17efbff"><span class="section-number-2">4</span> Migration to Org mode as my GTD system</h2>
+<div id="outline-container-orgb64f72c" class="outline-2">
+<h2 id="orgb64f72c"><span class="section-number-2">4</span> Migration to Org mode as my GTD system</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Principles:
@@ -446,12 +459,12 @@ and use <i>sparse tree</i>.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org46cb243" class="outline-2">
-<h2 id="org46cb243"><span class="section-number-2">5</span> One month after migrating to Org-mode</h2>
+<div id="outline-container-org3da02de" class="outline-2">
+<h2 id="org3da02de"><span class="section-number-2">5</span> One month after migrating to Org-mode</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org7180ab5" class="outline-3">
-<h3 id="org7180ab5"><span class="section-number-3">5.1</span> Case study: How to see what I have doen last week?</h3>
+<div id="outline-container-orgf0c3b38" class="outline-3">
+<h3 id="orgf0c3b38"><span class="section-number-3">5.1</span> Case study: How to see what I have doen last week?</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Use agenda week view
@@ -463,8 +476,8 @@ Use agenda week view
 </ol>
 </div>
 </div>
-<div id="outline-container-orgc1baffe" class="outline-3">
-<h3 id="orgc1baffe"><span class="section-number-3">5.2</span> Issues I met</h3>
+<div id="outline-container-org761d119" class="outline-3">
+<h3 id="org761d119"><span class="section-number-3">5.2</span> Issues I met</h3>
 <div class="outline-text-3" id="text-5-2">
 <ol class="org-ol">
 <li>Priority inverse in my task execution:  I headed for new, emerging tasks before the completion of my old TODOs.  As a result, old TODOs got accumulated.  This bad workflow hurts the progress of the tasks that I really want to do and increases the pressure when I check my tasks.</li>
@@ -476,7 +489,6 @@ Use agenda week view
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: Oct 22, 2019</p>
-<p class="validation"></p>
 </div>
 </body>
 </html>

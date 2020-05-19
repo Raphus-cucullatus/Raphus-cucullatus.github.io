@@ -159,6 +159,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -183,7 +196,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -232,20 +245,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge42f132">1. Redis data persistence and crash recovery</a>
+<li><a href="#org9b4e878">1. Redis data persistence and crash recovery</a>
 <ul>
-<li><a href="#org3135cb8">1.1. RDB</a></li>
-<li><a href="#orgea542e4">1.2. AOF</a></li>
-<li><a href="#orgcce4169">1.3. About redis recovery time</a></li>
+<li><a href="#org57ccd71">1.1. RDB</a></li>
+<li><a href="#org3f01cc6">1.2. AOF</a></li>
+<li><a href="#org92d5252">1.3. About redis recovery time</a></li>
 </ul>
 </li>
-<li><a href="#org58c7496">2. Redis high-availability: replication, cluster, and sentinel</a></li>
+<li><a href="#org8051458">2. Redis high-availability: replication, cluster, and sentinel</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge42f132" class="outline-2">
-<h2 id="orge42f132"><span class="section-number-2">1</span> Redis data persistence and crash recovery</h2>
+<div id="outline-container-org9b4e878" class="outline-2">
+<h2 id="org9b4e878"><span class="section-number-2">1</span> Redis data persistence and crash recovery</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> does redis persist data?</li>
@@ -258,8 +271,8 @@ Redis, PostgreSQL, MySQL alike provide different level of durability
 regards crashing.
 </p>
 </div>
-<div id="outline-container-org3135cb8" class="outline-3">
-<h3 id="org3135cb8"><span class="section-number-3">1.1</span> RDB</h3>
+<div id="outline-container-org57ccd71" class="outline-3">
+<h3 id="org57ccd71"><span class="section-number-3">1.1</span> RDB</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Snapshots.
@@ -312,8 +325,8 @@ Caller of saving to a RDB:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgea542e4" class="outline-3">
-<h3 id="orgea542e4"><span class="section-number-3">1.2</span> AOF</h3>
+<div id="outline-container-org3f01cc6" class="outline-3">
+<h3 id="org3f01cc6"><span class="section-number-3">1.2</span> AOF</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Operation logging + log compacting (log rewriting).  
@@ -348,8 +361,8 @@ writes.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcce4169" class="outline-3">
-<h3 id="orgcce4169"><span class="section-number-3">1.3</span> About redis recovery time</h3>
+<div id="outline-container-org92d5252" class="outline-3">
+<h3 id="org92d5252"><span class="section-number-3">1.3</span> About redis recovery time</h3>
 <div class="outline-text-3" id="text-1-3">
 <blockquote>
 <p>
@@ -371,8 +384,8 @@ and will finally shut down the old one.
 </div>
 </div>
 </div>
-<div id="outline-container-org58c7496" class="outline-2">
-<h2 id="org58c7496"><span class="section-number-2">2</span> Redis high-availability: replication, cluster, and sentinel</h2>
+<div id="outline-container-org8051458" class="outline-2">
+<h2 id="org8051458"><span class="section-number-2">2</span> Redis high-availability: replication, cluster, and sentinel</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Redis replication is a master-slave method to achieve fail-over
@@ -408,7 +421,6 @@ replication group.</li>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: Apr 25, 2019</p>
-<p class="validation"></p>
 </div>
 </body>
 </html>

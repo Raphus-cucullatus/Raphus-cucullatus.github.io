@@ -1,0 +1,160 @@
+#+TITLE: My Thought and Practices on Getting Things Done (GTD)
+#+DATE: Oct 22, 2019
+
+* Goal
+- Won't miss appointments without always keep them in mind.
+- Have enough time to complete tasks ahead of the deadlines.
+- Know what to do best at any time.
+* My post on reddit
+- [[https://www.reddit.com/r/omnifocus/comments/bug4a3/omnifocus_is_for_task_management_not_for_time/?utm_source=share&utm_medium=web2x][OmniFocus is for task management, NOT for time management?]]
+* Milestone summary
+The insight is separating task management and time management.
+
+Task management deals with tasks, and aims at
+- recording tasks
+- setting deadlines, notifications
+- grouping task (maybe into multiple dimensions) for the convenience
+  of later scheduling
+- complex task involves project management methodology
+
+Time management deals with time resource.  It schedules tasks into my
+available time blocks to
+- Make sure that tasks are assigned proper time resource so that
+  1. They have enough time to finish.
+  2. Tasks that have different priority are treated differently.
+- Balance tension and slack and maximize my efficiency
+
+I use OmniFocus and OmniPlan for task management and Apple Calendar
+for time management.
+* Migration to Org mode as my GTD system
+Principles:
+1. Make common things faster.
+2. Python philosophy: make it simple and intuitive.
+
+Primitives:
+1. Sub-trees.
+   1. Tags.
+   2. Properties.
+   3. TODO.
+   4. Priority.
+   5. Archive and refile.
+   6. Schedule.
+   7. Deadline.
+   8. Timestamp. Or time(range) in headline.
+   9. Effort.
+   10. Clocking work time.
+2. Agenda.
+   1. Agenda files.
+   2. Agenda views.
+   3. Custom agenda view.
+3. Capture.
+4. Beorg.
+
+Goal:
+1. Capturing.
+2. Task Planning (what, when).
+3. Time management (appt, what to do, what have done, how long).
+4. Note down.
+
+What's my use-cases from history?
+1. "~/Document/bears/": My plain text notes at work.
+   1. Daily: Planning/recording what I have done that day.
+   2. CallforReport: Planning my week at a coarse granularity.
+2. OmniFocus.app.
+   1. Shopping list.
+   2. Chores.  E.g. Fix bicycle, do the laundry.
+   3. What I want to learn.  E.g. Coursera, interesting papers, kernel
+      concepts, new language.
+   4. What I want to checkout.  E.g. interesting persons and their
+      blogs, News.
+   5. What I want to do.  E.g. Improve my homepage, fix bugs, make a
+      wheel.
+   6. Reading list.
+   7. Work project todo/planning.
+   8. Assignments.  Call for report, homework, project, TA work.
+      Deadlines and planning.
+   9. My fancy ideas.
+   10. Questions to ask other people.
+   11. Howto.
+3. Reminders.app.
+   1. Errands.  E.g. fetch something for somebody, pick delivered packages, get the laundry.
+   2. Appointments.  E.g. dissertation, test drive, appointment/meeting with somebody.
+   3. Reminders.  E.g. Take medicine.
+4. Calendar.app.
+   1. Courses.
+   2. Talks.
+   3. Discussions.
+   4. Meetings.
+   5. Exercises.
+   6. Appointments.  E.g. test drive, appointment/meeting with somebody.
+   7. Events.
+5. Notes.app.
+   1. Quick notes during a talk when no laptop by my side.
+   2. Reading list.  But is undergoing being substitued by
+      Goodreads.com.
+   3. Collections.
+   4. Temporary buffer at mobile.
+6. iOS usage.
+   1. Ask Siri to remind me.
+   2. Quick notes.
+   3. Appointments.
+   4. Shopping list.
+   5. Kill time when outside.
+
+Implementation:
+1. Capturing.  Using Org capture.  Capture ideas into inbox.
+   Implemented by a top-level sub-tree "Inbox", propertied by
+   ~CATEGORY="inbox"~.  For quick insertion, add a Capture template
+   to insert task into "Inbox".  For quick viewing, add a
+   ~org-agenda-custom-commands~ to filter ~+CATEGORY="inbox"+LEVEL=2~.
+2. Task Planning.
+   1. Use subtree, list for planning.  Use Emacs /narrow/ to reduce distraction.
+   2. Use tags for future retrieving.
+   3. Mark task as TODO if I am going to do it recently.  Then periodically I will match all TODO items to further schedule them to a specific time and date  (see Time management below).
+   4. Add deadline for tasks if necessary.
+3. Time management.  Using Org agenda view.
+   1. Appointments goes to "Appointments" with timestamp.  For
+      example, "Swimming" has a timestamp of
+      ~<2019-07-24 Wed 15:00-17:00 +1w>~.
+   2. What to do.
+      1. If you want to do something, mark it /TODO/.
+      2. /Schedule/ TODO items to a specific day (or time).
+      3. /Clock-in/ what you are doing.
+   3. Time logging.  Using /clock-in/, /clock-out/.
+   4. Archiving.  Tasks that done should be archived to keep the org
+      file neat.  To query upon archived tasks, visit the archive file
+      and use /sparse tree/.
+4. Note down. Add entry to "Misc".
+* One month after migrating to Org-mode
+** Case study: How to see what I have doen last week?
+Use agenda week view
+1. with archive file included, so that those archived tasks are shown.
+2. with log included, so that I can see what I've clocked-in/out in detail.
+3. with clock report included, so that I directly see my working hours, and what tasks have I worked on.
+** Issues I met
+1. Priority inverse in my task execution:  I headed for new, emerging tasks before the completion of my old TODOs.  As a result, old TODOs got accumulated.  This bad workflow hurts the progress of the tasks that I really want to do and increases the pressure when I check my tasks.
+2. GTD Org file bloat and the fragmentation of my Org notes.  Org-mode serves two functionality for me now, 1) note-taking (e.g. research journal) and 2) task management (GTD).  After using Org mode for GTD, I tended to write task execution result, thoughts, further ideas, simple research journaling directly in substrees in the GTD org file.  Then my research notes began scattering several places (in some TODO/DONE subtrees, and in standalone research note Org files.  Either I bother copying them all to standalone project note files or I would have a hard time when searching for previous notes.  Finally I realized that there should be a clear dividing between task&time management and my write-ups.
+* COMMENT Three month after migrating to Org-mode
+- Flatten my Org file.
+- Normalizing my tagging system.
+* COMMENT Crisis 1
+At the end of the first year of my Master degree, with lecture-taking finished, TA job completed, task flood slows down.  My GTD system began being filled with research journaling and research ideas.
+* COMMENT me
+- 不同类型的零碎想法
+- 日程
+  - 
+- 研究
+  - 临时想法、疑问
+  - 不同优先级、不同紧急、不同耗时的任务
+- 作业
+  - 系统安全lab
+  - paper reading
+- 提交材料
+- 买日常用品
+- 提醒：不需要提前准备
+* COMMENT sum-up
+- 需要花费一定时间的task
+  - 有deadline
+* COMMENT brainstorming
+- check my previous DONEs
+- GTD和scheduling和提醒是两回事吗

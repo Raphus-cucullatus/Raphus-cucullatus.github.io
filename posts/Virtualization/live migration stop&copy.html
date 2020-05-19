@@ -159,6 +159,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -183,7 +196,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -232,16 +245,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org81beed0">1. Setup</a></li>
-<li><a href="#org2f762c2">2. Analysis</a></li>
-<li><a href="#org2d7da8e">3. Appendix A: Probed tracing events</a></li>
-<li><a href="#org0cd562f">4. Appendix B: Tracing result</a></li>
+<li><a href="#org5c303d0">1. Setup</a></li>
+<li><a href="#org5986c65">2. Analysis</a></li>
+<li><a href="#org377751a">3. Appendix A: Probed tracing events</a></li>
+<li><a href="#orgc45b554">4. Appendix B: Tracing result</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org81beed0" class="outline-2">
-<h2 id="org81beed0"><span class="section-number-2">1</span> Setup</h2>
+<div id="outline-container-org5c303d0" class="outline-2">
+<h2 id="org5c303d0"><span class="section-number-2">1</span> Setup</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This trace is obtained QEMU simple tracing backend.  The guest is assigned 4
@@ -255,8 +268,8 @@ The trace events are in Appendix Atracing results are in Appendix B.
 </p>
 </div>
 </div>
-<div id="outline-container-org2f762c2" class="outline-2">
-<h2 id="org2f762c2"><span class="section-number-2">2</span> Analysis</h2>
+<div id="outline-container-org5986c65" class="outline-2">
+<h2 id="org5986c65"><span class="section-number-2">2</span> Analysis</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Operations sorted by time:
@@ -604,8 +617,8 @@ micro-seconds with a few exceptions that take thousands.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org2d7da8e" class="outline-2">
-<h2 id="org2d7da8e"><span class="section-number-2">3</span> Appendix A: Probed tracing events</h2>
+<div id="outline-container-org377751a" class="outline-2">
+<h2 id="org377751a"><span class="section-number-2">3</span> Appendix A: Probed tracing events</h2>
 <div class="outline-text-2" id="text-3">
 <pre class="example">
 # part of savevm.c
@@ -743,12 +756,12 @@ bdrv_flush_all
 </pre>
 </div>
 </div>
-<div id="outline-container-org0cd562f" class="outline-2">
-<h2 id="org0cd562f"><span class="section-number-2">4</span> Appendix B: Tracing result</h2>
+<div id="outline-container-orgc45b554" class="outline-2">
+<h2 id="orgc45b554"><span class="section-number-2">4</span> Appendix B: Tracing result</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgced11dd" class="outline-3">
-<h3 id="orgced11dd"><span class="section-number-3">4.1</span> stop all VCPUs: 221.704 us</h3>
+<div id="outline-container-org196beff" class="outline-3">
+<h3 id="org196beff"><span class="section-number-3">4.1</span> stop all VCPUs: 221.704 us</h3>
 <div class="outline-text-3" id="text-4-1">
 <pre class="example">
 migration_thread_low_pending,0.941,pending=0x846000
@@ -760,8 +773,8 @@ do_vm_stop_pause_all_vcpus_end,53.678
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb0cad73" class="outline-3">
-<h3 id="orgb0cad73"><span class="section-number-3">4.2</span> VM state change notify: 1083.087 us</h3>
+<div id="outline-container-orgb9da7d2" class="outline-3">
+<h3 id="orgb9da7d2"><span class="section-number-3">4.2</span> VM state change notify: 1083.087 us</h3>
 <div class="outline-text-3" id="text-4-2">
 <pre class="example">
 vm_state_notify_callback_begin,0.784
@@ -823,8 +836,8 @@ migration_completion_vm_stop_end,1.138
 </pre>
 </div>
 </div>
-<div id="outline-container-org2721755" class="outline-3">
-<h3 id="org2721755"><span class="section-number-3">4.3</span> get CPU states from KVM: 421.595 us</h3>
+<div id="outline-container-org82a5ae5" class="outline-3">
+<h3 id="org82a5ae5"><span class="section-number-3">4.3</span> get CPU states from KVM: 421.595 us</h3>
 <div class="outline-text-3" id="text-4-3">
 <pre class="example">
 savevm_state_complete_precopy,50.355
@@ -867,8 +880,8 @@ kvm_vcpu_ioctl,12.086,cpu_index=0x3,type=0xffffffff8080aea1,arg=0x7f9d4a7fb870
 </pre>
 </div>
 </div>
-<div id="outline-container-org18169c6" class="outline-3">
-<h3 id="org18169c6"><span class="section-number-3">4.4</span> get dirty RAM log: 446.159 us</h3>
+<div id="outline-container-org8ba3abc" class="outline-3">
+<h3 id="org8ba3abc"><span class="section-number-3">4.4</span> get dirty RAM log: 446.159 us</h3>
 <div class="outline-text-3" id="text-4-4">
 <pre class="example">
 savevm_section_start,16.060,id=ram,section_id=0x3
@@ -896,8 +909,8 @@ kvm_vm_ioctl,195.960,type=0x4010ae42,arg=0x7f9b17ffe710
 </pre>
 </div>
 </div>
-<div id="outline-container-orgd502fde" class="outline-3">
-<h3 id="orgd502fde"><span class="section-number-3">4.5</span> send dirty RAM: 61805.705 us</h3>
+<div id="outline-container-orgda96ce0" class="outline-3">
+<h3 id="orgda96ce0"><span class="section-number-3">4.5</span> send dirty RAM: 61805.705 us</h3>
 <div class="outline-text-3" id="text-4-5">
 <pre class="example">
 migration_bitmap_sync_end,65885.705,dirty_pages=0x12f
@@ -905,8 +918,8 @@ savevm_section_end,14.236,id=ram,section_id=0x3,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgba4633a" class="outline-3">
-<h3 id="orgba4633a"><span class="section-number-3">4.6</span> save timer: 21.874 us</h3>
+<div id="outline-container-org2b1efdf" class="outline-3">
+<h3 id="org2b1efdf"><span class="section-number-3">4.6</span> save timer: 21.874 us</h3>
 <div class="outline-text-3" id="text-4-6">
 <pre class="example">
 savevm_section_start,4.990,id=timer,section_id=0x0
@@ -915,8 +928,8 @@ savevm_section_end,1.630,id=timer,section_id=0x0,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org158809b" class="outline-3">
-<h3 id="org158809b"><span class="section-number-3">4.7</span> save slirp: 23.166 us</h3>
+<div id="outline-container-orgd209d05" class="outline-3">
+<h3 id="orgd209d05"><span class="section-number-3">4.7</span> save slirp: 23.166 us</h3>
 <div class="outline-text-3" id="text-4-7">
 <pre class="example">
 savevm_section_start,3.103,id=slirp,section_id=0x1
@@ -925,8 +938,8 @@ savevm_section_end,1.796,id=slirp,section_id=0x1,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org1179ce6" class="outline-3">
-<h3 id="org1179ce6"><span class="section-number-3">4.8</span> save <code>cpu_common</code>: 11.444 us</h3>
+<div id="outline-container-org4a0c39d" class="outline-3">
+<h3 id="org4a0c39d"><span class="section-number-3">4.8</span> save <code>cpu_common</code>: 11.444 us</h3>
 <div class="outline-text-3" id="text-4-8">
 <pre class="example">
 savevm_section_start,2.767,id=cpu_common,section_id=0x5
@@ -935,8 +948,8 @@ savevm_section_end,1.657,id=cpu_common,section_id=0x5,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org54bdbcb" class="outline-3">
-<h3 id="org54bdbcb"><span class="section-number-3">4.9</span> save cpu: 297.233 us</h3>
+<div id="outline-container-org05dd263" class="outline-3">
+<h3 id="org05dd263"><span class="section-number-3">4.9</span> save cpu: 297.233 us</h3>
 <div class="outline-text-3" id="text-4-9">
 <pre class="example">
 savevm_section_start,2.716,id=cpu,section_id=0x6
@@ -945,8 +958,8 @@ savevm_section_end,0.857,id=cpu,section_id=0x6,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org16fbe21" class="outline-3">
-<h3 id="org16fbe21"><span class="section-number-3">4.10</span> save kvm-tpr-opt: 27.977 us</h3>
+<div id="outline-container-org6d19d37" class="outline-3">
+<h3 id="org6d19d37"><span class="section-number-3">4.10</span> save kvm-tpr-opt: 27.977 us</h3>
 <div class="outline-text-3" id="text-4-10">
 <pre class="example">
 savevm_section_start,1.404,id=kvm-tpr-opt,section_id=0x7
@@ -955,8 +968,8 @@ savevm_section_end,0.753,id=kvm-tpr-opt,section_id=0x7,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgd8fbcaa" class="outline-3">
-<h3 id="orgd8fbcaa"><span class="section-number-3">4.11</span> save apic: 24.086 us</h3>
+<div id="outline-container-orge6f7748" class="outline-3">
+<h3 id="orge6f7748"><span class="section-number-3">4.11</span> save apic: 24.086 us</h3>
 <div class="outline-text-3" id="text-4-11">
 <pre class="example">
 savevm_section_start,1.174,id=apic,section_id=0x8
@@ -965,8 +978,8 @@ savevm_section_end,0.693,id=apic,section_id=0x8,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org2882a65" class="outline-3">
-<h3 id="org2882a65"><span class="section-number-3">4.12</span> save <code>cpu_common~</code>: 4.5 us</h3>
+<div id="outline-container-org6954d73" class="outline-3">
+<h3 id="org6954d73"><span class="section-number-3">4.12</span> save <code>cpu_common~</code>: 4.5 us</h3>
 <div class="outline-text-3" id="text-4-12">
 <pre class="example">
 savevm_section_start,1.169,id=cpu_common,section_id=0x9
@@ -975,8 +988,8 @@ savevm_section_end,0.700,id=cpu_common,section_id=0x9,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org8e8b170" class="outline-3">
-<h3 id="org8e8b170"><span class="section-number-3">4.13</span> save cpu: 172.909 us</h3>
+<div id="outline-container-orgd0307d2" class="outline-3">
+<h3 id="orgd0307d2"><span class="section-number-3">4.13</span> save cpu: 172.909 us</h3>
 <div class="outline-text-3" id="text-4-13">
 <pre class="example">
 savevm_section_start,1.026,id=cpu,section_id=0xa
@@ -985,8 +998,8 @@ savevm_section_end,0.668,id=cpu,section_id=0xa,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org62352b9" class="outline-3">
-<h3 id="org62352b9"><span class="section-number-3">4.14</span> save apic: 21.979 us</h3>
+<div id="outline-container-org958055c" class="outline-3">
+<h3 id="org958055c"><span class="section-number-3">4.14</span> save apic: 21.979 us</h3>
 <div class="outline-text-3" id="text-4-14">
 <pre class="example">
 savevm_section_start,1.215,id=apic,section_id=0xb
@@ -995,8 +1008,8 @@ savevm_section_end,0.609,id=apic,section_id=0xb,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgcc9f035" class="outline-3">
-<h3 id="orgcc9f035"><span class="section-number-3">4.15</span> save <code>cpu_common</code>: 4.188 us</h3>
+<div id="outline-container-org6505f3d" class="outline-3">
+<h3 id="org6505f3d"><span class="section-number-3">4.15</span> save <code>cpu_common</code>: 4.188 us</h3>
 <div class="outline-text-3" id="text-4-15">
 <pre class="example">
 savevm_section_start,1.107,id=cpu_common,section_id=0xc
@@ -1005,8 +1018,8 @@ savevm_section_end,0.679,id=cpu_common,section_id=0xc,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org237ec35" class="outline-3">
-<h3 id="org237ec35"><span class="section-number-3">4.16</span> save cpu: 166.661 us</h3>
+<div id="outline-container-org5141159" class="outline-3">
+<h3 id="org5141159"><span class="section-number-3">4.16</span> save cpu: 166.661 us</h3>
 <div class="outline-text-3" id="text-4-16">
 <pre class="example">
 savevm_section_start,1.095,id=cpu,section_id=0xd
@@ -1015,8 +1028,8 @@ savevm_section_end,0.701,id=cpu,section_id=0xd,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf76dee7" class="outline-3">
-<h3 id="orgf76dee7"><span class="section-number-3">4.17</span> save apic: 21.214 us</h3>
+<div id="outline-container-org3ca569a" class="outline-3">
+<h3 id="org3ca569a"><span class="section-number-3">4.17</span> save apic: 21.214 us</h3>
 <div class="outline-text-3" id="text-4-17">
 <pre class="example">
 savevm_section_start,0.989,id=apic,section_id=0xe
@@ -1025,8 +1038,8 @@ savevm_section_end,0.643,id=apic,section_id=0xe,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org96375c4" class="outline-3">
-<h3 id="org96375c4"><span class="section-number-3">4.18</span> save <code>cpu_common</code>: 4.242 us</h3>
+<div id="outline-container-org28d5b80" class="outline-3">
+<h3 id="org28d5b80"><span class="section-number-3">4.18</span> save <code>cpu_common</code>: 4.242 us</h3>
 <div class="outline-text-3" id="text-4-18">
 <pre class="example">
 savevm_section_start,1.073,id=cpu_common,section_id=0xf
@@ -1035,8 +1048,8 @@ savevm_section_end,0.762,id=cpu_common,section_id=0xf,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org0ffb594" class="outline-3">
-<h3 id="org0ffb594"><span class="section-number-3">4.19</span> save cpu: 173.444 us</h3>
+<div id="outline-container-org479ef93" class="outline-3">
+<h3 id="org479ef93"><span class="section-number-3">4.19</span> save cpu: 173.444 us</h3>
 <div class="outline-text-3" id="text-4-19">
 <pre class="example">
 savevm_section_start,1.352,id=cpu,section_id=0x10
@@ -1045,8 +1058,8 @@ savevm_section_end,1.033,id=cpu,section_id=0x10,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgea40b95" class="outline-3">
-<h3 id="orgea40b95"><span class="section-number-3">4.20</span> save apic: 20.963 us</h3>
+<div id="outline-container-orgef50eb8" class="outline-3">
+<h3 id="orgef50eb8"><span class="section-number-3">4.20</span> save apic: 20.963 us</h3>
 <div class="outline-text-3" id="text-4-20">
 <pre class="example">
 savevm_section_start,1.119,id=apic,section_id=0x11
@@ -1055,8 +1068,8 @@ savevm_section_end,0.684,id=apic,section_id=0x11,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orge7f0853" class="outline-3">
-<h3 id="orge7f0853"><span class="section-number-3">4.21</span> save kvmclock: 10.603 us</h3>
+<div id="outline-container-org58c9778" class="outline-3">
+<h3 id="org58c9778"><span class="section-number-3">4.21</span> save kvmclock: 10.603 us</h3>
 <div class="outline-text-3" id="text-4-21">
 <pre class="example">
 savevm_section_start,1.361,id=kvmclock,section_id=0x12
@@ -1067,8 +1080,8 @@ savevm_section_end,0.763,id=kvmclock,section_id=0x12,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org6c8f1cf" class="outline-3">
-<h3 id="org6c8f1cf"><span class="section-number-3">4.22</span> save <code>fw_cfg</code>: 9.055 us</h3>
+<div id="outline-container-org42ae18a" class="outline-3">
+<h3 id="org42ae18a"><span class="section-number-3">4.22</span> save <code>fw_cfg</code>: 9.055 us</h3>
 <div class="outline-text-3" id="text-4-22">
 <pre class="example">
 savevm_section_start,1.208,id=fw_cfg,section_id=0x13
@@ -1077,8 +1090,8 @@ savevm_section_end,0.712,id=fw_cfg,section_id=0x13,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org1ebc1a7" class="outline-3">
-<h3 id="org1ebc1a7"><span class="section-number-3">4.23</span> save PCIBUS: 8.083 us</h3>
+<div id="outline-container-org8641837" class="outline-3">
+<h3 id="org8641837"><span class="section-number-3">4.23</span> save PCIBUS: 8.083 us</h3>
 <div class="outline-text-3" id="text-4-23">
 <pre class="example">
 savevm_section_start,1.214,id=PCIBUS,section_id=0x14
@@ -1087,8 +1100,8 @@ savevm_section_end,0.709,id=PCIBUS,section_id=0x14,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org30846ba" class="outline-3">
-<h3 id="org30846ba"><span class="section-number-3">4.24</span> save I440FX: 11.056 us</h3>
+<div id="outline-container-org80b75e2" class="outline-3">
+<h3 id="org80b75e2"><span class="section-number-3">4.24</span> save I440FX: 11.056 us</h3>
 <div class="outline-text-3" id="text-4-24">
 <pre class="example">
 savevm_section_start,1.307,id=0000:00:00.0/I440FX,section_id=0x15
@@ -1097,8 +1110,8 @@ savevm_section_end,0.776,id=0000:00:00.0/I440FX,section_id=0x15,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgf320a51" class="outline-3">
-<h3 id="orgf320a51"><span class="section-number-3">4.25</span> save PIIX3: 14.187 us</h3>
+<div id="outline-container-org0f72d12" class="outline-3">
+<h3 id="org0f72d12"><span class="section-number-3">4.25</span> save PIIX3: 14.187 us</h3>
 <div class="outline-text-3" id="text-4-25">
 <pre class="example">
 savevm_section_start,1.531,id=0000:00:01.0/PIIX3,section_id=0x16
@@ -1107,8 +1120,8 @@ savevm_section_end,0.904,id=0000:00:01.0/PIIX3,section_id=0x16,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org7aedad0" class="outline-3">
-<h3 id="org7aedad0"><span class="section-number-3">4.26</span> save i8259: 29.543 us</h3>
+<div id="outline-container-org5b1d199" class="outline-3">
+<h3 id="org5b1d199"><span class="section-number-3">4.26</span> save i8259: 29.543 us</h3>
 <div class="outline-text-3" id="text-4-26">
 <pre class="example">
 savevm_section_start,1.325,id=i8259,section_id=0x17
@@ -1118,8 +1131,8 @@ savevm_section_end,0.741,id=i8259,section_id=0x17,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org55d7de5" class="outline-3">
-<h3 id="org55d7de5"><span class="section-number-3">4.27</span> save i8259: 14.13 us</h3>
+<div id="outline-container-orgff08b21" class="outline-3">
+<h3 id="orgff08b21"><span class="section-number-3">4.27</span> save i8259: 14.13 us</h3>
 <div class="outline-text-3" id="text-4-27">
 <pre class="example">
 savevm_section_start,1.077,id=i8259,section_id=0x18
@@ -1129,8 +1142,8 @@ savevm_section_end,0.731,id=i8259,section_id=0x18,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org28a2781" class="outline-3">
-<h3 id="org28a2781"><span class="section-number-3">4.28</span> save ioapic: 15.085 us</h3>
+<div id="outline-container-org158d641" class="outline-3">
+<h3 id="org158d641"><span class="section-number-3">4.28</span> save ioapic: 15.085 us</h3>
 <div class="outline-text-3" id="text-4-28">
 <pre class="example">
 savevm_section_start,1.080,id=ioapic,section_id=0x19
@@ -1140,8 +1153,8 @@ savevm_section_end,0.654,id=ioapic,section_id=0x19,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgfd268eb" class="outline-3">
-<h3 id="orgfd268eb"><span class="section-number-3">4.29</span> save vga: 38.811 us</h3>
+<div id="outline-container-org1b2432d" class="outline-3">
+<h3 id="org1b2432d"><span class="section-number-3">4.29</span> save vga: 38.811 us</h3>
 <div class="outline-text-3" id="text-4-29">
 <pre class="example">
 savevm_section_start,1.339,id=0000:00:02.0/vga,section_id=0x1a
@@ -1150,8 +1163,8 @@ savevm_section_end,0.848,id=0000:00:02.0/vga,section_id=0x1a,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org0977d82" class="outline-3">
-<h3 id="org0977d82"><span class="section-number-3">4.30</span> save hpet: 24.44 us</h3>
+<div id="outline-container-orgfeeeaae" class="outline-3">
+<h3 id="orgfeeeaae"><span class="section-number-3">4.30</span> save hpet: 24.44 us</h3>
 <div class="outline-text-3" id="text-4-30">
 <pre class="example">
 savevm_section_start,1.358,id=hpet,section_id=0x1b
@@ -1160,8 +1173,8 @@ savevm_section_end,0.756,id=hpet,section_id=0x1b,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org9bb56cc" class="outline-3">
-<h3 id="org9bb56cc"><span class="section-number-3">4.31</span> save mc146818rtc: 19.784 us</h3>
+<div id="outline-container-orgcacbde3" class="outline-3">
+<h3 id="orgcacbde3"><span class="section-number-3">4.31</span> save mc146818rtc: 19.784 us</h3>
 <div class="outline-text-3" id="text-4-31">
 <pre class="example">
 savevm_section_start,1.246,id=mc146818rtc,section_id=0x1c
@@ -1170,8 +1183,8 @@ savevm_section_end,1.752,id=mc146818rtc,section_id=0x1c,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb466961" class="outline-3">
-<h3 id="orgb466961"><span class="section-number-3">4.32</span> save i8254: 21.746 us</h3>
+<div id="outline-container-org3abb849" class="outline-3">
+<h3 id="org3abb849"><span class="section-number-3">4.32</span> save i8254: 21.746 us</h3>
 <div class="outline-text-3" id="text-4-32">
 <pre class="example">
 savevm_section_start,1.299,id=i8254,section_id=0x1d
@@ -1180,8 +1193,8 @@ savevm_section_end,1.019,id=i8254,section_id=0x1d,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org318e89b" class="outline-3">
-<h3 id="org318e89b"><span class="section-number-3">4.33</span> save pcspk: 6.665 us</h3>
+<div id="outline-container-org873a00c" class="outline-3">
+<h3 id="org873a00c"><span class="section-number-3">4.33</span> save pcspk: 6.665 us</h3>
 <div class="outline-text-3" id="text-4-33">
 <pre class="example">
 savevm_section_start,2.670,id=pcspk,section_id=0x1e
@@ -1190,8 +1203,8 @@ savevm_section_end,0.777,id=pcspk,section_id=0x1e,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org8a85051" class="outline-3">
-<h3 id="org8a85051"><span class="section-number-3">4.34</span> save dma: 18.103 us</h3>
+<div id="outline-container-org93aea92" class="outline-3">
+<h3 id="org93aea92"><span class="section-number-3">4.34</span> save dma: 18.103 us</h3>
 <div class="outline-text-3" id="text-4-34">
 <pre class="example">
 savevm_section_start,1.182,id=dma,section_id=0x1f
@@ -1200,8 +1213,8 @@ savevm_section_end,0.574,id=dma,section_id=0x1f,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org994b792" class="outline-3">
-<h3 id="org994b792"><span class="section-number-3">4.35</span> save dma: 14.851 us</h3>
+<div id="outline-container-org23d0a9f" class="outline-3">
+<h3 id="org23d0a9f"><span class="section-number-3">4.35</span> save dma: 14.851 us</h3>
 <div class="outline-text-3" id="text-4-35">
 <pre class="example">
 savevm_section_start,1.116,id=dma,section_id=0x20
@@ -1210,8 +1223,8 @@ savevm_section_end,0.604,id=dma,section_id=0x20,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org28148cc" class="outline-3">
-<h3 id="org28148cc"><span class="section-number-3">4.36</span> save serial: 12.588 us</h3>
+<div id="outline-container-orgc88de4e" class="outline-3">
+<h3 id="orgc88de4e"><span class="section-number-3">4.36</span> save serial: 12.588 us</h3>
 <div class="outline-text-3" id="text-4-36">
 <pre class="example">
 savevm_section_start,1.278,id=serial,section_id=0x21
@@ -1220,8 +1233,8 @@ savevm_section_end,0.784,id=serial,section_id=0x21,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org64482bc" class="outline-3">
-<h3 id="org64482bc"><span class="section-number-3">4.37</span> save <code>parallel_isa</code>: 9.287 us</h3>
+<div id="outline-container-org70c5d7d" class="outline-3">
+<h3 id="org70c5d7d"><span class="section-number-3">4.37</span> save <code>parallel_isa</code>: 9.287 us</h3>
 <div class="outline-text-3" id="text-4-37">
 <pre class="example">
 savevm_section_start,1.223,id=parallel_isa,section_id=0x22
@@ -1230,8 +1243,8 @@ savevm_section_end,0.679,id=parallel_isa,section_id=0x22,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org4512787" class="outline-3">
-<h3 id="org4512787"><span class="section-number-3">4.38</span> save fdc: 62.999 us</h3>
+<div id="outline-container-orga43a401" class="outline-3">
+<h3 id="orga43a401"><span class="section-number-3">4.38</span> save fdc: 62.999 us</h3>
 <div class="outline-text-3" id="text-4-38">
 <pre class="example">
 savevm_section_start,1.167,id=fdc,section_id=0x23
@@ -1240,8 +1253,8 @@ savevm_section_end,0.750,id=fdc,section_id=0x23,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org3023517" class="outline-3">
-<h3 id="org3023517"><span class="section-number-3">4.39</span> save ps2kbd: 13.944 us</h3>
+<div id="outline-container-org93f5873" class="outline-3">
+<h3 id="org93f5873"><span class="section-number-3">4.39</span> save ps2kbd: 13.944 us</h3>
 <div class="outline-text-3" id="text-4-39">
 <pre class="example">
 savevm_section_start,1.227,id=ps2kbd,section_id=0x24
@@ -1250,8 +1263,8 @@ savevm_section_end,0.742,id=ps2kbd,section_id=0x24,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org540d533" class="outline-3">
-<h3 id="org540d533"><span class="section-number-3">4.40</span> save ps2mouse: 14.804 us</h3>
+<div id="outline-container-org1014ca8" class="outline-3">
+<h3 id="org1014ca8"><span class="section-number-3">4.40</span> save ps2mouse: 14.804 us</h3>
 <div class="outline-text-3" id="text-4-40">
 <pre class="example">
 savevm_section_start,1.262,id=ps2mouse,section_id=0x25
@@ -1260,8 +1273,8 @@ savevm_section_end,0.547,id=ps2mouse,section_id=0x25,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgaa93238" class="outline-3">
-<h3 id="orgaa93238"><span class="section-number-3">4.41</span> save pckbd: 7.067 us</h3>
+<div id="outline-container-orgd654b51" class="outline-3">
+<h3 id="orgd654b51"><span class="section-number-3">4.41</span> save pckbd: 7.067 us</h3>
 <div class="outline-text-3" id="text-4-41">
 <pre class="example">
 savevm_section_start,1.305,id=pckbd,section_id=0x26
@@ -1270,8 +1283,8 @@ savevm_section_end,0.550,id=pckbd,section_id=0x26,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgdaf4433" class="outline-3">
-<h3 id="orgdaf4433"><span class="section-number-3">4.42</span> save vmmouse: 133.532 us</h3>
+<div id="outline-container-org35e79ca" class="outline-3">
+<h3 id="org35e79ca"><span class="section-number-3">4.42</span> save vmmouse: 133.532 us</h3>
 <div class="outline-text-3" id="text-4-42">
 <pre class="example">
 savevm_section_start,1.190,id=vmmouse,section_id=0x27
@@ -1280,8 +1293,8 @@ savevm_section_end,0.712,id=vmmouse,section_id=0x27,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org6136075" class="outline-3">
-<h3 id="org6136075"><span class="section-number-3">4.43</span> save port92: 4.633 us</h3>
+<div id="outline-container-orgaf7a474" class="outline-3">
+<h3 id="orgaf7a474"><span class="section-number-3">4.43</span> save port92: 4.633 us</h3>
 <div class="outline-text-3" id="text-4-43">
 <pre class="example">
 savevm_section_start,1.263,id=port92,section_id=0x28
@@ -1290,8 +1303,8 @@ savevm_section_end,0.720,id=port92,section_id=0x28,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org94afdb6" class="outline-3">
-<h3 id="org94afdb6"><span class="section-number-3">4.44</span> save ide: 90.513 us</h3>
+<div id="outline-container-orga86c34c" class="outline-3">
+<h3 id="orga86c34c"><span class="section-number-3">4.44</span> save ide: 90.513 us</h3>
 <div class="outline-text-3" id="text-4-44">
 <pre class="example">
 savevm_section_start,1.288,id=0000:00:01.1/ide,section_id=0x29
@@ -1300,8 +1313,8 @@ savevm_section_end,0.733,id=0000:00:01.1/ide,section_id=0x29,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org0f367f5" class="outline-3">
-<h3 id="org0f367f5"><span class="section-number-3">4.45</span> save i2c<sub>bus</sub>: 4.938 us</h3>
+<div id="outline-container-orgf6b239d" class="outline-3">
+<h3 id="orgf6b239d"><span class="section-number-3">4.45</span> save i2c<sub>bus</sub>: 4.938 us</h3>
 <div class="outline-text-3" id="text-4-45">
 <pre class="example">
 savevm_section_start,1.243,id=i2c_bus,section_id=0x2a
@@ -1310,8 +1323,8 @@ savevm_section_end,0.687,id=i2c_bus,section_id=0x2a,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org79b80cc" class="outline-3">
-<h3 id="org79b80cc"><span class="section-number-3">4.46</span> save piix4<sub>pm</sub>: 675.355 us</h3>
+<div id="outline-container-org6debd05" class="outline-3">
+<h3 id="org6debd05"><span class="section-number-3">4.46</span> save piix4<sub>pm</sub>: 675.355 us</h3>
 <div class="outline-text-3" id="text-4-46">
 <pre class="example">
 savevm_section_start,1.469,id=0000:00:01.3/piix4_pm,section_id=0x2b
@@ -1320,8 +1333,8 @@ savevm_section_end,1.882,id=0000:00:01.3/piix4_pm,section_id=0x2b,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orga03e1c5" class="outline-3">
-<h3 id="orga03e1c5"><span class="section-number-3">4.47</span> save smbus-eeprom: 7.265 us</h3>
+<div id="outline-container-orgffc2b55" class="outline-3">
+<h3 id="orgffc2b55"><span class="section-number-3">4.47</span> save smbus-eeprom: 7.265 us</h3>
 <div class="outline-text-3" id="text-4-47">
 <pre class="example">
 savevm_section_skip,1.785,id=smbus-eeprom,section_id=0x2c
@@ -1335,8 +1348,8 @@ savevm_section_skip,0.577,id=smbus-eeprom,section_id=0x33
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbf3b6ca" class="outline-3">
-<h3 id="orgbf3b6ca"><span class="section-number-3">4.48</span> save virtio-net: 2029.208 us</h3>
+<div id="outline-container-org2d7aec0" class="outline-3">
+<h3 id="org2d7aec0"><span class="section-number-3">4.48</span> save virtio-net: 2029.208 us</h3>
 <div class="outline-text-3" id="text-4-48">
 <pre class="example">
 savevm_section_start,1.649,id=0000:00:03.0/virtio-net,section_id=0x34
@@ -1345,8 +1358,8 @@ savevm_section_end,0.935,id=0000:00:03.0/virtio-net,section_id=0x34,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org8da83cb" class="outline-3">
-<h3 id="org8da83cb"><span class="section-number-3">4.49</span> save virtio-blk: 2030.198 us</h3>
+<div id="outline-container-orgd9b5b1f" class="outline-3">
+<h3 id="orgd9b5b1f"><span class="section-number-3">4.49</span> save virtio-blk: 2030.198 us</h3>
 <div class="outline-text-3" id="text-4-49">
 <pre class="example">
 savevm_section_start,1.429,id=0000:00:04.0/virtio-blk,section_id=0x35
@@ -1355,8 +1368,8 @@ savevm_section_end,0.865,id=0000:00:04.0/virtio-blk,section_id=0x35,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-orgc0905c5" class="outline-3">
-<h3 id="orgc0905c5"><span class="section-number-3">4.50</span> save acpi<sub>build</sub>: 5.224 us</h3>
+<div id="outline-container-org776856e" class="outline-3">
+<h3 id="org776856e"><span class="section-number-3">4.50</span> save acpi<sub>build</sub>: 5.224 us</h3>
 <div class="outline-text-3" id="text-4-50">
 <pre class="example">
 savevm_section_start,1.415,id=acpi_build,section_id=0x36
@@ -1365,8 +1378,8 @@ savevm_section_end,0.567,id=acpi_build,section_id=0x36,ret=0x0
 </pre>
 </div>
 </div>
-<div id="outline-container-org4070468" class="outline-3">
-<h3 id="org4070468"><span class="section-number-3">4.51</span> save globalstate: 64.848 us</h3>
+<div id="outline-container-org63b75af" class="outline-3">
+<h3 id="org63b75af"><span class="section-number-3">4.51</span> save globalstate: 64.848 us</h3>
 <div class="outline-text-3" id="text-4-51">
 <pre class="example">
 savevm_section_start,1.040,id=globalstate,section_id=0x37
@@ -1379,7 +1392,6 @@ savevm_section_end,60.552,id=globalstate,section_id=0x37,ret=0x0
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: Jul 16, 2019</p>
-<p class="validation"></p>
 </div>
 </body>
 </html>

@@ -1,0 +1,154 @@
+#+TITLE: Page-Modification Logging (PML) Inside and Its Overhead
+#+DATE: Jul 12, 2019
+
+* PML capability
+VMX related capabilities are reported mainly by MSR.  PML control is
+in the secondary processor-based VM-execution controls in VMCS.
+
+Secondary processor-based VM-execution controls is a 32-bit vector.
+And like other controls, it has a corresponding MSR
+(~IA32_VMX_PROCBASED_CTLS2~) to specify allow-1 and allow-0 of each
+bit.  The bits 31:0 in the MSR indicate whether it is allowed to set 0
+to (to disable) the control in the 32-bit vector.  The bits 63:32 in
+the MSR indicate whether it is allowed to set 1 to (to enable) the
+control in the 32-bit vector.
+* PML enabling
+The enabling bit of PML is at bit 17 in the secondary processor-based
+VM-execution controls (a 32-bit vector, see vol3 24.6.2 Processor-Based
+VM-Execution Controls).  KVM set this bit when creating a new VCPU
+based on a global variable ~enable_pml~.  ~enable_pml~ is decided when
+installing the KVM module.
+
+Deciding the enable PML bit in VMCS:
+#+BEGIN_SRC
+vmx_create_vcpu
+  vmx_vcpu_setup
+    vmx_compute_secondary_exec_control:
+      if (!enable_pml)
+	    exec_control &= ~SECONDARY_EXEC_ENABLE_PML;
+#+END_SRC
+
+Deciding the global variable ~enable_pml~:
+#+BEGIN_SRC
+kvm_init
+  kvm_arch_hardware_setup
+    kvm_x86_ops->hardware_setup (hardware_setup in vmx.c):
+      if (!enable_ept || !enable_ept_ad_bits || !cpu_has_vmx_pml())
+	    enable_pml = 0;
+#+END_SRC
+* PML mechanism
+The VMCS field (~PML_ADDRESS~) specifies the physical address of a 4K
+page for page-modification loggging where 8-byte entries of guest
+physical addresses (GPAs are /4K-aligned/) are written.  The VMCS
+field (~GUEST_PML_INDEX~) specifies the index of the current available
+slot for the processor(s) to write in this page.
+
+When a processor is going to update an EPT dirty bit (from 0 to 1), it
+checks the PML index.  
+- If the index is in the range of 0-511, it writes the /4K-aligned/
+  GPA in this slot.  Then decreases the PML index by 1.
+- If the index is of other value, an VM exit (of reason
+  ~EXIT_REASON_PML_FULL~) is triggered.
+* Runtime PML
+When PML is enabled (~enable_pml~ is 1), ~vmx_flush_pml_buffer~ is
+called on every guest exit.  This function will
+1. Read the PML index.
+2. For each entry between the PML index and 512, it calls
+   ~kvm_vcpu_mark_page_dirty~.
+3. Update the PML index to 511.
+
+~kvm_vcpu_mark_page_dirty~ will
+1. Search the memslot which contains the gfn.
+2. If the memslot is found and has a dirty bitmap, a bit in the bitmap
+   is set.
+* Getting the dirty log
+QEMU can use the ~KVM_GET_DIRTY_LOG~ ioctl to request a dirty page
+bitmap from KVM.  KVM will
+1. Flush the PML buffer.
+2. Read through the ~memslot->dirty_bitmap~, for each 1 in the bitmap,
+   1. ~xchg~ to 0.
+   2. set to a dirty bitmap buffer (allocated with and address follows
+      the dirty bitmap, it is called second dirty bitmap in KVM).
+   3. Clear the dirty bit for the corresponding page in the EPT.  (Or
+      write protect it for those pages that have dirty-bit disabled).
+3. copy the dirty bitmap buffer to user.
+4. flush tlb if some dirty-bit is cleared.
+* Evaluation on PML overhead
+** Sources of overhead
+There are 3 sources of overhead after enabling PML:
+1. 8-byte sequential memroy write to the PML page.
+2. Triggers VM exit if theh PML page is full (512 entries).
+3. Additional PML page traverse (sequential memory read) and bitmap
+   marking on every VM exit.
+
+However:
+1. The first overhead happens only when the processor updates the
+   EPT dirty-bit from 0 to 1.  If the page has been dirtied, and TLB
+   not flushed, the PML write does not occur.
+2. The second overhead happens only if the guest has written 512 clean
+   pages before an VM exit happens.  This depends on the guest
+   workload.
+3. The third overhead happens only if there are some unread entries
+   in the PML page.  And bitmap marking occurs only for
+   ~KVM_MEM_LOG_DIRTY_PAGES~ memory region (set by the
+   ~KVM_SET_USER_MEMORY_REGION~ IOCTL). 
+** Setup
+- Host: Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz, Linux 4.19.57, QEMU
+  4.0.50.
+- Guest: 4 VCPUs, 8 GB memory.
+** Result takeaways
+1. For an extreme case (guest repeatedly, sequentially writes 8 bytes
+   every 4K in a 4G region, and dirty-bit, TLB are cleared every
+   500us), the memory write throughput is 48.54% of the one where PML is
+   disabled.
+2. For a real world application (in-memory PageRank), it incurs 19.71%
+   running time slow down.
+** Micro-benchmark: memory write throughput
+Benchmark description: 1 thread repeatedly, sequentially write 8 bytes
+with a stride of 4K in a 4G memory region.  PML is only updated when
+the dirty-bit in EPT is set from 0 to 1.  To evaluate the impact of
+PML, a thread in QEMU is used who periodically calls
+~KVM_GET_DIRTY_LOG~ IOCTL which clears the dirty-bit and flushes TLB.
+|      | every 500us |   every 1ms |  every 10ms | every 100ms | every 1000ms | no clearing | no dirty logging | disable pml |
+|------+-------------+-------------+-------------+-------------+--------------+-------------+------------------+-------------|
+| min  |     2569.95 |     4352.46 |     5085.81 |     5032.75 |      5100.07 |     6349.07 |          6402.42 |     6188.88 |
+| max  |     3745.43 |      4599.3 |     5219.19 |     5447.23 |      5310.66 |     7342.69 |          7049.75 |     6924.64 |
+| mean |    3293.725 | 4470.263333 | 5163.601667 |      5201.3 |  5231.758333 |     7049.05 |      6785.501667 | 6771.048333 |
+| std  |  386.867784 | 95.43139502 | 46.13593011 | 161.0436779 |  90.27381263 | 375.7310623 |      242.8608998 | 261.1474595 |
+- "every <time>": the time interval between each call to the
+  ~KVM_GET_DIRTY_LOG~ IOCTL.
+- "no clearing": QEMU use ~KVM_SET_USER_MEMORY_REGION~ to mark
+  all guest memory to be ~KVM_MEM_LOG_DIRTY_PAGES~ but never clears
+  dirty-bit and flushes TLB.
+- "no dirty logging": QEMU does not mark all guest memory to be
+  ~KVM_MEM_LOG_DIRTY_PAGES~ and never clears dirty-bit and flushes
+  TLB.
+- "disable pml": disable PML in the VMCS VM-execution controls.  Since
+  KVM enables PML if capable and does not provide parameter to disable
+  it, this case involves modifying kernel a little bit.
+** Macro-benchmark: PageRank
+Benchmark description: 10-iteration PageRank in [[https://github.com/jshun/ligra][Ligra (a graph
+processing framework for shared memory)]] on a rMat graph (generated by
+Ligra's rMat generator) with 2^23 vertices.
+|      |  every 500us |   every 1ms |   every 10ms |   every 100ms | every 1000ms |  no clearing | no dirty logging |
+|------+--------------+-------------+--------------+---------------+--------------+--------------+------------------|
+| min  |      33.6509 |     31.6679 |      28.7268 |       28.9712 |      28.2361 |      28.2794 |          28.9396 |
+| max  |      35.2748 |     32.4316 |       29.295 |       29.1076 |       28.812 |      29.1299 |           29.498 |
+| mean |  34.37253333 |     32.0125 |  29.04983333 |       29.0499 |      28.4518 |      28.7121 |           29.144 |
+| std  | 0.6751464549 | 0.316198366 | 0.2384117214 | 0.05763095233 | 0.2563531288 | 0.3473749847 |     0.2513135624 |
+** ~kvm_vm_ioctl_get_dirty_log~ time
+The time of getting dirty log from KVM depends on how many dirty pages
+there are since last dirty log syncing.  It varies under different guest
+workload and the frequency of dirty log syncing.
+|                 | every 0.5ms |   every 1ms |  every 10ms | every 100ms | every 1000ms |
+|-----------------+-------------+-------------+-------------+-------------+--------------|
+| when guest idle | 11.78100356 | 13.50977993 | 12.09778611 |  11.5994575 |     15.75735 |
+| when mem write  | 12.67297443 | 18.31690381 | 36.09133187 | 199.7020885 |   2001.15694 |
+** ~vmx_flush_pml_buffer~ time
+This function is called on every guest exit and at the beginning
+~kvm_vm_ioctl_get_dirty_log~.  The time of this function is
+proportional to the number of unread entries in the PML page.
+|                 |  every 0.5ms |    every 1ms |   every 10ms | every 100ms | every 1000ms |  no clearing |
+|-----------------+--------------+--------------+--------------+-------------+--------------+--------------|
+| when guest idle | 0.4976450809 |  0.396483209 | 0.4771353965 | 0.692168242 | 0.6588709677 | 0.4714497992 |
+| when mem write  | 0.7263721791 | 0.8386978497 |  2.891451161 | 4.398656793 |  4.504321317 | 0.3870135987 |

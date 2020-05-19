@@ -1,0 +1,15 @@
+* Database
+- [[file:./posts/Database/redis%20persistence%20&%20high%20availability.html][Redis Data Persistence and High-Availability]]
+* Misc.
+- [[file:./posts/Misc./My%20Thought%20and%20Practices%20on%20Getting%20Things%20Done%20(GTD).html][My Thought and Practices on Getting Things Done (GTD)]]
+- [[file:./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper%20award:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html][Reading EuroSys’20 best paper award: Don’t shoot down TLB shootdowns]]
+- [[file:./posts/Misc./CR%202019-08-01%20at%20group%20meetup.html][CR: Pitfalls of the researches on performance optimization]]
+* Virtualization
+- [[file:./posts/Virtualization/case:%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html][Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host]]
+- [[file:./posts/Virtualization/live%20migration%20stop&copy.html][ The Stop & Copy Phase in QEMU Live Migration]]
+- [[file:./posts/Virtualization/PML%20and%20its%20overhead.html][Page-Modification Logging (PML) Inside and Its Overhead]]
+- [[file:./posts/Virtualization/qemu%20adding%20a%20new%20trace%20point.html][QEMU: Adding a New Trace Event]]
+* Emacs
+- [[file:./posts/Emacs/mani.html][mani.el: Yet Another Emacs Package to Read Man Page]]
+- [[file:./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html][Elisp Symbols: What are Symbol, Variable,  and "~boundp~", "~intern~" all about?]]
+- [[file:./posts/Emacs/iri.html][IRI: An Interactive Emacs Front-End for Ruby API Reference]]
