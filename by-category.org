@@ -1,7 +1,6 @@
 * Database
 - [[file:./posts/Database/redis%20persistence%20&%20high%20availability.html][Redis Data Persistence and High-Availability]]
 * Misc.
-- [[file:./posts/Misc./My%20Thought%20and%20Practices%20on%20Getting%20Things%20Done%20(GTD).html][My Thought and Practices on Getting Things Done (GTD)]]
 - [[file:./posts/Misc./CR%202019-08-01%20at%20group%20meetup.html][CR: Pitfalls of the researches on performance optimization]]
 - [[file:./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html][Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns]]
 * Virtualization

@@ -3,10 +3,10 @@
 
 Personally, I had a chance to optimize TLB shootdown overhead in
 2018 when I spent nearly one month evaluating TLB shootdown
-performance.  I was asked to provide some supporting data of the
+performance.  I was asked to provide some supporting data for the
 performance of some memory management operations on a
 multi-socket machine.  I also read several papers on TLB
-shootdown (which are all cited by this EuroSys’20 paper).
+shootdown (which are also cited by this EuroSys’20 paper).
 
 I had found the poor performance of TLB shootdown, I had read
 related paper as background, and I had looked into the source
@@ -27,6 +27,6 @@ Here are lessons I’ve learned:
 1. Note down observed problems and address them one day.
 2. Most of the time, there should always be work to do, however
    small it seems.
-3. Performance analysis: breakdown, *model*, analyze and begin
+3. Performance analysis: breakdown, *model*, analyze, then begin
    with the dominant.
 4. Don’t simply make a guess, use experiment result to speak.
