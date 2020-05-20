@@ -1,3 +1,3 @@
+- May 20, 2020: [[file:./posts/Emacs/ivy-cscope.html][Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!]]
 - May 19, 2020: [[file:./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html][Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns]]
 - Mar 11, 2020: [[file:./posts/Virtualization/case:%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html][Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host]]
-- Feb 21, 2020: [[file:./posts/Emacs/mani.html][mani.el: Yet Another Emacs Package to Read Man Page]]
