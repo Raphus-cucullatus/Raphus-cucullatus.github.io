@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>QEMU: Adding a New Trace Event</title>
+<title>A Glimpse Into Linux Security Teams</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -240,146 +240,56 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">QEMU: Adding a New Trace Event</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org931df74">1. Locate corresponding trace events file</a></li>
-<li><a href="#orge5facf4">2. Specify trace events</a></li>
-<li><a href="#org17d84dc">3. Place your trace function</a></li>
-<li><a href="#org8c414cc">4. Build and run</a></li>
-<li><a href="#org6e67f87">5. Troubleshooting</a>
-<ul>
-<li><a href="#orgbc380ed">5.1. "implicit declaration of function '<code>trace_xxx</code>' "?</a></li>
-<li><a href="#org32c2597">5.2. "trace-events does not end with a new line"?</a></li>
-<li><a href="#orge85b06b">5.3. "warning: trace event 'abc' does not exist"?</a></li>
-</ul>
-</li>
-<li><a href="#orgb57efd2">6. See also</a></li>
-</ul>
-</div>
-</div>
+<h1 class="title">A Glimpse Into Linux Security Teams</h1>
 <p>
-For example, I want to add three trace functions in
-<code>migration/migration.c</code>:
-</p>
-<pre class="example">
-trace_migration_completion_wakeup_request();
-trace_migration_completion_globalstate_store();
-trace_migration_completion_vm_stop();
-</pre>
-
-<p>
-The steps are as follows.
-</p>
-
-<div id="outline-container-org931df74" class="outline-2">
-<h2 id="org931df74"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-First, find the <code>trace-events</code> file in the sub-directory where your
-modification is going to happen.  Here, it is
-<code>migration/trace-events</code>.
-</p>
-</div>
-</div>
-<div id="outline-container-orge5facf4" class="outline-2">
-<h2 id="orge5facf4"><span class="section-number-2">2</span> Specify trace events</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-Then, append one line for each trace function.  The line specifies the
-trace function name, its args and print formatting.  In my case, they
-are
-</p>
-<pre class="example">
-migration_completion_wakeup_request(void) ""
-migration_completion_globalstate_store(void) ""
-migration_completion_vm_stop(void) ""
-</pre>
-</div>
-</div>
-<div id="outline-container-org17d84dc" class="outline-2">
-<h2 id="org17d84dc"><span class="section-number-2">3</span> Place your trace function</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-Now place the trace functions where you want.
-</p>
-</div>
-</div>
-<div id="outline-container-org8c414cc" class="outline-2">
-<h2 id="org8c414cc"><span class="section-number-2">4</span> Build and run</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-Note that tracing should be enabled with a backend and switched on.
-When <code>./configure</code>, add
-</p>
-<pre class="example">
---enable-trace-backends=&lt;choose your tracing backends&gt;
-</pre>
-<p>
-Check <code>/.configure --help</code> for supported tracing backends.
+At the time I am writing this, the bug has been assigned CVE id
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-10757">CVE-2020-10757</a> (with <a href="https://nvd.nist.gov/vuln/detail/CVE-2020-10757">7.8/10 CVSS score</a>), fixed at commit
+<a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5bfea2d9b17f1034a68147a8b03b9789af5700f9">5bfea2d9b17f</a>, and published at <a href="https://www.openwall.com/lists/oss-security/2020/06/04/4">oss-security</a> for public
+discussion.
 </p>
 
 <p>
-And when run QEMU, add
+When I was writing a program, I found a Linux kernel bug which,
+under exploit, can allow a less-than-70-line C code to access any
+physical address.  This bug was introduced 4 years ago, as early
+as version 4.5.  The emergency handling procedure took 15 people,
+79 email messages, and 7 days, to finally resulted in patching
+the mainline and 6 stable trees.  
 </p>
-<pre class="example">
--trace events=&lt;file that contains events you want to trace&gt;
-</pre>
-</div>
-</div>
-<div id="outline-container-org6e67f87" class="outline-2">
-<h2 id="org6e67f87"><span class="section-number-2">5</span> Troubleshooting</h2>
-<div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-orgbc380ed" class="outline-3">
-<h3 id="orgbc380ed"><span class="section-number-3">5.1</span> "implicit declaration of function '<code>trace_xxx</code>' "?</h3>
-<div class="outline-text-3" id="text-5-1">
+
 <p>
-This is possibly due to not including "<code>trace.h</code>".  QEMU generates the
-implementation of the trace functions for you according to the
-<code>trace-events</code> files in <code>trace.c</code> files, as well as the declarations
-in <code>trace.h</code> files.  Many "<code>.c</code>" files have already included
-"<code>trace.h</code>".  If not, include it yourself.  One exception is for adding
-trace events at the QEMU source root directory.  In this case, include
-"<code>trace-root.h</code>".
+Since it is related to a kind of emerging hardware, nvdimm, which
+is only commercially available 1 year ago 2, although the exploit
+result is severe, the actual impact coverage is limited.
+Nonetheless, I am so appreciated to be able to take part in the
+security private channels, to have a glimpse of what usually
+hides behind the scenes.  This is also what motivates me to write
+it down: to let people know
 </p>
-</div>
-</div>
-<div id="outline-container-org32c2597" class="outline-3">
-<h3 id="org32c2597"><span class="section-number-3">5.2</span> "trace-events does not end with a new line"?</h3>
-<div class="outline-text-3" id="text-5-2">
+<ol class="org-ol">
+<li>how a security bug is discussed and fixed,</li>
+<li>how security teams from multiple parties cooperate to minimize
+the possible damages, and more generally,</li>
+<li>what is the proper procedure to report a security bug,</li>
+<li>what is the role, in security, of kernel security group,
+linux-distros, oss-security, and the Common Vulnerabilities
+and Exposures (CVE) system, and</li>
+<li>how should we consider trust and disclosure.</li>
+</ol>
+
 <p>
-Currently all the <code>trace-events</code> files should be ended with a new
-line.  Otherwise error would be reported when parsing and when at run
-time.
+However, perhaps you would better not take it seriously, since it
+is only one of the hundreds commits getting into the kernel every
+day, and kernel is evolving, as well as its security policies and
+procedures.  Anyway, hope you enjoy reading this.
 </p>
-</div>
-</div>
-<div id="outline-container-orge85b06b" class="outline-3">
-<h3 id="orge85b06b"><span class="section-number-3">5.3</span> "warning: trace event 'abc' does not exist"?</h3>
-<div class="outline-text-3" id="text-5-3">
+
 <p>
-If you get this error while the trace event is actually named 'abcd',
-it is likely the same reason as the issue above.  An ending new line
-is required in the <code>trace-events</code> files.
+<i>The full report will be released soon.</i>
 </p>
-</div>
-</div>
-</div>
-<div id="outline-container-orgb57efd2" class="outline-2">
-<h2 id="orgb57efd2"><span class="section-number-2">6</span> See also</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-For more details on QEMU tracing, see <code>docs/devel/tracing.txt</code> in the
-QEMU repository.
-</p>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: Jul 09, 2019</p>
+<p class="date">Date: Jun 29, 2020</p>
 </div>
 </body>
 </html>

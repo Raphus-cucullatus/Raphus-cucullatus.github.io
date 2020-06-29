@@ -245,28 +245,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf9a5fcd">1. PML capability</a></li>
-<li><a href="#org833eda3">2. PML enabling</a></li>
-<li><a href="#org25a9227">3. PML mechanism</a></li>
-<li><a href="#org7c3e106">4. Runtime PML</a></li>
-<li><a href="#orgc0134e2">5. Getting the dirty log</a></li>
-<li><a href="#orgf34fddc">6. Evaluation on PML overhead</a>
+<li><a href="#org81e1e3b">1. PML capability</a></li>
+<li><a href="#orga5e3c62">2. PML enabling</a></li>
+<li><a href="#org0741ec7">3. PML mechanism</a></li>
+<li><a href="#orgfa73283">4. Runtime PML</a></li>
+<li><a href="#orgf60b9a3">5. Getting the dirty log</a></li>
+<li><a href="#orgfe3d7ec">6. Evaluation on PML overhead</a>
 <ul>
-<li><a href="#orgca8543f">6.1. Sources of overhead</a></li>
-<li><a href="#orgff17393">6.2. Setup</a></li>
-<li><a href="#org73e43ce">6.3. Result takeaways</a></li>
-<li><a href="#orgd77bd73">6.4. Micro-benchmark: memory write throughput</a></li>
-<li><a href="#orgbeffcc7">6.5. Macro-benchmark: PageRank</a></li>
-<li><a href="#org4dc8504">6.6. <code>kvm_vm_ioctl_get_dirty_log</code> time</a></li>
-<li><a href="#org9d372a0">6.7. <code>vmx_flush_pml_buffer</code> time</a></li>
+<li><a href="#org569a001">6.1. Sources of overhead</a></li>
+<li><a href="#org667cec2">6.2. Setup</a></li>
+<li><a href="#org54c4283">6.3. Result takeaways</a></li>
+<li><a href="#org3c8aa95">6.4. Micro-benchmark: memory write throughput</a></li>
+<li><a href="#orgcaf030e">6.5. Macro-benchmark: PageRank</a></li>
+<li><a href="#orga860da9">6.6. <code>kvm_vm_ioctl_get_dirty_log</code> time</a></li>
+<li><a href="#org5cccc64">6.7. <code>vmx_flush_pml_buffer</code> time</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf9a5fcd" class="outline-2">
-<h2 id="orgf9a5fcd"><span class="section-number-2">1</span> PML capability</h2>
+<div id="outline-container-org81e1e3b" class="outline-2">
+<h2 id="org81e1e3b"><span class="section-number-2">1</span> PML capability</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 VMX related capabilities are reported mainly by MSR.  PML control is
@@ -284,8 +284,8 @@ control in the 32-bit vector.
 </p>
 </div>
 </div>
-<div id="outline-container-org833eda3" class="outline-2">
-<h2 id="org833eda3"><span class="section-number-2">2</span> PML enabling</h2>
+<div id="outline-container-orga5e3c62" class="outline-2">
+<h2 id="orga5e3c62"><span class="section-number-2">2</span> PML enabling</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The enabling bit of PML is at bit 17 in the secondary processor-based
@@ -318,8 +318,8 @@ kvm_init
 </pre>
 </div>
 </div>
-<div id="outline-container-org25a9227" class="outline-2">
-<h2 id="org25a9227"><span class="section-number-2">3</span> PML mechanism</h2>
+<div id="outline-container-org0741ec7" class="outline-2">
+<h2 id="org0741ec7"><span class="section-number-2">3</span> PML mechanism</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The VMCS field (<code>PML_ADDRESS</code>) specifies the physical address of a 4K
@@ -341,8 +341,8 @@ GPA in this slot.  Then decreases the PML index by 1.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7c3e106" class="outline-2">
-<h2 id="org7c3e106"><span class="section-number-2">4</span> Runtime PML</h2>
+<div id="outline-container-orgfa73283" class="outline-2">
+<h2 id="orgfa73283"><span class="section-number-2">4</span> Runtime PML</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 When PML is enabled (<code>enable_pml</code> is 1), <code>vmx_flush_pml_buffer</code> is
@@ -365,8 +365,8 @@ is set.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgc0134e2" class="outline-2">
-<h2 id="orgc0134e2"><span class="section-number-2">5</span> Getting the dirty log</h2>
+<div id="outline-container-orgf60b9a3" class="outline-2">
+<h2 id="orgf60b9a3"><span class="section-number-2">5</span> Getting the dirty log</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 QEMU can use the <code>KVM_GET_DIRTY_LOG</code> ioctl to request a dirty page
@@ -387,12 +387,12 @@ write protect it for those pages that have dirty-bit disabled).</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgf34fddc" class="outline-2">
-<h2 id="orgf34fddc"><span class="section-number-2">6</span> Evaluation on PML overhead</h2>
+<div id="outline-container-orgfe3d7ec" class="outline-2">
+<h2 id="orgfe3d7ec"><span class="section-number-2">6</span> Evaluation on PML overhead</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgca8543f" class="outline-3">
-<h3 id="orgca8543f"><span class="section-number-3">6.1</span> Sources of overhead</h3>
+<div id="outline-container-org569a001" class="outline-3">
+<h3 id="org569a001"><span class="section-number-3">6.1</span> Sources of overhead</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 There are 3 sources of overhead after enabling PML:
@@ -421,8 +421,8 @@ in the PML page.  And bitmap marking occurs only for
 </ol>
 </div>
 </div>
-<div id="outline-container-orgff17393" class="outline-3">
-<h3 id="orgff17393"><span class="section-number-3">6.2</span> Setup</h3>
+<div id="outline-container-org667cec2" class="outline-3">
+<h3 id="org667cec2"><span class="section-number-3">6.2</span> Setup</h3>
 <div class="outline-text-3" id="text-6-2">
 <ul class="org-ul">
 <li>Host: Intel(R) Xeon(R) CPU E5-2650 v4 @ 2.20GHz, Linux 4.19.57, QEMU
@@ -431,8 +431,8 @@ in the PML page.  And bitmap marking occurs only for
 </ul>
 </div>
 </div>
-<div id="outline-container-org73e43ce" class="outline-3">
-<h3 id="org73e43ce"><span class="section-number-3">6.3</span> Result takeaways</h3>
+<div id="outline-container-org54c4283" class="outline-3">
+<h3 id="org54c4283"><span class="section-number-3">6.3</span> Result takeaways</h3>
 <div class="outline-text-3" id="text-6-3">
 <ol class="org-ol">
 <li>For an extreme case (guest repeatedly, sequentially writes 8 bytes
@@ -444,8 +444,8 @@ running time slow down.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgd77bd73" class="outline-3">
-<h3 id="orgd77bd73"><span class="section-number-3">6.4</span> Micro-benchmark: memory write throughput</h3>
+<div id="outline-container-org3c8aa95" class="outline-3">
+<h3 id="org3c8aa95"><span class="section-number-3">6.4</span> Micro-benchmark: memory write throughput</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Benchmark description: 1 thread repeatedly, sequentially write 8 bytes
@@ -554,8 +554,8 @@ it, this case involves modifying kernel a little bit.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbeffcc7" class="outline-3">
-<h3 id="orgbeffcc7"><span class="section-number-3">6.5</span> Macro-benchmark: PageRank</h3>
+<div id="outline-container-orgcaf030e" class="outline-3">
+<h3 id="orgcaf030e"><span class="section-number-3">6.5</span> Macro-benchmark: PageRank</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 Benchmark description: 10-iteration PageRank in <a href="https://github.com/jshun/ligra">Ligra (a graph
@@ -642,8 +642,8 @@ Ligra's rMat generator) with 2<sup>23</sup> vertices.
 </table>
 </div>
 </div>
-<div id="outline-container-org4dc8504" class="outline-3">
-<h3 id="org4dc8504"><span class="section-number-3">6.6</span> <code>kvm_vm_ioctl_get_dirty_log</code> time</h3>
+<div id="outline-container-orga860da9" class="outline-3">
+<h3 id="orga860da9"><span class="section-number-3">6.6</span> <code>kvm_vm_ioctl_get_dirty_log</code> time</h3>
 <div class="outline-text-3" id="text-6-6">
 <p>
 The time of getting dirty log from KVM depends on how many dirty pages
@@ -698,8 +698,8 @@ workload and the frequency of dirty log syncing.
 </table>
 </div>
 </div>
-<div id="outline-container-org9d372a0" class="outline-3">
-<h3 id="org9d372a0"><span class="section-number-3">6.7</span> <code>vmx_flush_pml_buffer</code> time</h3>
+<div id="outline-container-org5cccc64" class="outline-3">
+<h3 id="org5cccc64"><span class="section-number-3">6.7</span> <code>vmx_flush_pml_buffer</code> time</h3>
 <div class="outline-text-3" id="text-6-7">
 <p>
 This function is called on every guest exit and at the beginning

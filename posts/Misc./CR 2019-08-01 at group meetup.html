@@ -245,9 +245,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgce78dee">1. Pitfall 1: Begin implementing without solid, preliminary data support</a></li>
-<li><a href="#orgc43c891">2. Pitfall 2: Aimlessly apply an optimization</a></li>
-<li><a href="#org803d5ad">3. Pitfall 3: Can not identify the trade-offs of an optimization</a></li>
+<li><a href="#org388b4a5">1. Pitfall 1: Begin implementing without solid, preliminary data support</a></li>
+<li><a href="#org827d3a8">2. Pitfall 2: Aimlessly apply an optimization</a></li>
+<li><a href="#org18f9d25">3. Pitfall 3: Can not identify the trade-offs of an optimization</a></li>
 </ul>
 </div>
 </div>
@@ -259,8 +259,8 @@ On 2019/08/01, HGS gave a report on his query repair concurrency control.
 After the speech, CR left an inspiring comment on the presentation, the work, and about general research as well.  Here is a summary on the pitfalls of the researches on performance optimization by CR.
 </p>
 
-<div id="outline-container-orgce78dee" class="outline-2">
-<h2 id="orgce78dee"><span class="section-number-2">1</span> Pitfall 1: Begin implementing without solid, preliminary data support</h2>
+<div id="outline-container-org388b4a5" class="outline-2">
+<h2 id="org388b4a5"><span class="section-number-2">1</span> Pitfall 1: Begin implementing without solid, preliminary data support</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 If there is no supporting data for your idea/claims, it is 90% that the project would fail.  It is necessary to give:
@@ -271,8 +271,8 @@ If there is no supporting data for your idea/claims, it is 90% that the project 
 </ol>
 </div>
 </div>
-<div id="outline-container-orgc43c891" class="outline-2">
-<h2 id="orgc43c891"><span class="section-number-2">2</span> Pitfall 2: Aimlessly apply an optimization</h2>
+<div id="outline-container-org827d3a8" class="outline-2">
+<h2 id="org827d3a8"><span class="section-number-2">2</span> Pitfall 2: Aimlessly apply an optimization</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Hu used predicate lock to optimize the false conflict issue in MySQL gap lock.  But
@@ -283,8 +283,8 @@ Hu used predicate lock to optimize the false conflict issue in MySQL gap lock.  
 </ol>
 </div>
 </div>
-<div id="outline-container-org803d5ad" class="outline-2">
-<h2 id="org803d5ad"><span class="section-number-2">3</span> Pitfall 3: Can not identify the trade-offs of an optimization</h2>
+<div id="outline-container-org18f9d25" class="outline-2">
+<h2 id="org18f9d25"><span class="section-number-2">3</span> Pitfall 3: Can not identify the trade-offs of an optimization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Hu decided to use query plan optimization to reduce the repair operations in the repair phase so that blocking time can be reduced.  However, query plan optimization was originally used for execution performance.  If you use a query plan that is <i>good</i> for your repair phase but is different from the query plan <i>optimal</i> for execution, you are actually trading common-case performance for that in special cases.
