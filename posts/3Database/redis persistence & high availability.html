@@ -245,20 +245,20 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6303bd4">1. Redis data persistence and crash recovery</a>
+<li><a href="#org2acce95">1. Redis data persistence and crash recovery</a>
 <ul>
-<li><a href="#org8c084bb">1.1. RDB</a></li>
-<li><a href="#orgdaa9e9d">1.2. AOF</a></li>
-<li><a href="#orgc6f50cf">1.3. About redis recovery time</a></li>
+<li><a href="#org3ebd29b">1.1. RDB</a></li>
+<li><a href="#org6b6d55c">1.2. AOF</a></li>
+<li><a href="#org5931447">1.3. About redis recovery time</a></li>
 </ul>
 </li>
-<li><a href="#org98396b9">2. Redis high-availability: replication, cluster, and sentinel</a></li>
+<li><a href="#org578287d">2. Redis high-availability: replication, cluster, and sentinel</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org6303bd4" class="outline-2">
-<h2 id="org6303bd4"><span class="section-number-2">1</span> Redis data persistence and crash recovery</h2>
+<div id="outline-container-org2acce95" class="outline-2">
+<h2 id="org2acce95"><span class="section-number-2">1</span> Redis data persistence and crash recovery</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> does redis persist data?</li>
@@ -271,8 +271,8 @@ Redis, PostgreSQL, MySQL alike provide different level of durability
 regards crashing.
 </p>
 </div>
-<div id="outline-container-org8c084bb" class="outline-3">
-<h3 id="org8c084bb"><span class="section-number-3">1.1</span> RDB</h3>
+<div id="outline-container-org3ebd29b" class="outline-3">
+<h3 id="org3ebd29b"><span class="section-number-3">1.1</span> RDB</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Snapshots.
@@ -325,8 +325,8 @@ Caller of saving to a RDB:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdaa9e9d" class="outline-3">
-<h3 id="orgdaa9e9d"><span class="section-number-3">1.2</span> AOF</h3>
+<div id="outline-container-org6b6d55c" class="outline-3">
+<h3 id="org6b6d55c"><span class="section-number-3">1.2</span> AOF</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Operation logging + log compacting (log rewriting).  
@@ -361,8 +361,8 @@ writes.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc6f50cf" class="outline-3">
-<h3 id="orgc6f50cf"><span class="section-number-3">1.3</span> About redis recovery time</h3>
+<div id="outline-container-org5931447" class="outline-3">
+<h3 id="org5931447"><span class="section-number-3">1.3</span> About redis recovery time</h3>
 <div class="outline-text-3" id="text-1-3">
 <blockquote>
 <p>
@@ -384,8 +384,8 @@ and will finally shut down the old one.
 </div>
 </div>
 </div>
-<div id="outline-container-org98396b9" class="outline-2">
-<h2 id="org98396b9"><span class="section-number-2">2</span> Redis high-availability: replication, cluster, and sentinel</h2>
+<div id="outline-container-org578287d" class="outline-2">
+<h2 id="org578287d"><span class="section-number-2">2</span> Redis high-availability: replication, cluster, and sentinel</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Redis replication is a master-slave method to achieve fail-over

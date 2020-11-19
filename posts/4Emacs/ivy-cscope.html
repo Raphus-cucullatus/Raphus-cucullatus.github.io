@@ -245,22 +245,22 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd51a1c5">1. Introduction</a></li>
-<li><a href="#org2aa5396">2. Example usage:</a>
+<li><a href="#org3604af8">1. Introduction</a></li>
+<li><a href="#org75e5b2b">2. Example usage:</a>
 <ul>
-<li><a href="#orgc177a7d">2.1. You can bind the key map by:</a></li>
-<li><a href="#org8b5a73f">2.2. Also for quick access:</a></li>
-<li><a href="#org4503ed9">2.3. Get familiar with ivy actions:</a></li>
-<li><a href="#org105ee26">2.4. Other hints when using ivy completion (not directly related to this package)</a></li>
+<li><a href="#orga673aae">2.1. You can bind the key map by:</a></li>
+<li><a href="#org7dc32d4">2.2. Also for quick access:</a></li>
+<li><a href="#org3e9cca3">2.3. Get familiar with ivy actions:</a></li>
+<li><a href="#org55a30da">2.4. Other hints when using ivy completion (not directly related to this package)</a></li>
 </ul>
 </li>
-<li><a href="#org70e9ecc">3. Other Emacs cscope packages:</a></li>
+<li><a href="#org0f4a8e6">3. Other Emacs cscope packages:</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd51a1c5" class="outline-2">
-<h2 id="orgd51a1c5"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org3604af8" class="outline-2">
+<h2 id="org3604af8"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b><a href="https://github.com/Raphus-cucullatus/ivy-cscope.el">ivy-cscope.el</a></b> is yet another interface for <a href="http://cscope.sourceforge.net">cscope</a> in Emacs.
@@ -282,12 +282,12 @@ It provides
 </div>
 </div>
 
-<div id="outline-container-org2aa5396" class="outline-2">
-<h2 id="org2aa5396"><span class="section-number-2">2</span> Example usage:</h2>
+<div id="outline-container-org75e5b2b" class="outline-2">
+<h2 id="org75e5b2b"><span class="section-number-2">2</span> Example usage:</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgc177a7d" class="outline-3">
-<h3 id="orgc177a7d"><span class="section-number-3">2.1</span> You can bind the key map by:</h3>
+<div id="outline-container-orga673aae" class="outline-3">
+<h3 id="orga673aae"><span class="section-number-3">2.1</span> You can bind the key map by:</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key c-mode-base-map (kbd <span style="font-style: italic;">"C-c j c"</span>) ivy-cscope-command-map)
@@ -296,8 +296,8 @@ It provides
 </div>
 </div>
 
-<div id="outline-container-org8b5a73f" class="outline-3">
-<h3 id="org8b5a73f"><span class="section-number-3">2.2</span> Also for quick access:</h3>
+<div id="outline-container-org7dc32d4" class="outline-3">
+<h3 id="org7dc32d4"><span class="section-number-3">2.2</span> Also for quick access:</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key c-mode-base-map (kbd <span style="font-style: italic;">"M-."</span>) 'ivy-cscope-find-definition-at-point)
@@ -309,8 +309,8 @@ It provides
 </div>
 </div>
 
-<div id="outline-container-org4503ed9" class="outline-3">
-<h3 id="org4503ed9"><span class="section-number-3">2.3</span> Get familiar with ivy actions:</h3>
+<div id="outline-container-org3e9cca3" class="outline-3">
+<h3 id="org3e9cca3"><span class="section-number-3">2.3</span> Get familiar with ivy actions:</h3>
 <div class="outline-text-3" id="text-2-3">
 <ol class="org-ol">
 <li>Press <code>C-c j c c</code> (or <code>M-x ivy-cscope-find-caller</code>).</li>
@@ -331,8 +331,8 @@ mm/gup.c ...
 </div>
 </div>
 
-<div id="outline-container-org105ee26" class="outline-3">
-<h3 id="org105ee26"><span class="section-number-3">2.4</span> Other hints when using ivy completion (not directly related to this package)</h3>
+<div id="outline-container-org55a30da" class="outline-3">
+<h3 id="org55a30da"><span class="section-number-3">2.4</span> Other hints when using ivy completion (not directly related to this package)</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 If you use <a href="https://github.com/abo-abo/avy">avy</a>, you can bind <code>ivy-avy</code> so that you can jump to a specific result with a single key stroke:
@@ -356,8 +356,8 @@ When in ivy minibuffer, one can use
 </div>
 </div>
 
-<div id="outline-container-org70e9ecc" class="outline-2">
-<h2 id="org70e9ecc"><span class="section-number-2">3</span> Other Emacs cscope packages:</h2>
+<div id="outline-container-org0f4a8e6" class="outline-2">
+<h2 id="org0f4a8e6"><span class="section-number-2">3</span> Other Emacs cscope packages:</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/dkogan/xcscope.el">xcscope.el</a>.</li>
