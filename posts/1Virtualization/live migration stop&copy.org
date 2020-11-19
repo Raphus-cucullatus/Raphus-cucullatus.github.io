@@ -1,4 +1,4 @@
-#+TITLE:  The Stop & Copy Phase in QEMU Live Migration
+#+TITLE: The Stop & Copy Phase in QEMU Live Migration
 #+DATE: Jul 16, 2019
 #+OPTIONS: toc:1
 

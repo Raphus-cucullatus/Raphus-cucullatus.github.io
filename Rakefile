@@ -2,8 +2,8 @@ require 'date'
 require 'rake/clean'
 
 POSTS_ORGS = FileList['./posts/**/*.org']
-BIN_GEN_BC = './bin/gen-bc.rb'
-BIN_GEN_RP = './bin/gen-rp.rb'
+BIN_GEN_BC = './bin/gen-bc-from-template.rb'
+BIN_GEN_RP = './bin/gen-rp-from-template.rb'
 CONFIG_EMACS_ORG_EXPORT = './config/emacs-org-export.el'
 
 desc "Compile standalone Org file to html (I have my Org file named '*.org')."

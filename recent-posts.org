@@ -1,3 +1,0 @@
-- Nov 19, 2020: [[file:./posts/Kernel/Linux%20kernel%20programming%20test.html][Linux Kernel Programming Test]]
-- Jun 29, 2020: [[file:./posts/Misc./a%20glimpse%20into%20linux%20security%20teams.html][A Glimpse Into Linux Security Teams]]
-- May 20, 2020: [[file:./posts/Emacs/ivy-cscope.html][Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!]]
