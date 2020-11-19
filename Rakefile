@@ -39,3 +39,6 @@ end
 
 task default: %w[index.html]
 
+task view: %w[index.html] do |t|
+  sh "open #{t.prerequisites[0]}"
+end
