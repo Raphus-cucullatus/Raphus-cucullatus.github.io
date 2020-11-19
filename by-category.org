@@ -1,0 +1,28 @@
+* Virtualization
+
+- [[file:.%2Fposts%2F1Virtualization%2Fcase%3A%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html][Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host]]
+- [[file:.%2Fposts%2F1Virtualization%2Flive%20migration%20stop%26copy.html][The Stop & Copy Phase in QEMU Live Migration]]
+- [[file:.%2Fposts%2F1Virtualization%2FPML%20and%20its%20overhead.html][Page-Modification Logging (PML) Inside and Its Overhead]]
+- [[file:.%2Fposts%2F1Virtualization%2Fqemu%20adding%20a%20new%20trace%20point.html][QEMU: Adding a New Trace Event]]
+
+* Kernel
+
+- [[file:.%2Fposts%2F2Kernel%2FLinux%20kernel%20programming%20test.html][Linux Kernel Programming Test]]
+
+* Database
+
+- [[file:.%2Fposts%2F3Database%2Fredis%20persistence%20%26%20high%20availability.html][Redis Data Persistence and High-Availability]]
+
+* Emacs
+
+- [[file:.%2Fposts%2F4Emacs%2Fmani.html][mani.el: Yet Another Emacs Package to Read Man Page]]
+- [[file:.%2Fposts%2F4Emacs%2Fivy-cscope.html][Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!]]
+- [[file:.%2Fposts%2F4Emacs%2FElisp%20symbol%3A%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html][Elisp Symbols: What are Symbol, Variable,  and "~boundp~", "~intern~" all about?]]
+- [[file:.%2Fposts%2F4Emacs%2Firi.html][IRI: An Interactive Emacs Front-End for Ruby API Reference]]
+
+* Misc.
+
+- [[file:.%2Fposts%2F5Misc.%2Fa%20glimpse%20into%20linux%20security%20teams.html][A Glimpse Into Linux Security Teams]]
+- [[file:.%2Fposts%2F5Misc.%2FCR%202019-08-01%20at%20group%20meetup.html][CR: Pitfalls of the researches on performance optimization]]
+- [[file:.%2Fposts%2F5Misc.%2FReading%20EuroSys%E2%80%9920%20best%20paper%3A%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html][Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns]]
+

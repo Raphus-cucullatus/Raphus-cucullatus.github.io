@@ -1,0 +1,1397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Stop &amp; Copy Phase in QEMU Live Migration</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">The Stop &amp; Copy Phase in QEMU Live Migration</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9231799">1. Setup</a></li>
+<li><a href="#org191cd09">2. Analysis</a></li>
+<li><a href="#org73e7bd5">3. Appendix A: Probed tracing events</a></li>
+<li><a href="#org9dfebc2">4. Appendix B: Tracing result</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9231799" class="outline-2">
+<h2 id="org9231799"><span class="section-number-2">1</span> Setup</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This trace is obtained QEMU simple tracing backend.  The guest is assigned 4
+VCPUs, 8 GB memory, a virtio nic and a virtio block device.  The guest
+runs Ubuntu 18.04.2 and is idle when the TCP migration is performed.
+</p>
+
+<p>
+The trace events I used are provided in Appendix A.  The detailed
+The trace events are in Appendix Atracing results are in Appendix B.
+</p>
+</div>
+</div>
+<div id="outline-container-org191cd09" class="outline-2">
+<h2 id="org191cd09"><span class="section-number-2">2</span> Analysis</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Operations sorted by time:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">Index</th>
+<th scope="col" class="org-left">Operations</th>
+<th scope="col" class="org-right">Time (us)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">send dirty RAM</td>
+<td class="org-right">61805.705</td>
+</tr>
+
+<tr>
+<td class="org-right">49</td>
+<td class="org-left">save virtio-blk</td>
+<td class="org-right">2030.198</td>
+</tr>
+
+<tr>
+<td class="org-right">48</td>
+<td class="org-left">save virtio-net</td>
+<td class="org-right">2029.208</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">VM state change notify</td>
+<td class="org-right">1083.087</td>
+</tr>
+
+<tr>
+<td class="org-right">46</td>
+<td class="org-left">save piix4<sub>pm</sub></td>
+<td class="org-right">675.355</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">get dirty RAM log</td>
+<td class="org-right">446.159</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">get CPU states from KVM</td>
+<td class="org-right">421.595</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-left">save cpu</td>
+<td class="org-right">297.233</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">stop all VCPUs</td>
+<td class="org-right">221.704</td>
+</tr>
+
+<tr>
+<td class="org-right">19</td>
+<td class="org-left">save cpu</td>
+<td class="org-right">173.444</td>
+</tr>
+
+<tr>
+<td class="org-right">13</td>
+<td class="org-left">save cpu</td>
+<td class="org-right">172.909</td>
+</tr>
+
+<tr>
+<td class="org-right">16</td>
+<td class="org-left">save cpu</td>
+<td class="org-right">166.661</td>
+</tr>
+
+<tr>
+<td class="org-right">42</td>
+<td class="org-left">save vmmouse</td>
+<td class="org-right">133.532</td>
+</tr>
+
+<tr>
+<td class="org-right">44</td>
+<td class="org-left">save ide</td>
+<td class="org-right">90.513</td>
+</tr>
+
+<tr>
+<td class="org-right">51</td>
+<td class="org-left">save globalstate</td>
+<td class="org-right">64.848</td>
+</tr>
+
+<tr>
+<td class="org-right">38</td>
+<td class="org-left">save fdc</td>
+<td class="org-right">62.999</td>
+</tr>
+
+<tr>
+<td class="org-right">29</td>
+<td class="org-left">save vga</td>
+<td class="org-right">38.811</td>
+</tr>
+
+<tr>
+<td class="org-right">26</td>
+<td class="org-left">save i8259</td>
+<td class="org-right">29.543</td>
+</tr>
+
+<tr>
+<td class="org-right">10</td>
+<td class="org-left">save kvm-tpr-opt</td>
+<td class="org-right">27.977</td>
+</tr>
+
+<tr>
+<td class="org-right">30</td>
+<td class="org-left">save hpet</td>
+<td class="org-right">24.44</td>
+</tr>
+
+<tr>
+<td class="org-right">11</td>
+<td class="org-left">save apic</td>
+<td class="org-right">24.086</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-left">save slirp</td>
+<td class="org-right">23.166</td>
+</tr>
+
+<tr>
+<td class="org-right">14</td>
+<td class="org-left">save apic</td>
+<td class="org-right">21.979</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">save timer</td>
+<td class="org-right">21.874</td>
+</tr>
+
+<tr>
+<td class="org-right">32</td>
+<td class="org-left">save i8254</td>
+<td class="org-right">21.746</td>
+</tr>
+
+<tr>
+<td class="org-right">17</td>
+<td class="org-left">save apic</td>
+<td class="org-right">21.214</td>
+</tr>
+
+<tr>
+<td class="org-right">20</td>
+<td class="org-left">save apic</td>
+<td class="org-right">20.963</td>
+</tr>
+
+<tr>
+<td class="org-right">31</td>
+<td class="org-left">save mc146818rtc</td>
+<td class="org-right">19.784</td>
+</tr>
+
+<tr>
+<td class="org-right">34</td>
+<td class="org-left">save dma</td>
+<td class="org-right">18.103</td>
+</tr>
+
+<tr>
+<td class="org-right">28</td>
+<td class="org-left">save ioapic</td>
+<td class="org-right">15.085</td>
+</tr>
+
+<tr>
+<td class="org-right">35</td>
+<td class="org-left">save dma</td>
+<td class="org-right">14.851</td>
+</tr>
+
+<tr>
+<td class="org-right">40</td>
+<td class="org-left">save ps2mouse</td>
+<td class="org-right">14.804</td>
+</tr>
+
+<tr>
+<td class="org-right">25</td>
+<td class="org-left">save PIIX3</td>
+<td class="org-right">14.187</td>
+</tr>
+
+<tr>
+<td class="org-right">27</td>
+<td class="org-left">save i8259</td>
+<td class="org-right">14.13</td>
+</tr>
+
+<tr>
+<td class="org-right">39</td>
+<td class="org-left">save ps2kbd</td>
+<td class="org-right">13.944</td>
+</tr>
+
+<tr>
+<td class="org-right">36</td>
+<td class="org-left">save serial</td>
+<td class="org-right">12.588</td>
+</tr>
+
+<tr>
+<td class="org-right">8</td>
+<td class="org-left">save <code>cpu_common</code></td>
+<td class="org-right">11.444</td>
+</tr>
+
+<tr>
+<td class="org-right">24</td>
+<td class="org-left">save I440FX</td>
+<td class="org-right">11.056</td>
+</tr>
+
+<tr>
+<td class="org-right">21</td>
+<td class="org-left">save kvmclock</td>
+<td class="org-right">10.603</td>
+</tr>
+
+<tr>
+<td class="org-right">37</td>
+<td class="org-left">save <code>parallel_isa</code></td>
+<td class="org-right">9.287</td>
+</tr>
+
+<tr>
+<td class="org-right">22</td>
+<td class="org-left">save <code>fw_cfg</code></td>
+<td class="org-right">9.055</td>
+</tr>
+
+<tr>
+<td class="org-right">23</td>
+<td class="org-left">save PCIBUS</td>
+<td class="org-right">8.083</td>
+</tr>
+
+<tr>
+<td class="org-right">47</td>
+<td class="org-left">save smbus-eeprom</td>
+<td class="org-right">7.265</td>
+</tr>
+
+<tr>
+<td class="org-right">41</td>
+<td class="org-left">save pckbd</td>
+<td class="org-right">7.067</td>
+</tr>
+
+<tr>
+<td class="org-right">33</td>
+<td class="org-left">save pcspk</td>
+<td class="org-right">6.665</td>
+</tr>
+
+<tr>
+<td class="org-right">50</td>
+<td class="org-left">save acpi<sub>build</sub></td>
+<td class="org-right">5.224</td>
+</tr>
+
+<tr>
+<td class="org-right">45</td>
+<td class="org-left">save i2c<sub>bus</sub></td>
+<td class="org-right">4.938</td>
+</tr>
+
+<tr>
+<td class="org-right">43</td>
+<td class="org-left">save port92</td>
+<td class="org-right">4.633</td>
+</tr>
+
+<tr>
+<td class="org-right">12</td>
+<td class="org-left">save <code>cpu_common~</code></td>
+<td class="org-right">4.5</td>
+</tr>
+
+<tr>
+<td class="org-right">18</td>
+<td class="org-left">save <code>cpu_common</code></td>
+<td class="org-right">4.242</td>
+</tr>
+
+<tr>
+<td class="org-right">15</td>
+<td class="org-left">save <code>cpu_common</code></td>
+<td class="org-right">4.188</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>The time of RAM-related operations (get dirty log, send to remote)
+may be reduced by
+<ol class="org-ol">
+<li>Enabling compression.  [TODO] will compression works for the
+stop&amp;copy phase?</li>
+<li>Setting max downtime limit.  This will affect the decision of
+when to stop the iteration phase and to enter the final stop&amp;copy
+phase.</li>
+</ol></li>
+<li>Saving some of the devices takes a lot time: is it due to network
+transmission?</li>
+<li>Most VM states can be saved/transmitted at round tens of
+micro-seconds with a few exceptions that take thousands.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org73e7bd5" class="outline-2">
+<h2 id="org73e7bd5"><span class="section-number-2">3</span> Appendix A: Probed tracing events</h2>
+<div class="outline-text-2" id="text-3">
+<pre class="example">
+# part of savevm.c
+qemu_loadvm_state_section
+qemu_loadvm_state_section_command
+qemu_loadvm_state_section_partend
+qemu_loadvm_state_post_main
+qemu_loadvm_state_section_startfull
+qemu_savevm_send_packaged
+loadvm_state_setup
+loadvm_state_cleanup
+savevm_command_send
+savevm_section_start
+savevm_section_end
+savevm_section_skip
+savevm_send_open_return_path
+savevm_send_ping
+savevm_send_postcopy_listen
+savevm_send_postcopy_run
+savevm_send_postcopy_resume
+savevm_send_colo_enable
+savevm_send_recv_bitmap
+savevm_state_setup
+savevm_state_resume_prepare
+savevm_state_header
+savevm_state_iterate
+savevm_state_cleanup
+savevm_state_complete_precopy
+vmstate_save
+vmstate_load
+# migration.c
+await_return_path_close_on_source_close
+await_return_path_close_on_source_joining
+migrate_set_state
+migrate_fd_cleanup
+migrate_fd_error
+migrate_fd_cancel
+migrate_handle_rp_req_pages
+migrate_pending
+migrate_send_rp_message
+migrate_send_rp_recv_bitmap
+migration_completion_file_err
+migration_completion_postcopy_end
+migration_completion_postcopy_end_after_complete
+migration_return_path_end_before
+migration_return_path_end_after
+migration_thread_after_loop
+migration_thread_file_err
+migration_thread_ratelimit_pre
+migration_thread_ratelimit_post
+migration_thread_setup_complete
+open_return_path_on_source
+open_return_path_on_source_continue
+postcopy_start
+postcopy_pause_return_path
+postcopy_pause_return_path_continued
+postcopy_pause_continued
+postcopy_start_set_run
+source_return_path_thread_bad_end
+source_return_path_thread_end
+source_return_path_thread_entry
+source_return_path_thread_loop_top
+source_return_path_thread_pong
+source_return_path_thread_shut
+source_return_path_thread_resume_ack
+migration_thread_low_pending
+migrate_transferred
+process_incoming_migration_co_end
+process_incoming_migration_co_postcopy_end_main
+# kvm-all.c
+kvm_ioctl
+kvm_vm_ioctl
+kvm_vcpu_ioctl
+kvm_run_exit
+kvm_device_ioctl
+kvm_failed_reg_get
+kvm_failed_reg_set
+kvm_irqchip_commit_routes
+kvm_irqchip_add_msi_route
+kvm_irqchip_update_msi_route
+kvm_irqchip_release_virq
+kvm_set_ioeventfd_mmio
+kvm_set_ioeventfd_pio
+kvm_set_user_memory
+# ram.c
+get_queued_page
+get_queued_page_not_dirty
+migration_bitmap_sync_start
+migration_bitmap_sync_end
+migration_throttle
+multifd_recv
+multifd_recv_sync_main
+multifd_recv_sync_main_signal
+multifd_recv_sync_main_wait
+multifd_recv_thread_end
+multifd_recv_thread_start
+multifd_send
+multifd_send_sync_main
+multifd_send_sync_main_signal
+multifd_send_sync_main_wait
+multifd_send_thread_end
+multifd_send_thread_start
+ram_discard_range
+ram_load_loop
+ram_load_postcopy_loop
+ram_postcopy_send_discard_bitmap
+-ram_save_page
+ram_save_queue_pages
+ram_dirty_bitmap_request
+ram_dirty_bitmap_reload_begin
+ram_dirty_bitmap_reload_complete
+ram_dirty_bitmap_sync_start
+ram_dirty_bitmap_sync_wait
+ram_dirty_bitmap_sync_complete
+ram_state_resume_prepare
+colo_flush_ram_cache_begin
+colo_flush_ram_cache_end
+save_xbzrle_page_skipping
+save_xbzrle_page_overflow
+ram_save_iterate_big_wait
+ram_load_complete
+# added
+migration_completion_wakeup_request
+migration_completion_globalstate_store
+migration_completion_vm_stop
+do_vm_stop_pause_all_vcpus_begin
+do_vm_stop_pause_all_vcpus_end
+net_vm_change_state_handler_begin
+net_vm_change_state_handler_end
+vm_state_notify_callback_begin
+vm_state_notify_callback_end
+bdrv_drain_all
+replay_disable_events
+bdrv_flush_all
+</pre>
+</div>
+</div>
+<div id="outline-container-org9dfebc2" class="outline-2">
+<h2 id="org9dfebc2"><span class="section-number-2">4</span> Appendix B: Tracing result</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgf556784" class="outline-3">
+<h3 id="orgf556784"><span class="section-number-3">4.1</span> stop all VCPUs: 221.704 us</h3>
+<div class="outline-text-3" id="text-4-1">
+<pre class="example">
+migration_thread_low_pending,0.941,pending=0x846000
+migration_completion_wakeup_request,1.166
+migration_completion_globalstate_store,1.527
+migration_completion_vm_stop,1.610
+do_vm_stop_pause_all_vcpus_begin,162.782
+do_vm_stop_pause_all_vcpus_end,53.678
+</pre>
+</div>
+</div>
+<div id="outline-container-org1c180eb" class="outline-3">
+<h3 id="org1c180eb"><span class="section-number-3">4.2</span> VM state change notify: 1083.087 us</h3>
+<div class="outline-text-3" id="text-4-2">
+<pre class="example">
+vm_state_notify_callback_begin,0.784
+vm_state_notify_callback_end,0.384
+vm_state_notify_callback_begin,67.191
+kvm_set_ioeventfd_mmio,0.780,fd=0x17,addr=0xfe007000,val=0x0,assign=0x0,size=0x0,datamatch=0x0
+kvm_vm_ioctl,109.853,type=0x4040ae79,arg=0x7f20eeffc3d0
+kvm_set_ioeventfd_pio,1.086,fd=0x17,addr=0xc010,val=0x0,assign=0x0,size=0x2,datamatch=0x1
+kvm_vm_ioctl,58.903,type=0x4040ae79,arg=0x7f20eeffc3d0
+kvm_vm_ioctl,37.582,type=0x4020ae76,arg=0x7f20eeffc5a0
+kvm_irqchip_release_virq,12.129,virq=0x2
+vm_state_notify_callback_end,0.859
+vm_state_notify_callback_begin,105.248
+kvm_set_ioeventfd_mmio,0.686,fd=0x13,addr=0xfe003000,val=0x0,assign=0x0,size=0x0,datamatch=0x0
+kvm_vm_ioctl,67.815,type=0x4040ae79,arg=0x7f20eeffc570
+kvm_set_ioeventfd_mmio,0.509,fd=0x14,addr=0xfe003004,val=0x1,assign=0x0,size=0x0,datamatch=0x0
+kvm_vm_ioctl,58.957,type=0x4040ae79,arg=0x7f20eeffc570
+kvm_set_ioeventfd_mmio,0.461,fd=0x15,addr=0xfe003008,val=0x2,assign=0x0,size=0x0,datamatch=0x0
+kvm_vm_ioctl,59.775,type=0x4040ae79,arg=0x7f20eeffc570
+kvm_set_ioeventfd_pio,0.519,fd=0x13,addr=0xc090,val=0x0,assign=0x0,size=0x2,datamatch=0x1
+kvm_vm_ioctl,30.228,type=0x4040ae79,arg=0x7f20eeffc570
+kvm_set_ioeventfd_pio,0.455,fd=0x14,addr=0xc090,val=0x1,assign=0x0,size=0x2,datamatch=0x1
+kvm_vm_ioctl,29.808,type=0x4040ae79,arg=0x7f20eeffc570
+kvm_set_ioeventfd_pio,0.477,fd=0x15,addr=0xc090,val=0x2,assign=0x0,size=0x2,datamatch=0x1
+kvm_vm_ioctl,62.505,type=0x4040ae79,arg=0x7f20eeffc570
+vm_state_notify_callback_end,0.444
+vm_state_notify_callback_begin,0.592
+vm_state_notify_callback_end,0.387
+vm_state_notify_callback_begin,0.289
+vm_state_notify_callback_end,0.396
+vm_state_notify_callback_begin,5.211
+kvm_vm_ioctl,3.454,type=0xffffffff8070ae9f,arg=0x7f20eeffc7e0
+vm_state_notify_callback_end,0.423
+vm_state_notify_callback_begin,0.880
+kvm_ioctl,24.088,type=0xae03,arg=0x4c
+kvm_vcpu_ioctl,69.623,cpu_index=0x0,type=0xffffffffc008ae88,arg=0x7f231e146910
+kvm_vcpu_ioctl,118.076,cpu_index=0x1,type=0xffffffffc008ae88,arg=0x7f231d945910
+kvm_vcpu_ioctl,61.232,cpu_index=0x2,type=0xffffffffc008ae88,arg=0x7f231d144910
+kvm_vcpu_ioctl,18.657,cpu_index=0x3,type=0xffffffffc008ae88,arg=0x7f231c943910
+kvm_vm_ioctl,2.548,type=0xffffffff8030ae7c,arg=0x7f20eeffc7c0
+kvm_ioctl,2.033,type=0xae03,arg=0x27
+vm_state_notify_callback_end,0.495
+vm_state_notify_callback_begin,0.419
+vm_state_notify_callback_end,0.605
+vm_state_notify_callback_begin,0.304
+vm_state_notify_callback_end,0.636
+vm_state_notify_callback_begin,0.295
+vm_state_notify_callback_end,0.453
+vm_state_notify_callback_begin,0.300
+vm_state_notify_callback_end,0.408
+vm_state_notify_callback_begin,5.889
+net_vm_change_state_handler_begin,6.247
+net_vm_change_state_handler_end,0.353
+vm_state_notify_callback_end,28.360
+bdrv_drain_all,9.380
+replay_disable_events,0.665
+bdrv_flush_all,11.813
+migration_completion_vm_stop_end,1.138
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcbce8a1" class="outline-3">
+<h3 id="orgcbce8a1"><span class="section-number-3">4.3</span> get CPU states from KVM: 421.595 us</h3>
+<div class="outline-text-3" id="text-4-3">
+<pre class="example">
+savevm_state_complete_precopy,50.355
+kvm_vcpu_ioctl,5.051,cpu_index=0x0,type=0xffffffff8040ae9f,arg=0x7f9d4bffe8b0
+kvm_vcpu_ioctl,1.958,cpu_index=0x0,type=0xffffffff8004ae98,arg=0x7f9d4bffe8e0
+kvm_vcpu_ioctl,3.627,cpu_index=0x0,type=0xffffffff8090ae81,arg=0x7f9d4bffe860
+kvm_vcpu_ioctl,9.603,cpu_index=0x0,type=0xffffffff9000aea4,arg=0x7f9d40001000
+kvm_vcpu_ioctl,2.171,cpu_index=0x0,type=0xffffffff8188aea6,arg=0x7f9d4bffe770
+kvm_vcpu_ioctl,10.200,cpu_index=0x0,type=0xffffffff8138ae83,arg=0x7f9d4bffe7c0
+kvm_vcpu_ioctl,17.757,cpu_index=0x0,type=0xffffffffc008ae88,arg=0x7f9d40002010
+kvm_vcpu_ioctl,4.337,cpu_index=0x0,type=0xffffffff8400ae8e,arg=0x7f9d4bffe4f0
+kvm_vcpu_ioctl,21.765,cpu_index=0x0,type=0xffffffff8080aea1,arg=0x7f9d4bffe870
+kvm_vcpu_ioctl,4.798,cpu_index=0x1,type=0xffffffff8040ae9f,arg=0x7f9d4b7fd8b0
+kvm_vcpu_ioctl,1.599,cpu_index=0x1,type=0xffffffff8004ae98,arg=0x7f9d4b7fd8e0
+kvm_vcpu_ioctl,2.691,cpu_index=0x1,type=0xffffffff8090ae81,arg=0x7f9d4b7fd860
+kvm_vcpu_ioctl,18.422,cpu_index=0x1,type=0xffffffff9000aea4,arg=0x7f9d38001000
+kvm_vcpu_ioctl,1.706,cpu_index=0x1,type=0xffffffff8188aea6,arg=0x7f9d4b7fd770
+kvm_vcpu_ioctl,10.941,cpu_index=0x1,type=0xffffffff8138ae83,arg=0x7f9d4b7fd7c0
+kvm_vcpu_ioctl,17.931,cpu_index=0x1,type=0xffffffffc008ae88,arg=0x7f9d38002010
+kvm_vcpu_ioctl,4.855,cpu_index=0x1,type=0xffffffff8400ae8e,arg=0x7f9d4b7fd4f0
+kvm_vcpu_ioctl,52.697,cpu_index=0x1,type=0xffffffff8080aea1,arg=0x7f9d4b7fd870
+kvm_vcpu_ioctl,4.643,cpu_index=0x2,type=0xffffffff8040ae9f,arg=0x7f9d4affc8b0
+kvm_vcpu_ioctl,1.533,cpu_index=0x2,type=0xffffffff8004ae98,arg=0x7f9d4affc8e0
+kvm_vcpu_ioctl,2.361,cpu_index=0x2,type=0xffffffff8090ae81,arg=0x7f9d4affc860
+kvm_vcpu_ioctl,10.186,cpu_index=0x2,type=0xffffffff9000aea4,arg=0x7f9d3c001000
+kvm_vcpu_ioctl,2.201,cpu_index=0x2,type=0xffffffff8188aea6,arg=0x7f9d4affc770
+kvm_vcpu_ioctl,9.031,cpu_index=0x2,type=0xffffffff8138ae83,arg=0x7f9d4affc7c0
+kvm_vcpu_ioctl,15.084,cpu_index=0x2,type=0xffffffffc008ae88,arg=0x7f9d3c002010
+kvm_vcpu_ioctl,3.760,cpu_index=0x2,type=0xffffffff8400ae8e,arg=0x7f9d4affc4f0
+kvm_vcpu_ioctl,65.921,cpu_index=0x2,type=0xffffffff8080aea1,arg=0x7f9d4affc870
+kvm_vcpu_ioctl,4.538,cpu_index=0x3,type=0xffffffff8040ae9f,arg=0x7f9d4a7fb8b0
+kvm_vcpu_ioctl,1.749,cpu_index=0x3,type=0xffffffff8004ae98,arg=0x7f9d4a7fb8e0
+kvm_vcpu_ioctl,2.674,cpu_index=0x3,type=0xffffffff8090ae81,arg=0x7f9d4a7fb860
+kvm_vcpu_ioctl,10.647,cpu_index=0x3,type=0xffffffff9000aea4,arg=0x7f9d30001000
+kvm_vcpu_ioctl,2.155,cpu_index=0x3,type=0xffffffff8188aea6,arg=0x7f9d4a7fb770
+kvm_vcpu_ioctl,10.440,cpu_index=0x3,type=0xffffffff8138ae83,arg=0x7f9d4a7fb7c0
+kvm_vcpu_ioctl,16.436,cpu_index=0x3,type=0xffffffffc008ae88,arg=0x7f9d30002010
+kvm_vcpu_ioctl,3.686,cpu_index=0x3,type=0xffffffff8400ae8e,arg=0x7f9d4a7fb4f0
+kvm_vcpu_ioctl,12.086,cpu_index=0x3,type=0xffffffff8080aea1,arg=0x7f9d4a7fb870
+</pre>
+</div>
+</div>
+<div id="outline-container-orga582b71" class="outline-3">
+<h3 id="orga582b71"><span class="section-number-3">4.4</span> get dirty RAM log: 446.159 us</h3>
+<div class="outline-text-3" id="text-4-4">
+<pre class="example">
+savevm_section_start,16.060,id=ram,section_id=0x3
+migration_bitmap_sync_start,2.003
+kvm_vm_ioctl,3.496,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.290,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.145,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.162,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.138,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,5.840,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,51.467,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,2.099,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,7.014,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,87.759,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.546,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.080,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.396,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.061,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,1.163,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,4.468,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,50.213,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,2.030,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,6.769,type=0x4010ae42,arg=0x7f9b17ffe710
+kvm_vm_ioctl,195.960,type=0x4010ae42,arg=0x7f9b17ffe710
+</pre>
+</div>
+</div>
+<div id="outline-container-orgf24fdf3" class="outline-3">
+<h3 id="orgf24fdf3"><span class="section-number-3">4.5</span> send dirty RAM: 61805.705 us</h3>
+<div class="outline-text-3" id="text-4-5">
+<pre class="example">
+migration_bitmap_sync_end,65885.705,dirty_pages=0x12f
+savevm_section_end,14.236,id=ram,section_id=0x3,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org83b9a58" class="outline-3">
+<h3 id="org83b9a58"><span class="section-number-3">4.6</span> save timer: 21.874 us</h3>
+<div class="outline-text-3" id="text-4-6">
+<pre class="example">
+savevm_section_start,4.990,id=timer,section_id=0x0
+vmstate_save,15.254,idstr=timer,vmsd_name=timer
+savevm_section_end,1.630,id=timer,section_id=0x0,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orge134b66" class="outline-3">
+<h3 id="orge134b66"><span class="section-number-3">4.7</span> save slirp: 23.166 us</h3>
+<div class="outline-text-3" id="text-4-7">
+<pre class="example">
+savevm_section_start,3.103,id=slirp,section_id=0x1
+vmstate_save,18.267,idstr=slirp,vmsd_name=(old)
+savevm_section_end,1.796,id=slirp,section_id=0x1,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org023b56d" class="outline-3">
+<h3 id="org023b56d"><span class="section-number-3">4.8</span> save <code>cpu_common</code>: 11.444 us</h3>
+<div class="outline-text-3" id="text-4-8">
+<pre class="example">
+savevm_section_start,2.767,id=cpu_common,section_id=0x5
+vmstate_save,7.020,idstr=cpu_common,vmsd_name=cpu_common
+savevm_section_end,1.657,id=cpu_common,section_id=0x5,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orga99ceb5" class="outline-3">
+<h3 id="orga99ceb5"><span class="section-number-3">4.9</span> save cpu: 297.233 us</h3>
+<div class="outline-text-3" id="text-4-9">
+<pre class="example">
+savevm_section_start,2.716,id=cpu,section_id=0x6
+vmstate_save,293.660,idstr=cpu,vmsd_name=cpu
+savevm_section_end,0.857,id=cpu,section_id=0x6,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org791574a" class="outline-3">
+<h3 id="org791574a"><span class="section-number-3">4.10</span> save kvm-tpr-opt: 27.977 us</h3>
+<div class="outline-text-3" id="text-4-10">
+<pre class="example">
+savevm_section_start,1.404,id=kvm-tpr-opt,section_id=0x7
+vmstate_save,25.820,idstr=kvm-tpr-opt,vmsd_name=kvm-tpr-opt
+savevm_section_end,0.753,id=kvm-tpr-opt,section_id=0x7,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org4499c10" class="outline-3">
+<h3 id="org4499c10"><span class="section-number-3">4.11</span> save apic: 24.086 us</h3>
+<div class="outline-text-3" id="text-4-11">
+<pre class="example">
+savevm_section_start,1.174,id=apic,section_id=0x8
+vmstate_save,22.219,idstr=apic,vmsd_name=apic
+savevm_section_end,0.693,id=apic,section_id=0x8,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org1e2886a" class="outline-3">
+<h3 id="org1e2886a"><span class="section-number-3">4.12</span> save <code>cpu_common~</code>: 4.5 us</h3>
+<div class="outline-text-3" id="text-4-12">
+<pre class="example">
+savevm_section_start,1.169,id=cpu_common,section_id=0x9
+vmstate_save,2.631,idstr=cpu_common,vmsd_name=cpu_common
+savevm_section_end,0.700,id=cpu_common,section_id=0x9,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org4122a37" class="outline-3">
+<h3 id="org4122a37"><span class="section-number-3">4.13</span> save cpu: 172.909 us</h3>
+<div class="outline-text-3" id="text-4-13">
+<pre class="example">
+savevm_section_start,1.026,id=cpu,section_id=0xa
+vmstate_save,171.215,idstr=cpu,vmsd_name=cpu
+savevm_section_end,0.668,id=cpu,section_id=0xa,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd904351" class="outline-3">
+<h3 id="orgd904351"><span class="section-number-3">4.14</span> save apic: 21.979 us</h3>
+<div class="outline-text-3" id="text-4-14">
+<pre class="example">
+savevm_section_start,1.215,id=apic,section_id=0xb
+vmstate_save,20.155,idstr=apic,vmsd_name=apic
+savevm_section_end,0.609,id=apic,section_id=0xb,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgf83aea1" class="outline-3">
+<h3 id="orgf83aea1"><span class="section-number-3">4.15</span> save <code>cpu_common</code>: 4.188 us</h3>
+<div class="outline-text-3" id="text-4-15">
+<pre class="example">
+savevm_section_start,1.107,id=cpu_common,section_id=0xc
+vmstate_save,2.402,idstr=cpu_common,vmsd_name=cpu_common
+savevm_section_end,0.679,id=cpu_common,section_id=0xc,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org221f306" class="outline-3">
+<h3 id="org221f306"><span class="section-number-3">4.16</span> save cpu: 166.661 us</h3>
+<div class="outline-text-3" id="text-4-16">
+<pre class="example">
+savevm_section_start,1.095,id=cpu,section_id=0xd
+vmstate_save,164.865,idstr=cpu,vmsd_name=cpu
+savevm_section_end,0.701,id=cpu,section_id=0xd,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgae6806c" class="outline-3">
+<h3 id="orgae6806c"><span class="section-number-3">4.17</span> save apic: 21.214 us</h3>
+<div class="outline-text-3" id="text-4-17">
+<pre class="example">
+savevm_section_start,0.989,id=apic,section_id=0xe
+vmstate_save,19.582,idstr=apic,vmsd_name=apic
+savevm_section_end,0.643,id=apic,section_id=0xe,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc355d9b" class="outline-3">
+<h3 id="orgc355d9b"><span class="section-number-3">4.18</span> save <code>cpu_common</code>: 4.242 us</h3>
+<div class="outline-text-3" id="text-4-18">
+<pre class="example">
+savevm_section_start,1.073,id=cpu_common,section_id=0xf
+vmstate_save,2.407,idstr=cpu_common,vmsd_name=cpu_common
+savevm_section_end,0.762,id=cpu_common,section_id=0xf,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgda6efab" class="outline-3">
+<h3 id="orgda6efab"><span class="section-number-3">4.19</span> save cpu: 173.444 us</h3>
+<div class="outline-text-3" id="text-4-19">
+<pre class="example">
+savevm_section_start,1.352,id=cpu,section_id=0x10
+vmstate_save,171.059,idstr=cpu,vmsd_name=cpu
+savevm_section_end,1.033,id=cpu,section_id=0x10,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfd2f73b" class="outline-3">
+<h3 id="orgfd2f73b"><span class="section-number-3">4.20</span> save apic: 20.963 us</h3>
+<div class="outline-text-3" id="text-4-20">
+<pre class="example">
+savevm_section_start,1.119,id=apic,section_id=0x11
+vmstate_save,19.160,idstr=apic,vmsd_name=apic
+savevm_section_end,0.684,id=apic,section_id=0x11,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org8127011" class="outline-3">
+<h3 id="org8127011"><span class="section-number-3">4.21</span> save kvmclock: 10.603 us</h3>
+<div class="outline-text-3" id="text-4-21">
+<pre class="example">
+savevm_section_start,1.361,id=kvmclock,section_id=0x12
+vmstate_save,1.028,idstr=kvmclock,vmsd_name=kvmclock
+kvm_vm_ioctl,1.917,type=0xffffffff8030ae7c,arg=0x7f9b17ffe770
+kvm_ioctl,5.534,type=0xae03,arg=0x27
+savevm_section_end,0.763,id=kvmclock,section_id=0x12,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org1dd1749" class="outline-3">
+<h3 id="org1dd1749"><span class="section-number-3">4.22</span> save <code>fw_cfg</code>: 9.055 us</h3>
+<div class="outline-text-3" id="text-4-22">
+<pre class="example">
+savevm_section_start,1.208,id=fw_cfg,section_id=0x13
+vmstate_save,7.135,idstr=fw_cfg,vmsd_name=fw_cfg
+savevm_section_end,0.712,id=fw_cfg,section_id=0x13,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org91d5c65" class="outline-3">
+<h3 id="org91d5c65"><span class="section-number-3">4.23</span> save PCIBUS: 8.083 us</h3>
+<div class="outline-text-3" id="text-4-23">
+<pre class="example">
+savevm_section_start,1.214,id=PCIBUS,section_id=0x14
+vmstate_save,6.160,idstr=PCIBUS,vmsd_name=PCIBUS
+savevm_section_end,0.709,id=PCIBUS,section_id=0x14,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org8976be0" class="outline-3">
+<h3 id="org8976be0"><span class="section-number-3">4.24</span> save I440FX: 11.056 us</h3>
+<div class="outline-text-3" id="text-4-24">
+<pre class="example">
+savevm_section_start,1.307,id=0000:00:00.0/I440FX,section_id=0x15
+vmstate_save,8.973,idstr=0000:00:00.0/I440FX,vmsd_name=I440FX
+savevm_section_end,0.776,id=0000:00:00.0/I440FX,section_id=0x15,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org7c76bae" class="outline-3">
+<h3 id="org7c76bae"><span class="section-number-3">4.25</span> save PIIX3: 14.187 us</h3>
+<div class="outline-text-3" id="text-4-25">
+<pre class="example">
+savevm_section_start,1.531,id=0000:00:01.0/PIIX3,section_id=0x16
+vmstate_save,11.752,idstr=0000:00:01.0/PIIX3,vmsd_name=PIIX3
+savevm_section_end,0.904,id=0000:00:01.0/PIIX3,section_id=0x16,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org1b93199" class="outline-3">
+<h3 id="org1b93199"><span class="section-number-3">4.26</span> save i8259: 29.543 us</h3>
+<div class="outline-text-3" id="text-4-26">
+<pre class="example">
+savevm_section_start,1.325,id=i8259,section_id=0x17
+vmstate_save,7.737,idstr=i8259,vmsd_name=i8259
+kvm_vm_ioctl,19.740,type=0xffffffffc208ae62,arg=0x7f9b17ffe5a0
+savevm_section_end,0.741,id=i8259,section_id=0x17,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgad6802a" class="outline-3">
+<h3 id="orgad6802a"><span class="section-number-3">4.27</span> save i8259: 14.13 us</h3>
+<div class="outline-text-3" id="text-4-27">
+<pre class="example">
+savevm_section_start,1.077,id=i8259,section_id=0x18
+vmstate_save,0.724,idstr=i8259,vmsd_name=i8259
+kvm_vm_ioctl,11.598,type=0xffffffffc208ae62,arg=0x7f9b17ffe5a0
+savevm_section_end,0.731,id=i8259,section_id=0x18,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org5a434c5" class="outline-3">
+<h3 id="org5a434c5"><span class="section-number-3">4.28</span> save ioapic: 15.085 us</h3>
+<div class="outline-text-3" id="text-4-28">
+<pre class="example">
+savevm_section_start,1.080,id=ioapic,section_id=0x19
+vmstate_save,2.504,idstr=ioapic,vmsd_name=ioapic
+kvm_vm_ioctl,10.847,type=0xffffffffc208ae62,arg=0x7f9b17ffe5a0
+savevm_section_end,0.654,id=ioapic,section_id=0x19,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb81f6cf" class="outline-3">
+<h3 id="orgb81f6cf"><span class="section-number-3">4.29</span> save vga: 38.811 us</h3>
+<div class="outline-text-3" id="text-4-29">
+<pre class="example">
+savevm_section_start,1.339,id=0000:00:02.0/vga,section_id=0x1a
+vmstate_save,36.624,idstr=0000:00:02.0/vga,vmsd_name=vga
+savevm_section_end,0.848,id=0000:00:02.0/vga,section_id=0x1a,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org003074c" class="outline-3">
+<h3 id="org003074c"><span class="section-number-3">4.30</span> save hpet: 24.44 us</h3>
+<div class="outline-text-3" id="text-4-30">
+<pre class="example">
+savevm_section_start,1.358,id=hpet,section_id=0x1b
+vmstate_save,22.326,idstr=hpet,vmsd_name=hpet
+savevm_section_end,0.756,id=hpet,section_id=0x1b,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org9a58aaf" class="outline-3">
+<h3 id="org9a58aaf"><span class="section-number-3">4.31</span> save mc146818rtc: 19.784 us</h3>
+<div class="outline-text-3" id="text-4-31">
+<pre class="example">
+savevm_section_start,1.246,id=mc146818rtc,section_id=0x1c
+vmstate_save,16.786,idstr=mc146818rtc,vmsd_name=mc146818rtc
+savevm_section_end,1.752,id=mc146818rtc,section_id=0x1c,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org27fec08" class="outline-3">
+<h3 id="org27fec08"><span class="section-number-3">4.32</span> save i8254: 21.746 us</h3>
+<div class="outline-text-3" id="text-4-32">
+<pre class="example">
+savevm_section_start,1.299,id=i8254,section_id=0x1d
+vmstate_save,19.428,idstr=i8254,vmsd_name=i8254
+savevm_section_end,1.019,id=i8254,section_id=0x1d,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org58161a8" class="outline-3">
+<h3 id="org58161a8"><span class="section-number-3">4.33</span> save pcspk: 6.665 us</h3>
+<div class="outline-text-3" id="text-4-33">
+<pre class="example">
+savevm_section_start,2.670,id=pcspk,section_id=0x1e
+vmstate_save,3.218,idstr=pcspk,vmsd_name=pcspk
+savevm_section_end,0.777,id=pcspk,section_id=0x1e,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orge25d277" class="outline-3">
+<h3 id="orge25d277"><span class="section-number-3">4.34</span> save dma: 18.103 us</h3>
+<div class="outline-text-3" id="text-4-34">
+<pre class="example">
+savevm_section_start,1.182,id=dma,section_id=0x1f
+vmstate_save,16.347,idstr=dma,vmsd_name=dma
+savevm_section_end,0.574,id=dma,section_id=0x1f,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org3ad4a48" class="outline-3">
+<h3 id="org3ad4a48"><span class="section-number-3">4.35</span> save dma: 14.851 us</h3>
+<div class="outline-text-3" id="text-4-35">
+<pre class="example">
+savevm_section_start,1.116,id=dma,section_id=0x20
+vmstate_save,13.131,idstr=dma,vmsd_name=dma
+savevm_section_end,0.604,id=dma,section_id=0x20,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgaa01306" class="outline-3">
+<h3 id="orgaa01306"><span class="section-number-3">4.36</span> save serial: 12.588 us</h3>
+<div class="outline-text-3" id="text-4-36">
+<pre class="example">
+savevm_section_start,1.278,id=serial,section_id=0x21
+vmstate_save,10.526,idstr=serial,vmsd_name=serial
+savevm_section_end,0.784,id=serial,section_id=0x21,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org4bb8e69" class="outline-3">
+<h3 id="org4bb8e69"><span class="section-number-3">4.37</span> save <code>parallel_isa</code>: 9.287 us</h3>
+<div class="outline-text-3" id="text-4-37">
+<pre class="example">
+savevm_section_start,1.223,id=parallel_isa,section_id=0x22
+vmstate_save,7.385,idstr=parallel_isa,vmsd_name=parallel_isa
+savevm_section_end,0.679,id=parallel_isa,section_id=0x22,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfbfb7c1" class="outline-3">
+<h3 id="orgfbfb7c1"><span class="section-number-3">4.38</span> save fdc: 62.999 us</h3>
+<div class="outline-text-3" id="text-4-38">
+<pre class="example">
+savevm_section_start,1.167,id=fdc,section_id=0x23
+vmstate_save,61.082,idstr=fdc,vmsd_name=fdc
+savevm_section_end,0.750,id=fdc,section_id=0x23,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org94d8e35" class="outline-3">
+<h3 id="org94d8e35"><span class="section-number-3">4.39</span> save ps2kbd: 13.944 us</h3>
+<div class="outline-text-3" id="text-4-39">
+<pre class="example">
+savevm_section_start,1.227,id=ps2kbd,section_id=0x24
+vmstate_save,11.975,idstr=ps2kbd,vmsd_name=ps2kbd
+savevm_section_end,0.742,id=ps2kbd,section_id=0x24,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfd6652a" class="outline-3">
+<h3 id="orgfd6652a"><span class="section-number-3">4.40</span> save ps2mouse: 14.804 us</h3>
+<div class="outline-text-3" id="text-4-40">
+<pre class="example">
+savevm_section_start,1.262,id=ps2mouse,section_id=0x25
+vmstate_save,12.995,idstr=ps2mouse,vmsd_name=ps2mouse
+savevm_section_end,0.547,id=ps2mouse,section_id=0x25,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org1284749" class="outline-3">
+<h3 id="org1284749"><span class="section-number-3">4.41</span> save pckbd: 7.067 us</h3>
+<div class="outline-text-3" id="text-4-41">
+<pre class="example">
+savevm_section_start,1.305,id=pckbd,section_id=0x26
+vmstate_save,5.212,idstr=pckbd,vmsd_name=pckbd
+savevm_section_end,0.550,id=pckbd,section_id=0x26,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgf2edbce" class="outline-3">
+<h3 id="orgf2edbce"><span class="section-number-3">4.42</span> save vmmouse: 133.532 us</h3>
+<div class="outline-text-3" id="text-4-42">
+<pre class="example">
+savevm_section_start,1.190,id=vmmouse,section_id=0x27
+vmstate_save,131.630,idstr=vmmouse,vmsd_name=vmmouse
+savevm_section_end,0.712,id=vmmouse,section_id=0x27,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgeae88e2" class="outline-3">
+<h3 id="orgeae88e2"><span class="section-number-3">4.43</span> save port92: 4.633 us</h3>
+<div class="outline-text-3" id="text-4-43">
+<pre class="example">
+savevm_section_start,1.263,id=port92,section_id=0x28
+vmstate_save,2.650,idstr=port92,vmsd_name=port92
+savevm_section_end,0.720,id=port92,section_id=0x28,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org6cb3d07" class="outline-3">
+<h3 id="org6cb3d07"><span class="section-number-3">4.44</span> save ide: 90.513 us</h3>
+<div class="outline-text-3" id="text-4-44">
+<pre class="example">
+savevm_section_start,1.288,id=0000:00:01.1/ide,section_id=0x29
+vmstate_save,88.492,idstr=0000:00:01.1/ide,vmsd_name=ide
+savevm_section_end,0.733,id=0000:00:01.1/ide,section_id=0x29,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org14e322b" class="outline-3">
+<h3 id="org14e322b"><span class="section-number-3">4.45</span> save i2c<sub>bus</sub>: 4.938 us</h3>
+<div class="outline-text-3" id="text-4-45">
+<pre class="example">
+savevm_section_start,1.243,id=i2c_bus,section_id=0x2a
+vmstate_save,3.008,idstr=i2c_bus,vmsd_name=i2c_bus
+savevm_section_end,0.687,id=i2c_bus,section_id=0x2a,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org724f988" class="outline-3">
+<h3 id="org724f988"><span class="section-number-3">4.46</span> save piix4<sub>pm</sub>: 675.355 us</h3>
+<div class="outline-text-3" id="text-4-46">
+<pre class="example">
+savevm_section_start,1.469,id=0000:00:01.3/piix4_pm,section_id=0x2b
+vmstate_save,672.004,idstr=0000:00:01.3/piix4_pm,vmsd_name=piix4_pm
+savevm_section_end,1.882,id=0000:00:01.3/piix4_pm,section_id=0x2b,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org4260f8b" class="outline-3">
+<h3 id="org4260f8b"><span class="section-number-3">4.47</span> save smbus-eeprom: 7.265 us</h3>
+<div class="outline-text-3" id="text-4-47">
+<pre class="example">
+savevm_section_skip,1.785,id=smbus-eeprom,section_id=0x2c
+savevm_section_skip,1.732,id=smbus-eeprom,section_id=0x2d
+savevm_section_skip,0.701,id=smbus-eeprom,section_id=0x2e
+savevm_section_skip,0.525,id=smbus-eeprom,section_id=0x2f
+savevm_section_skip,0.652,id=smbus-eeprom,section_id=0x30
+savevm_section_skip,0.667,id=smbus-eeprom,section_id=0x31
+savevm_section_skip,0.626,id=smbus-eeprom,section_id=0x32
+savevm_section_skip,0.577,id=smbus-eeprom,section_id=0x33
+</pre>
+</div>
+</div>
+<div id="outline-container-org8e361e3" class="outline-3">
+<h3 id="org8e361e3"><span class="section-number-3">4.48</span> save virtio-net: 2029.208 us</h3>
+<div class="outline-text-3" id="text-4-48">
+<pre class="example">
+savevm_section_start,1.649,id=0000:00:03.0/virtio-net,section_id=0x34
+vmstate_save,2026.624,idstr=0000:00:03.0/virtio-net,vmsd_name=virtio-net
+savevm_section_end,0.935,id=0000:00:03.0/virtio-net,section_id=0x34,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org3f13a61" class="outline-3">
+<h3 id="org3f13a61"><span class="section-number-3">4.49</span> save virtio-blk: 2030.198 us</h3>
+<div class="outline-text-3" id="text-4-49">
+<pre class="example">
+savevm_section_start,1.429,id=0000:00:04.0/virtio-blk,section_id=0x35
+vmstate_save,2027.904,idstr=0000:00:04.0/virtio-blk,vmsd_name=virtio-blk
+savevm_section_end,0.865,id=0000:00:04.0/virtio-blk,section_id=0x35,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-org79fe2c5" class="outline-3">
+<h3 id="org79fe2c5"><span class="section-number-3">4.50</span> save acpi<sub>build</sub>: 5.224 us</h3>
+<div class="outline-text-3" id="text-4-50">
+<pre class="example">
+savevm_section_start,1.415,id=acpi_build,section_id=0x36
+vmstate_save,3.242,idstr=acpi_build,vmsd_name=acpi_build
+savevm_section_end,0.567,id=acpi_build,section_id=0x36,ret=0x0
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb131bda" class="outline-3">
+<h3 id="orgb131bda"><span class="section-number-3">4.51</span> save globalstate: 64.848 us</h3>
+<div class="outline-text-3" id="text-4-51">
+<pre class="example">
+savevm_section_start,1.040,id=globalstate,section_id=0x37
+vmstate_save,3.256,idstr=globalstate,vmsd_name=globalstate
+savevm_section_end,60.552,id=globalstate,section_id=0x37,ret=0x0
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: Jul 16, 2019</p>
+</div>
+</body>
+</html>

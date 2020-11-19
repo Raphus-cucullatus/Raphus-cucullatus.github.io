@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgd51a1c5">1. Introduction</a></li>
+<li><a href="#org2aa5396">2. Example usage:</a>
+<ul>
+<li><a href="#orgc177a7d">2.1. You can bind the key map by:</a></li>
+<li><a href="#org8b5a73f">2.2. Also for quick access:</a></li>
+<li><a href="#org4503ed9">2.3. Get familiar with ivy actions:</a></li>
+<li><a href="#org105ee26">2.4. Other hints when using ivy completion (not directly related to this package)</a></li>
+</ul>
+</li>
+<li><a href="#org70e9ecc">3. Other Emacs cscope packages:</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd51a1c5" class="outline-2">
+<h2 id="orgd51a1c5"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b><a href="https://github.com/Raphus-cucullatus/ivy-cscope.el">ivy-cscope.el</a></b> is yet another interface for <a href="http://cscope.sourceforge.net">cscope</a> in Emacs.
+</p>
+
+<p>
+Compared with other cscope package in Emacs, It features using <a href="https://github.com/abo-abo/swiper">ivy</a> to display and select the cscope jump candidates.  It also uses "ivy actions" to perform rich actions (e.g. open other window, open other window without focus) on the jump candidates.
+</p>
+
+<p>
+It provides
+</p>
+<ul class="org-ul">
+<li><code>ivy-cscope-find-xxx</code>: 9 functions each for cscope's menu (e.g. symbol, definition, assignment, calling, &#x2026;).</li>
+<li><code>ivy-cscope-find-definition-at-point</code>: a handy command to find the definition of the symbol at point.</li>
+<li><code>ivy-cscope-pop-mark</code>: jump back to the location before the last <code>ivy-cscope-xxxx</code> jump.</li>
+<li><code>ivy-cscope-command-map</code>: a keymap of all the commands above.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2aa5396" class="outline-2">
+<h2 id="org2aa5396"><span class="section-number-2">2</span> Example usage:</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc177a7d" class="outline-3">
+<h3 id="orgc177a7d"><span class="section-number-3">2.1</span> You can bind the key map by:</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(define-key c-mode-base-map (kbd <span style="font-style: italic;">"C-c j c"</span>) ivy-cscope-command-map)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8b5a73f" class="outline-3">
+<h3 id="org8b5a73f"><span class="section-number-3">2.2</span> Also for quick access:</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(define-key c-mode-base-map (kbd <span style="font-style: italic;">"M-."</span>) 'ivy-cscope-find-definition-at-point)
+(define-key c-mode-base-map (kbd <span style="font-style: italic;">"M-,"</span>) 'ivy-cscope-pop-mark)
+(define-key c-mode-base-map [M-mouse-1] 'ivy-cscope-find-definition-at-point)
+(define-key c-mode-base-map [M-S-mouse-1] 'ivy-cscope-pop-mark)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4503ed9" class="outline-3">
+<h3 id="org4503ed9"><span class="section-number-3">2.3</span> Get familiar with ivy actions:</h3>
+<div class="outline-text-3" id="text-2-3">
+<ol class="org-ol">
+<li>Press <code>C-c j c c</code> (or <code>M-x ivy-cscope-find-caller</code>).</li>
+<li>Insert <code>put_user_pages</code> to find functions calling <code>put_user_pages</code>.</li>
+<li><p>
+A completion list shows up, like
+</p>
+
+<pre class="example">
+(1/3) Result:
+drivers/infiniband/core/umem_odp.c ...
+fs/io_uring.c ...
+mm/gup.c ...
+</pre></li>
+
+<li>Move to some line and press <code>M-o</code> to trigger ivy actions.  A list of actions are shown, for example, open the result in other window, open the result in other window without focus, &#x2026;.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org105ee26" class="outline-3">
+<h3 id="org105ee26"><span class="section-number-3">2.4</span> Other hints when using ivy completion (not directly related to this package)</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+If you use <a href="https://github.com/abo-abo/avy">avy</a>, you can bind <code>ivy-avy</code> so that you can jump to a specific result with a single key stroke:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(define-key ivy-minibuffer-map (kbd <span style="font-style: italic;">"M-'"</span>) 'ivy-avy)
+</pre>
+</div>
+
+<p>
+When in ivy minibuffer, one can use 
+</p>
+<ul class="org-ul">
+<li><code>C-M-m</code> to preview the current candidate (select the candidate while remain the point in the minibuffer).</li>
+<li><code>C-M-n</code> to preview the next candidate.</li>
+<li><code>C-M-p</code> to preview the previous candidate.</li>
+<li><code>C-g</code> to abort the preview.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org70e9ecc" class="outline-2">
+<h2 id="org70e9ecc"><span class="section-number-2">3</span> Other Emacs cscope packages:</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="https://github.com/dkogan/xcscope.el">xcscope.el</a>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: May 20, 2020</p>
+</div>
+</body>
+</html>
