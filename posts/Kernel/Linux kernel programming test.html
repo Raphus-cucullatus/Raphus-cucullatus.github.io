@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My HomePage</title>
+<title>Linux Kernel Programming Test</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -240,79 +240,73 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">My HomePage</h1>
-
-<div id="outline-container-org747812a" class="outline-2">
-<h2 id="org747812a">Recent Posts</h2>
-<div class="outline-text-2" id="text-org747812a">
-<ul class="org-ul">
-<li>Nov 19, 2020: <a href="./posts/Kernel/Linux%20kernel%20programming%20test.html">Linux Kernel Programming Test</a></li>
-<li>Jun 29, 2020: <a href="./posts/Misc./a%20glimpse%20into%20linux%20security%20teams.html">A Glimpse Into Linux Security Teams</a></li>
-<li>May 20, 2020: <a href="./posts/Emacs/ivy-cscope.html">Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!</a></li>
+<h1 class="title">Linux Kernel Programming Test</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8415a09">Question 1: Memory translation</a></li>
+<li><a href="#orgc1432fa">Question 2: Huge page in kernel</a></li>
+<li><a href="#org08c772d">Question 3: Kernel memory pool interface</a></li>
+<li><a href="#org1efc1c3">About</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org3010a16" class="outline-2">
-<h2 id="org3010a16">All Posts</h2>
-<div class="outline-text-2" id="text-org3010a16">
-</div>
-<div id="outline-container-org97fe20d" class="outline-3">
-<h3 id="org97fe20d">Database</h3>
-<div class="outline-text-3" id="text-org97fe20d">
-<ul class="org-ul">
-<li><a href="./posts/Database/redis%20persistence%20&amp;%20high%20availability.html">Redis Data Persistence and High-Availability</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org5110807" class="outline-3">
-<h3 id="org5110807">Misc.</h3>
-<div class="outline-text-3" id="text-org5110807">
-<ul class="org-ul">
-<li><a href="./posts/Misc./a%20glimpse%20into%20linux%20security%20teams.html">A Glimpse Into Linux Security Teams</a></li>
-<li><a href="./posts/Misc./CR%202019-08-01%20at%20group%20meetup.html">CR: Pitfalls of the researches on performance optimization</a></li>
-<li><a href="./posts/Misc./Reading%20EuroSys%E2%80%9920%20best%20paper:%20Don%E2%80%99t%20shoot%20down%20TLB%20shootdowns.html">Reading EuroSys’20 best paper: Don’t shoot down TLB shootdowns</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orga9d1c98" class="outline-3">
-<h3 id="orga9d1c98">Virtualization</h3>
-<div class="outline-text-3" id="text-orga9d1c98">
-<ul class="org-ul">
-<li><a href="./posts/Virtualization/case:%20guests%20used%20PM%20exceeds%20host%20PM%20capacity.html">Case: When Guests' Used Persistent Memory Exceeds the Capacity of Host</a></li>
-<li><a href="./posts/Virtualization/live%20migration%20stop&amp;copy.html"> The Stop &amp; Copy Phase in QEMU Live Migration</a></li>
-<li><a href="./posts/Virtualization/PML%20and%20its%20overhead.html">Page-Modification Logging (PML) Inside and Its Overhead</a></li>
-<li><a href="./posts/Virtualization/qemu%20adding%20a%20new%20trace%20point.html">QEMU: Adding a New Trace Event</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgac6c61e" class="outline-3">
-<h3 id="orgac6c61e">Emacs</h3>
-<div class="outline-text-3" id="text-orgac6c61e">
-<ul class="org-ul">
-<li><a href="./posts/Emacs/mani.html">mani.el: Yet Another Emacs Package to Read Man Page</a></li>
-<li><a href="./posts/Emacs/ivy-cscope.html">Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!</a></li>
-<li><a href="./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html">Elisp Symbols: What are Symbol, Variable,  and "<code>boundp</code>", "<code>intern</code>" all about?</a></li>
-<li><a href="./posts/Emacs/iri.html">IRI: An Interactive Emacs Front-End for Ruby API Reference</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgbddcfde" class="outline-3">
-<h3 id="orgbddcfde">Kernel</h3>
-<div class="outline-text-3" id="text-orgbddcfde">
-<ul class="org-ul">
-<li><a href="./posts/Kernel/Linux%20kernel%20programming%20test.html">Linux Kernel Programming Test</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org2bd1f0b" class="outline-2">
-<h2 id="org2bd1f0b">About</h2>
-<div class="outline-text-2" id="text-org2bd1f0b">
 <p>
-If you have any questions, feel free to contact me at <a href="https://github.com/Raphus-cucullatus/Raphus-cucullatus.github.io/issues">the Issues page</a>.
+Test your (Linux) kernel programming skills by trying to answer the following questions!
+</p>
+
+<div id="outline-container-org8415a09" class="outline-2">
+<h2 id="org8415a09">Question 1: Memory translation</h2>
+<div class="outline-text-2" id="text-org8415a09">
+<p>
+Assume you're writing a kernel module which interacts with
+userspace programs with a series of <code>ioctl</code> APIs.  In one of
+the <code>ioctl</code> API, you need to do virtual-to-physical memory
+translation for a given memory region that user provided.  How
+will you implement this?
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgc1432fa" class="outline-2">
+<h2 id="orgc1432fa">Question 2: Huge page in kernel</h2>
+<div class="outline-text-2" id="text-orgc1432fa">
+<p>
+Assume that in a customized network driver module, you plan to
+use huge pages as in-kernel DMA buffers for better performance.
+Which kernel API(s) will you choose to implement a huge-page
+DMA buffer pool?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org08c772d" class="outline-2">
+<h2 id="org08c772d">Question 3: Kernel memory pool interface</h2>
+<div class="outline-text-2" id="text-org08c772d">
+<p>
+You're writing a kernel module which manages a memory pool for a
+specific purpose.  The pool is exposed to userspace programs who
+can acquire, use, and release the memory resources.  Please
+describe a clean and elegant kernel-user interface that you plan
+to use for this feature.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1efc1c3" class="outline-2">
+<h2 id="org1efc1c3">About</h2>
+<div class="outline-text-2" id="text-org1efc1c3">
+<p>
+The questions above comes from the non-trivial problems I've
+encountered in my kernel programming practice or heard from my
+colleagues.  The list will be updated constantly.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: Nov 19, 2020</p>
 </div>
 </body>
 </html>

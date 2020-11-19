@@ -14,3 +14,5 @@
 - [[file:./posts/Emacs/ivy-cscope.html][Introducing ivy-cscope.el, using cscope in Emacs with ivy completion!]]
 - [[file:./posts/Emacs/Elisp%20symbol:%20What%20is%20symbol%20variable%20intern%20bound%20all%20about.html][Elisp Symbols: What are Symbol, Variable,  and "~boundp~", "~intern~" all about?]]
 - [[file:./posts/Emacs/iri.html][IRI: An Interactive Emacs Front-End for Ruby API Reference]]
+* Kernel
+- [[file:./posts/Kernel/Linux%20kernel%20programming%20test.html][Linux Kernel Programming Test]]
