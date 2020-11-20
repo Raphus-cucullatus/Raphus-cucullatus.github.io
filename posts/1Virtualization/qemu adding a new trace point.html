@@ -245,18 +245,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org53c3278">1. Locate corresponding trace events file</a></li>
-<li><a href="#org71a25f8">2. Specify trace events</a></li>
-<li><a href="#orgab9de8e">3. Place your trace function</a></li>
-<li><a href="#org285be39">4. Build and run</a></li>
-<li><a href="#org2656f69">5. Troubleshooting</a>
+<li><a href="#org8639e13">1. Locate corresponding trace events file</a></li>
+<li><a href="#org2ffd879">2. Specify trace events</a></li>
+<li><a href="#orga8d6a28">3. Place your trace function</a></li>
+<li><a href="#org575e31e">4. Build and run</a></li>
+<li><a href="#orgfe4aa90">5. Troubleshooting</a>
 <ul>
-<li><a href="#org8f32d5d">5.1. "implicit declaration of function '<code>trace_xxx</code>' "?</a></li>
-<li><a href="#org2a102dc">5.2. "trace-events does not end with a new line"?</a></li>
-<li><a href="#orge3cef29">5.3. "warning: trace event 'abc' does not exist"?</a></li>
+<li><a href="#org84c97b0">5.1. "implicit declaration of function '<code>trace_xxx</code>' "?</a></li>
+<li><a href="#orgd6c6f9a">5.2. "trace-events does not end with a new line"?</a></li>
+<li><a href="#orgc6e62d6">5.3. "warning: trace event 'abc' does not exist"?</a></li>
 </ul>
 </li>
-<li><a href="#org71e6dfc">6. See also</a></li>
+<li><a href="#orgb91954b">6. See also</a></li>
 </ul>
 </div>
 </div>
@@ -274,8 +274,8 @@ trace_migration_completion_vm_stop();
 The steps are as follows.
 </p>
 
-<div id="outline-container-org53c3278" class="outline-2">
-<h2 id="org53c3278"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
+<div id="outline-container-org8639e13" class="outline-2">
+<h2 id="org8639e13"><span class="section-number-2">1</span> Locate corresponding trace events file</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, find the <code>trace-events</code> file in the sub-directory where your
@@ -284,8 +284,8 @@ modification is going to happen.  Here, it is
 </p>
 </div>
 </div>
-<div id="outline-container-org71a25f8" class="outline-2">
-<h2 id="org71a25f8"><span class="section-number-2">2</span> Specify trace events</h2>
+<div id="outline-container-org2ffd879" class="outline-2">
+<h2 id="org2ffd879"><span class="section-number-2">2</span> Specify trace events</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Then, append one line for each trace function.  The line specifies the
@@ -299,16 +299,16 @@ migration_completion_vm_stop(void) ""
 </pre>
 </div>
 </div>
-<div id="outline-container-orgab9de8e" class="outline-2">
-<h2 id="orgab9de8e"><span class="section-number-2">3</span> Place your trace function</h2>
+<div id="outline-container-orga8d6a28" class="outline-2">
+<h2 id="orga8d6a28"><span class="section-number-2">3</span> Place your trace function</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Now place the trace functions where you want.
 </p>
 </div>
 </div>
-<div id="outline-container-org285be39" class="outline-2">
-<h2 id="org285be39"><span class="section-number-2">4</span> Build and run</h2>
+<div id="outline-container-org575e31e" class="outline-2">
+<h2 id="org575e31e"><span class="section-number-2">4</span> Build and run</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Note that tracing should be enabled with a backend and switched on.
@@ -329,12 +329,12 @@ And when run QEMU, add
 </pre>
 </div>
 </div>
-<div id="outline-container-org2656f69" class="outline-2">
-<h2 id="org2656f69"><span class="section-number-2">5</span> Troubleshooting</h2>
+<div id="outline-container-orgfe4aa90" class="outline-2">
+<h2 id="orgfe4aa90"><span class="section-number-2">5</span> Troubleshooting</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org8f32d5d" class="outline-3">
-<h3 id="org8f32d5d"><span class="section-number-3">5.1</span> "implicit declaration of function '<code>trace_xxx</code>' "?</h3>
+<div id="outline-container-org84c97b0" class="outline-3">
+<h3 id="org84c97b0"><span class="section-number-3">5.1</span> "implicit declaration of function '<code>trace_xxx</code>' "?</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 This is possibly due to not including "<code>trace.h</code>".  QEMU generates the
@@ -347,8 +347,8 @@ trace events at the QEMU source root directory.  In this case, include
 </p>
 </div>
 </div>
-<div id="outline-container-org2a102dc" class="outline-3">
-<h3 id="org2a102dc"><span class="section-number-3">5.2</span> "trace-events does not end with a new line"?</h3>
+<div id="outline-container-orgd6c6f9a" class="outline-3">
+<h3 id="orgd6c6f9a"><span class="section-number-3">5.2</span> "trace-events does not end with a new line"?</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Currently all the <code>trace-events</code> files should be ended with a new
@@ -357,8 +357,8 @@ time.
 </p>
 </div>
 </div>
-<div id="outline-container-orge3cef29" class="outline-3">
-<h3 id="orge3cef29"><span class="section-number-3">5.3</span> "warning: trace event 'abc' does not exist"?</h3>
+<div id="outline-container-orgc6e62d6" class="outline-3">
+<h3 id="orgc6e62d6"><span class="section-number-3">5.3</span> "warning: trace event 'abc' does not exist"?</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 If you get this error while the trace event is actually named 'abcd',
@@ -368,8 +368,8 @@ is required in the <code>trace-events</code> files.
 </div>
 </div>
 </div>
-<div id="outline-container-org71e6dfc" class="outline-2">
-<h2 id="org71e6dfc"><span class="section-number-2">6</span> See also</h2>
+<div id="outline-container-orgb91954b" class="outline-2">
+<h2 id="orgb91954b"><span class="section-number-2">6</span> See also</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 For more details on QEMU tracing, see <code>docs/devel/tracing.txt</code> in the

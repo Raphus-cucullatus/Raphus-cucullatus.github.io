@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>CR: Pitfalls of the researches on performance optimization</title>
+<title>Evaluation Skill Practice: Learning from OSDI'20-Ruan-AIFM</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -240,60 +240,143 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">CR: Pitfalls of the researches on performance optimization</h1>
+<h1 class="title">Evaluation Skill Practice: Learning from OSDI'20-Ruan-AIFM</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org08d864c">1. Pitfall 1: Begin implementing without solid, preliminary data support</a></li>
-<li><a href="#org0a210f4">2. Pitfall 2: Aimlessly apply an optimization</a></li>
-<li><a href="#org9468e59">3. Pitfall 3: Can not identify the trade-offs of an optimization</a></li>
+<li><a href="#orgb36820a">My Evaluation Plan</a></li>
+<li><a href="#org1d12c21">Their Evaluation</a></li>
+<li><a href="#orga08f54d">Lessons learned</a></li>
 </ul>
 </div>
 </div>
 <p>
-On 2019/08/01, HGS gave a report on his query repair concurrency control.
+Recently an OSDI'20 paper, <a href="https://www.usenix.org/conference/osdi20/presentation/ruan">AIFM: High-Performance,
+Application-Integrated Far Memory</a>, has aroused heated discussions
+in our lab.  It is interesting, and relevant enough that I decide
+to make use of this paper to practice my evaluation skill.
 </p>
 
 <p>
-After the speech, CR left an inspiring comment on the presentation, the work, and about general research as well.  Here is a summary on the pitfalls of the researches on performance optimization by CR.
+The practice consists of two steps:
 </p>
+<ul class="org-ul">
+<li>If AIFM was my work, how would I evaluate it?</li>
+<li>Compare my evaluation plan with this OSDI paper.</li>
+</ul>
 
-<div id="outline-container-org08d864c" class="outline-2">
-<h2 id="org08d864c"><span class="section-number-2">1</span> Pitfall 1: Begin implementing without solid, preliminary data support</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-If there is no supporting data for your idea/claims, it is 90% that the project would fail.  It is necessary to give:
-</p>
+<div id="outline-container-orgb36820a" class="outline-2">
+<h2 id="orgb36820a">My Evaluation Plan</h2>
+<div class="outline-text-2" id="text-orgb36820a">
 <ol class="org-ol">
-<li>Define the most beneficial case of your optimization.</li>
-<li>Declare the scenario/use-case where the most beneficial case is common.</li>
+<li>Engineering effort to use their APIs for different workloads.</li>
+<li>Application performance under different level of local memory pressure.
+<ul class="org-ul">
+<li>Workloads: graph computing (ligra), in-memory database (Memcached), general data processing (spark)</li>
+<li>Variable: 20%, 40%, 60%, 80%, 100% DRAM</li>
+<li>Result: computing time</li>
+<li>Group: traditional swapping, Related work (Fastswap), AIFM</li>
+</ul></li>
+<li>CDF to reveal the trade-off between "slowing-down each access
+a little bit" and "largely slowing-down a fraction of accesses
+by page fault".</li>
+<li>Breakdown and evaluate the effectiveness of each optimization.
+<ul class="org-ul">
+<li>Workload: make a micro-benchmark</li>
+<li>Variable: accumulate each optimization</li>
+<li>Result: time of each operation</li>
+</ul></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org0a210f4" class="outline-2">
-<h2 id="org0a210f4"><span class="section-number-2">2</span> Pitfall 2: Aimlessly apply an optimization</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-Hu used predicate lock to optimize the false conflict issue in MySQL gap lock.  But
-</p>
+
+<div id="outline-container-org1d12c21" class="outline-2">
+<h2 id="org1d12c21">Their Evaluation</h2>
+<div class="outline-text-2" id="text-org1d12c21">
 <ol class="org-ol">
-<li>It seems unrelated to query repair (the project key point).</li>
-<li>If applied, it brings a further question that what's the impact of predicate lock on query repair.  What if using predicate lock boosts the baseline while has little effect on your version?</li>
+<li>End-to-end performance
+<ol class="org-ol">
+<li><b>Web service</b>.  They designed a synthetic web service that
+accesses "remoteable" hashtable and array, and does some
+computation.
+<ol class="org-ol">
+<li>Figure 1: Given a memory cap, compare the latency-against-throughput of Fastswap, AIFM-NT, AIFM-T</li>
+<li>Figure 2: varies memory cap, compare the normalized throughput of Fastswap, AIFM-NT, AIFM-T</li>
+<li>Figure 3: (supporting data of figure 2) varies memory cap, show the "remoteable" data structure miss rate of AIFM</li>
+</ol></li>
+<li><b>Data frame application</b>.  They choose a Pandas-like C++
+data analysis framework, and a workload of NYC taxi trip
+data analysis.
+<ol class="org-ol">
+<li>Figure 1: varies memory cap, compare the normalized throughput of Fastswap, AIFM, AIFM-offload</li>
+<li>Figure 2: (supporting data of figure 1) varies memory cap, show the normalized throughput of AIFM with different level of offload</li>
+</ol></li>
+</ol></li>
+<li>Data structure
+<ol class="org-ol">
+<li><b>Hashtable</b>
+<ol class="org-ol">
+<li>Figure 1: varies Zipfian skew parameter, compare the GET throughput of all-in-local-memory, Fastswap, AIFM</li>
+<li>Figure 2: AIFM hashtable throughput under different miss rate, under different thread number</li>
+</ol></li>
+<li><b>Array</b>.  A compression and decompression workload.
+<ol class="org-ol">
+<li>Figure 1: compression: varies memory cap, compare the normalized performance (maybe inverse of run time?) of Fastswap, AIFM</li>
+<li>Figure 2: decompression: varies memory cap, compare the normalized performance (maybe inverse of run time?) of Fastswap, AIFM</li>
+</ol></li>
+</ol></li>
+<li>Evaluating specific design aspect
+<ol class="org-ol">
+<li><b>Object access latency</b>
+<ol class="org-ol">
+<li>Table 1: 90th percentile latency (in cycles) of {read, write} dereferencing normal C++ pointer and a AIFM remoteable pointer.</li>
+<li>Table 2: 90th percentile latency (in cycles) of {read, write} fetching a remote object of Fastswap, AIFM with {64B, 4KB} object size.</li>
+</ol></li>
+<li><b>Balance point of compute time vs fetching time</b>.  They designed a micro-benchmark to do sequential read + compute over an array.
+<ol class="org-ol">
+<li>Figure 1: varies compute time, compare the normalized run time of Fastswap, AIFM.</li>
+</ol></li>
+<li><b>Pauseless Evacuation</b>
+<ol class="org-ol">
+<li>Figure 1: application thread performance impact: compare stop-the-world evacuator and pauseless evacuator.</li>
+</ol></li>
+<li><b>Prioritizing scheduler</b>
+<ol class="org-ol">
+<li>Figure 1: the effectiveness of object eviction: compare with, and without their prioritizing scheduler.</li>
+</ol></li>
+</ol></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org9468e59" class="outline-2">
-<h2 id="org9468e59"><span class="section-number-2">3</span> Pitfall 3: Can not identify the trade-offs of an optimization</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-Hu decided to use query plan optimization to reduce the repair operations in the repair phase so that blocking time can be reduced.  However, query plan optimization was originally used for execution performance.  If you use a query plan that is <i>good</i> for your repair phase but is different from the query plan <i>optimal</i> for execution, you are actually trading common-case performance for that in special cases.
-</p>
+
+<div id="outline-container-orga08f54d" class="outline-2">
+<h2 id="orga08f54d">Lessons learned</h2>
+<div class="outline-text-2" id="text-orga08f54d">
+<ol class="org-ol">
+<li>Organize the evaluation in a logical order (typically a
+top-down order): from end-to-end application benchmarks, to
+data structure benchmarks, to the evaluations of partial
+section of the whole system.</li>
+<li>Decide which parameter(s) to vary, which parameter(s) to fix,
+according to the goal: for example, they fix Zipfian ratio and
+vary memory cap in the web service end-to-end evaluation; and
+they fix memory cap and vary Zipfian ratio in the hashtable
+evaluation.</li>
+<li>Use some supporting data to better explain/illustrate the
+result especially in an end-to-end evaluation.</li>
+<li>If measuring each memory access latency for a CDF plot is too
+hard, one can use statistical result (mean, median, p90, p99).</li>
+<li>Evaluate partial section of the whole system (a specific
+design choice).</li>
+<li>Do break-even analysis.  Show when and how the benefits of the
+system may be offset by other factors.</li>
+</ol>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: Aug 01, 2019</p>
+<p class="date">Date: Nov 20, 2020</p>
 </div>
 </body>
 </html>
