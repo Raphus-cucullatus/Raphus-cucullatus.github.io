@@ -245,9 +245,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb36820a">My Evaluation Plan</a></li>
-<li><a href="#org1d12c21">Their Evaluation</a></li>
-<li><a href="#orga08f54d">Lessons learned</a></li>
+<li><a href="#org3ddd355">My Evaluation Plan</a></li>
+<li><a href="#orga2e0794">Their Evaluation</a></li>
+<li><a href="#orga27156d">Lessons learned</a></li>
 </ul>
 </div>
 </div>
@@ -266,9 +266,9 @@ The practice consists of two steps:
 <li>Compare my evaluation plan with this OSDI paper.</li>
 </ul>
 
-<div id="outline-container-orgb36820a" class="outline-2">
-<h2 id="orgb36820a">My Evaluation Plan</h2>
-<div class="outline-text-2" id="text-orgb36820a">
+<div id="outline-container-org3ddd355" class="outline-2">
+<h2 id="org3ddd355">My Evaluation Plan</h2>
+<div class="outline-text-2" id="text-org3ddd355">
 <ol class="org-ol">
 <li>Engineering effort to use their APIs for different workloads.</li>
 <li>Application performance under different level of local memory pressure.
@@ -291,9 +291,9 @@ by page fault".</li>
 </div>
 </div>
 
-<div id="outline-container-org1d12c21" class="outline-2">
-<h2 id="org1d12c21">Their Evaluation</h2>
-<div class="outline-text-2" id="text-org1d12c21">
+<div id="outline-container-orga2e0794" class="outline-2">
+<h2 id="orga2e0794">Their Evaluation</h2>
+<div class="outline-text-2" id="text-orga2e0794">
 <ol class="org-ol">
 <li>End-to-end performance
 <ol class="org-ol">
@@ -350,19 +350,19 @@ data analysis.
 </div>
 </div>
 
-<div id="outline-container-orga08f54d" class="outline-2">
-<h2 id="orga08f54d">Lessons learned</h2>
-<div class="outline-text-2" id="text-orga08f54d">
+<div id="outline-container-orga27156d" class="outline-2">
+<h2 id="orga27156d">Lessons learned</h2>
+<div class="outline-text-2" id="text-orga27156d">
 <ol class="org-ol">
 <li>Organize the evaluation in a logical order (typically a
 top-down order): from end-to-end application benchmarks, to
 data structure benchmarks, to the evaluations of partial
 section of the whole system.</li>
 <li>Decide which parameter(s) to vary, which parameter(s) to fix,
-according to the goal: for example, they fix Zipfian ratio and
-vary memory cap in the web service end-to-end evaluation; and
-they fix memory cap and vary Zipfian ratio in the hashtable
-evaluation.</li>
+according to the evaluation goal.  For example, they fix
+Zipfian ratio and vary memory cap in the web service
+end-to-end evaluation; and they fix memory cap and vary
+Zipfian ratio in the hashtable evaluation.</li>
 <li>Use some supporting data to better explain/illustrate the
 result especially in an end-to-end evaluation.</li>
 <li>If measuring each memory access latency for a CDF plot is too

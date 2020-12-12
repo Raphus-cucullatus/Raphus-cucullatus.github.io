@@ -66,10 +66,10 @@ The practice consists of two steps:
    data structure benchmarks, to the evaluations of partial
    section of the whole system.
 2. Decide which parameter(s) to vary, which parameter(s) to fix,
-   according to the goal: for example, they fix Zipfian ratio and
-   vary memory cap in the web service end-to-end evaluation; and
-   they fix memory cap and vary Zipfian ratio in the hashtable
-   evaluation.
+   according to the evaluation goal.  For example, they fix
+   Zipfian ratio and vary memory cap in the web service
+   end-to-end evaluation; and they fix memory cap and vary
+   Zipfian ratio in the hashtable evaluation.
 3. Use some supporting data to better explain/illustrate the
    result especially in an end-to-end evaluation.
 4. If measuring each memory access latency for a CDF plot is too
