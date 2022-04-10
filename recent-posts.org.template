@@ -1,3 +1,0 @@
-<% recent_posts.each do |p| %>
-- <%= p[:date] %>: [[file:<%= p[:path] %>][<%= p[:title] %>]]
-<% end %>

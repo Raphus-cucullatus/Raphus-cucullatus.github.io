@@ -1,3 +1,0 @@
-- Nov 20, 2020: [[file:.%2Fposts%2F5Misc.%2FEvaluation%20skill%20practice%20learning%20from%20osdi20-ruan-belay-aifm.org][Evaluation Skill Practice: Learning from OSDI'20-Ruan-AIFM]]
-- Nov 19, 2020: [[file:.%2Fposts%2F2Kernel%2FLinux%20kernel%20programming%20test.org][Linux Kernel Programming Test]]
-- Jun 29, 2020: [[file:.%2Fposts%2F2Kernel%2Fa%20glimpse%20into%20linux%20security%20teams.org][A Glimpse Into Linux Security Teams]]

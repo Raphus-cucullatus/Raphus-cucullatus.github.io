@@ -1,8 +1,0 @@
-<% categories.each do |cat| %>
-* <%= cat[:name] %>
-
-<% cat[:posts].each do |p| %>
-- [[file:<%= p[:html] %>][<%= p[:title] %>]]
-<% end %>
-
-<% end %>

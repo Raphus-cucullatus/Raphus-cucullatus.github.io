@@ -1,9 +1,0 @@
-#+TITLE: My HomePage
-#+OPTIONS: toc:nil num:nil
-
-* Recent Posts
-#+INCLUDE: "recent-posts.org"
-* All Posts
-#+INCLUDE: "by-category.org"
-* About
-If you have any questions, feel free to contact me at [[https://github.com/Raphus-cucullatus/Raphus-cucullatus.github.io/issues][the Issues page]].

@@ -1,3 +1,0 @@
-[submodule "lib/emacs-htmlize"]
-	path = lib/emacs-htmlize
-	url = https://github.com/hniksic/emacs-htmlize.git
