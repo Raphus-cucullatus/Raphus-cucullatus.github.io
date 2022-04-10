@@ -1,9 +1,10 @@
 title: Fan's HomePage
-email: yangfan.fan@bytedance.com
+email: Fan_Yang@sjtu.edu.cn
 description: >-
 baseurl: ""
 url: "https://raphus-cucullatus.github.io"
 github_username: Raphus-cucullatus
+rss: rss
 
 disqus:
     shortname: homepage-ni6rifkb5r
